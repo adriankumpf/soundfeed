@@ -20,9 +20,9 @@ defmodule SoundcloudRss.Client do
   end
 
   defp parse_json(%HTTPoison.Response{status_code: 200, body: body}) do
-    Poison.decode!(body, as: %PR{collection: [%Favorit{}]})
+    Poison.decode!(body, as: %Page{collection: [%Favorit{}]})
   end
 
-  defp paginate(%PR{collection: col, next_href: nil}), do: col
-  defp paginate(%PR{collection: col, next_href: url}), do: col ++ get(url)
+  defp paginate(%Page{collection: col, next_href: nil}), do: col
+  defp paginate(%Page{collection: col, next_href: url}), do: col ++ get(url)
 end
