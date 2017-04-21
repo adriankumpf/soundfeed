@@ -1,6 +1,4 @@
 defmodule SoundcloudRss.Application do
-  # See http://elixir-lang.org/docs/stable/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -8,7 +6,6 @@ defmodule SoundcloudRss.Application do
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    # Define workers and child supervisors to be supervised
     children = [
       # Starts a worker by calling: SoundcloudRss.Worker.start_link(arg1, arg2, arg3)
       # worker(SoundcloudRss.Worker, [arg1, arg2, arg3]),
