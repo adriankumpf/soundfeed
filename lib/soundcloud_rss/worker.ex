@@ -1,13 +1,9 @@
 defmodule SoundcloudRss.Worker do
   use GenServer
 
-  alias SoundcloudRss.Models.Favorit
-  alias SoundcloudRss.Helper
-  alias SoundcloudRss.Client
-  alias SoundcloudRss.Feed
+  alias SoundcloudRss.Worker.Behavior
 
   @name __MODULE__
-  @user_id Application.get_env(:soundcloud_rss, :user_id)
   @refresh_rate 12*60*60*1000
 
   ### Public API
@@ -29,23 +25,19 @@ defmodule SoundcloudRss.Worker do
   ### Server API
 
   def init(:ok) do
-    {:ok, {Map.new, []}}
+    {:ok, Behavior.init()}
   end
 
-  def handle_info(:fetch_favorites, {favorites, _order}) do
-    fetched_favs = Client.fetch_favorites(@user_id)
-    updated_favs = insert(favorites, fetched_favs)
-    order = Enum.map(fetched_favs, fn %Favorit{id: id} -> id end)
-    {:noreply, {updated_favs, order}}
+  def handle_info(:fetch_favorites, state) do
+    {:noreply, Behavior.fetch_favorites(state)}
   end
 
-  def handle_call(:get_favorites, _from, {favorites, _order} = state) do
-    {:reply, favorites, state}
+  def handle_call(:get_favorites, _from, state) do
+    {:reply, Behavior.get_favorties(state), state}
   end
 
-  def handle_call(:get_feed, _from, {favorites, order} = state) do
-    favs = Enum.map(order, fn id -> favorites[id] end)
-    {:reply, Feed.build(favs), state}
+  def handle_call(:get_feed, _from, state) do
+    {:reply, Behavior.get_feed(state), state}
   end
 
   ### Private
@@ -54,11 +46,5 @@ defmodule SoundcloudRss.Worker do
     send @name, :fetch_favorites
     :timer.sleep(@refresh_rate)
     loop()
-  end
-
-  defp insert(map, favorites) do
-    Enum.reduce(favorites, map, fn %Favorit{id: id} = fav, acc ->
-      Map.put_new(acc, id, %{fav | liked_at: Helper.now_rfc1123})
-    end)
   end
 end
