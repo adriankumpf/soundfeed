@@ -29,8 +29,11 @@ defmodule SoundcloudRss.Worker.Behavior do
   end
 
   defp insert(map, likes) do
-    Enum.reduce(likes, map, fn %Like{id: id} = fav, acc ->
-      Map.put_new(acc, id, %{fav | liked_at: Helper.now_rfc1123})
-    end)
+    Enum.reduce(likes, map, &do_insert/2)
+  end
+  defp do_insert(%Like{id: id, description: longDesc} = fav, acc)do
+    {description, _} = (longDesc || "") |> String.split_at(100)
+
+    Map.put_new(acc, id, %{fav | description: description})
   end
 end

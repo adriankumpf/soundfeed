@@ -13,25 +13,23 @@ defmodule SoundcloudRss.Feed.RSS do
     """
   end
 
-  def item(title, desc, pubDate, link, guid) do
+  def item(title, desc, link, guid) do
     """
     <item>
-      <title>#{title}</title>
+      <title><![CDATA[#{title}]]></title>
       <description><![CDATA[#{desc}]]></description>
-      <pubDate>#{pubDate}</pubDate>
       <link>#{link}</link>
       <guid>#{guid}</guid>
     </item>
     """
   end
 
-  def channel(title, link, desc, date, lang) do
+  def channel(title, link, desc, date) do
     """
       <title>#{title}</title>
       <link>#{link}</link>
       <description>#{desc}</description>
       <lastBuildDate>#{date}</lastBuildDate>
-      <language>#{lang}</language>
     """
   end
 end
