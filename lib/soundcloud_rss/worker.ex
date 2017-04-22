@@ -14,8 +14,8 @@ defmodule SoundcloudRss.Worker do
     ok
   end
 
-  def get_favorties do
-    GenServer.call(@name, :get_favorites)
+  def get_likes do
+    GenServer.call(@name, :get_likes)
   end
 
   def get_feed do
@@ -28,12 +28,12 @@ defmodule SoundcloudRss.Worker do
     {:ok, Behavior.init()}
   end
 
-  def handle_info(:fetch_favorites, state) do
-    {:noreply, Behavior.fetch_favorites(state)}
+  def handle_info(:fetch_likes, state) do
+    {:noreply, Behavior.fetch_likes(state)}
   end
 
-  def handle_call(:get_favorites, _from, state) do
-    {:reply, Behavior.get_favorties(state), state}
+  def handle_call(:get_likes, _from, state) do
+    {:reply, Behavior.get_likes(state), state}
   end
 
   def handle_call(:get_feed, _from, state) do
@@ -43,7 +43,7 @@ defmodule SoundcloudRss.Worker do
   ### Private
 
   defp loop do
-    send @name, :fetch_favorites
+    send @name, :fetch_likes
     :timer.sleep(@refresh_rate)
     loop()
   end
