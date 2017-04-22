@@ -6,6 +6,7 @@ defmodule SoundcloudRss.Worker.Behavior do
   alias SoundcloudRss.Feed
 
   @user_id Application.get_env(:soundcloud_rss, :user_id)
+  @desc_length 100
 
   def init do
     {Map.new, []}
@@ -13,7 +14,7 @@ defmodule SoundcloudRss.Worker.Behavior do
 
   def fetch_likes({likes, _order}) do
     fetched_favs = Client.fetch_likes(@user_id)
-    updated_favs = insert(likes, fetched_favs)
+    updated_favs = likes |> insert(fetched_favs)
     order = Enum.map(fetched_favs, fn %Like{id: id} -> id end)
     {updated_favs, order}
   end
@@ -31,9 +32,15 @@ defmodule SoundcloudRss.Worker.Behavior do
   defp insert(map, likes) do
     Enum.reduce(likes, map, &do_insert/2)
   end
-  defp do_insert(%Like{id: id, description: longDesc} = fav, acc)do
-    {description, _} = (longDesc || "") |> String.split_at(100)
 
+  defp do_insert(%Like{id: id, description: nil} = fav, acc) do
+    Map.put_new(acc, id, %{fav | description: ""})
+  end
+  defp do_insert(%Like{id: id, description: desc} = fav, acc) when byte_size(desc) > @desc_length do
+    {description, _} = String.split_at(desc, @desc_length)
+    Map.put_new(acc, id, %{fav | description: description <> "..."})
+  end
+  defp do_insert(%Like{id: id, description: description} = fav, acc) do
     Map.put_new(acc, id, %{fav | description: description})
   end
 end
