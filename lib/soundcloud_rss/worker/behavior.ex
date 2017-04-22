@@ -5,6 +5,7 @@ defmodule SoundcloudRss.Worker.Behavior do
   alias SoundcloudRss.Client
   alias SoundcloudRss.Feed
 
+  @feeds_dir Application.get_env(:soundcloud_rss, :feeds_dir)
   @user_id Application.get_env(:soundcloud_rss, :user_id)
   @desc_length 100
 
@@ -21,6 +22,10 @@ defmodule SoundcloudRss.Worker.Behavior do
 
   def get_likes({likes, _order}) do
     likes
+  end
+
+  def save_feed(state) do
+    File.write!("#{@feeds_dir}/likes_#{@user_id}.rss", get_feed(state))
   end
 
   def get_feed({likes, order}) do

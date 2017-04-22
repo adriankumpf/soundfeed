@@ -22,6 +22,10 @@ defmodule SoundcloudRss.Worker do
     GenServer.call(@name, :get_feed)
   end
 
+  def save_feed do
+    GenServer.cast(@name, :save_feed)
+  end
+
   ### Server API
 
   def init(:ok) do
@@ -35,9 +39,13 @@ defmodule SoundcloudRss.Worker do
   def handle_call(:get_likes, _from, state) do
     {:reply, Behavior.get_likes(state), state}
   end
-
   def handle_call(:get_feed, _from, state) do
     {:reply, Behavior.get_feed(state), state}
+  end
+
+  def handle_cast(:save_feed, state) do
+    Behavior.save_feed(state)
+    {:noreply, state}
   end
 
   ### Private
