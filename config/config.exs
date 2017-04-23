@@ -9,4 +9,4 @@ config :soundcloud,
   user_id: "yourUserId",
 
   # Project specifics
-  feeds_dir: "./data"
+  feeds_dir: "./apps/server/priv/static/feeds"
