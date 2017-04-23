@@ -5,29 +5,28 @@ defmodule Soundcloud.Worker.Behavior do
   alias Soundcloud.Feed
 
   @feeds_dir Application.get_env(:soundcloud, :feeds_dir)
-  @user_id Application.get_env(:soundcloud, :user_id)
   @desc_length 100
 
-  def init do
-    {Map.new, []}
+  def init(user_id) do
+    {user_id, Map.new, []}
   end
 
-  def fetch_likes({likes, _order}) do
-    fetched_favs = Client.fetch_likes(@user_id)
+  def fetch_likes({user_id, likes, _order}) do
+    fetched_favs = Client.fetch_likes(user_id)
     updated_favs = likes |> insert(fetched_favs)
     order = Enum.map(fetched_favs, fn %Like{id: id} -> id end)
-    {updated_favs, order}
+    {user_id, updated_favs, order}
   end
 
-  def get_likes({likes, _order}) do
+  def get_likes({user_id, likes, _order}) do
     likes
   end
 
-  def save_feed(state) do
-    File.write!("#{@feeds_dir}/likes_#{@user_id}.rss", get_feed(state))
+  def save_feed({user_id, _, _} = state) do
+    File.write!("#{@feeds_dir}/likes_#{user_id}.rss", get_feed(state))
   end
 
-  def get_feed({likes, order}) do
+  def get_feed({_user_id, likes, order}) do
     order
     |> Enum.map(fn id -> likes[id] end)
     |> Feed.build
