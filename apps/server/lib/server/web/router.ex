@@ -12,6 +12,7 @@ defmodule Server.Web.Router do
   end
 
   pipeline :feeds do
+    plug :fetch_user_id
     plug :start_genserver
     plug Plug.Static,
       at: "/", from: :server, gzip: true

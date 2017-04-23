@@ -8,10 +8,15 @@ defmodule Soundcloud.Worker do
   ### Public API
 
   def start_link(user_id) do
-    {:ok, pid} = ok = GenServer.start_link(__MODULE__, user_id)
-    :yes = :global.register_name(user_id, pid)
-    periodically_refresh(pid)
-    ok
+    case :global.whereis_name(user_id) do
+      :undefined ->
+        {:ok, pid} = ok = GenServer.start_link(__MODULE__, user_id)
+        :yes = :global.register_name(user_id, pid)
+        periodically_refresh(pid)
+        ok
+      pid ->
+        {:ok, pid}
+    end
   end
 
   def get_likes(user_id) do

@@ -6,11 +6,18 @@ defmodule Soundcloud.Client do
   @client_id Application.get_env(:soundcloud, :client_id)
 
   def fetch_likes(userId) do
-    get("https://api.soundcloud.com/users/#{userId}/favorites", [
-          linked_partitioning: 1,
-          client_id: @client_id,
-          limit: 200
-        ])
+    [
+      %Soundcloud.Models.Like{
+        id: 177511943,
+        description: "Selected Records",
+        permalink_url: "http://soundcloud.com/problemmakers/problem-makers-nyx-original-mix",
+        title: "Problem Makers - Nyx (Original Mix)"}
+    ]
+    # get("https://api.soundcloud.com/users/#{userId}/favorites", [
+    #       linked_partitioning: 1,
+    #       client_id: @client_id,
+    #       limit: 200
+    #     ])
   end
 
   def get(url, params \\ []) do
