@@ -1,4 +1,4 @@
-defmodule SoundcloudRss.Application do
+defmodule Soundcloud.Application do
   @moduledoc false
 
   use Application
@@ -7,10 +7,10 @@ defmodule SoundcloudRss.Application do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(SoundcloudRss.Worker, []),
+      worker(Soundcloud.Worker, []),
     ]
 
-    opts = [strategy: :one_for_one, name: SoundcloudRss.Supervisor]
+    opts = [strategy: :one_for_one, name: Soundcloud.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

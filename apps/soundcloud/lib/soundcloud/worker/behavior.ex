@@ -1,12 +1,11 @@
-defmodule SoundcloudRss.Worker.Behavior do
+defmodule Soundcloud.Worker.Behavior do
 
-  alias SoundcloudRss.Models.Like
-  alias SoundcloudRss.Helper
-  alias SoundcloudRss.Client
-  alias SoundcloudRss.Feed
+  alias Soundcloud.Models.Like
+  alias Soundcloud.Client
+  alias Soundcloud.Feed
 
-  @feeds_dir Application.get_env(:soundcloud_rss, :feeds_dir)
-  @user_id Application.get_env(:soundcloud_rss, :user_id)
+  @feeds_dir Application.get_env(:soundcloud, :feeds_dir)
+  @user_id Application.get_env(:soundcloud, :user_id)
   @desc_length 100
 
   def init do

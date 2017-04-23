@@ -1,7 +1,7 @@
-defmodule SoundcloudRss.Worker do
+defmodule Soundcloud.Worker do
   use GenServer
 
-  alias SoundcloudRss.Worker.Behavior
+  alias Soundcloud.Worker.Behavior
 
   @name __MODULE__
   @refresh_rate 12*60*60*1000
@@ -22,10 +22,6 @@ defmodule SoundcloudRss.Worker do
     GenServer.call(@name, :get_feed)
   end
 
-  def save_feed do
-    GenServer.cast(@name, :save_feed)
-  end
-
   ### Server API
 
   def init(:ok) do
@@ -36,6 +32,11 @@ defmodule SoundcloudRss.Worker do
     {:noreply, Behavior.fetch_likes(state)}
   end
 
+  def handle_info(:save_feed, state) do
+    Behavior.save_feed(state)
+    {:noreply, state}
+  end
+
   def handle_call(:get_likes, _from, state) do
     {:reply, Behavior.get_likes(state), state}
   end
@@ -43,15 +44,11 @@ defmodule SoundcloudRss.Worker do
     {:reply, Behavior.get_feed(state), state}
   end
 
-  def handle_cast(:save_feed, state) do
-    Behavior.save_feed(state)
-    {:noreply, state}
-  end
-
   ### Private
 
   defp loop do
     send @name, :fetch_likes
+    send @name, :save_feed
     :timer.sleep(@refresh_rate)
     loop()
   end

@@ -1,9 +1,9 @@
-defmodule SoundcloudRss.Client do
+defmodule Soundcloud.Client do
 
-  alias SoundcloudRss.Models.PagedResponse, as: Page
-  alias SoundcloudRss.Models.Like
+  alias Soundcloud.Models.PagedResponse, as: Page
+  alias Soundcloud.Models.Like
 
-  @client_id Application.get_env(:soundcloud_rss, :client_id)
+  @client_id Application.get_env(:soundcloud, :client_id)
 
   def fetch_likes(userId) do
     get("https://api.soundcloud.com/users/#{userId}/favorites", [

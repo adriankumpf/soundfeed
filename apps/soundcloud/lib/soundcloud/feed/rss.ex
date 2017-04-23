@@ -1,8 +1,4 @@
-defmodule SoundcloudRss.Feed.RSS do
-  @moduledoc """
-    https://github.com/BennyHallett/elixir-rss
-  """
-
+defmodule Soundcloud.Feed.RSS do
   def feed(channel, items) do
     """
     <?xml version="1.0" encoding="utf-8"?>
