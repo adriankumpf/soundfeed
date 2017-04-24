@@ -10,10 +10,7 @@ defmodule Soundcloud.Worker do
   def start_link(user_id) do
     case :global.whereis_name(user_id) do
       :undefined ->
-        {:ok, pid} = ok = GenServer.start_link(__MODULE__, user_id)
-        :yes = :global.register_name(user_id, pid)
-        periodically_refresh(pid)
-        ok
+        start_and_fetch(user_id)
       pid ->
         {:ok, pid}
     end
@@ -30,7 +27,7 @@ defmodule Soundcloud.Worker do
   ### Server API
 
   def init(user_id) do
-    {:ok, Behavior.init(user_id)}
+    Behavior.init(user_id)
   end
 
   def handle_info(:fetch_likes, state) do
@@ -38,8 +35,7 @@ defmodule Soundcloud.Worker do
   end
 
   def handle_info(:save_feed, state) do
-    Behavior.save_feed(state)
-    {:noreply, state}
+    {:noreply, Behavior.save_feed(state)}
   end
 
   def handle_call(:get_likes, _from, state) do
@@ -51,6 +47,17 @@ defmodule Soundcloud.Worker do
 
   ### Private
 
+  defp start_and_fetch(user_id) do
+    case GenServer.start_link(__MODULE__, user_id) do
+      ok = {:ok, pid} ->
+        :yes = :global.register_name(user_id, pid)
+        periodically_refresh(pid)
+        ok
+      err = {:error, _} ->
+        err
+    end
+  end
+
   defp periodically_refresh(pid) do
     spawn_link(fn ->
       Process.link(pid)
@@ -59,9 +66,9 @@ defmodule Soundcloud.Worker do
   end
 
   defp loop(pid) do
+    :timer.sleep(@refresh_rate)
     send pid, :fetch_likes
     send pid, :save_feed
-    :timer.sleep(@refresh_rate)
     loop(pid)
   end
 end

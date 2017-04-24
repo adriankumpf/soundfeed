@@ -8,14 +8,23 @@ defmodule Soundcloud.Worker.Behavior do
   @desc_length 100
 
   def init(user_id) do
-    {user_id, Map.new, []}
+    case fetch_likes({user_id, Map.new, []}) do
+      {:error, reason} ->
+        {:stop, reason}
+      likes ->
+        {:ok, likes}
+    end
   end
 
   def fetch_likes({user_id, likes, _order}) do
-    fetched_favs = Client.fetch_likes(user_id)
-    updated_favs = likes |> insert(fetched_favs)
-    order = Enum.map(fetched_favs, fn %Like{id: id} -> id end)
-    {user_id, updated_favs, order}
+    case Client.fetch_likes(user_id) do
+      {:ok, fetched_likes} ->
+        new_likes = likes |> insert(fetched_likes)
+        new_order = Enum.map(fetched_likes, fn %Like{id: id} -> id end)
+        {user_id, new_likes, new_order}
+      error ->
+        error
+    end
   end
 
   def get_likes({user_id, likes, _order}) do
@@ -24,11 +33,15 @@ defmodule Soundcloud.Worker.Behavior do
 
   def save_feed({user_id, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
-    save = fn -> File.write!(path <> "likes.rss", get_feed(state)) end
+
+    save_and_return_state = fn ->
+      File.write!(path <> "likes.rss", get_feed(state))
+      state
+    end
 
     case File.mkdir(path) do
-      {:error, :eexist} -> save.()
-      :ok -> save.()
+      {:error, :eexist} -> save_and_return_state.()
+      :ok -> save_and_return_state.()
       err -> err
     end
   end

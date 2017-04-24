@@ -6,7 +6,6 @@ config :soundcloud,
 
   # Soundcloud credentials
   client_id: "yourClientId",
-  user_id: "yourUserId",
 
   # Project specifics
   feeds_dir: "./apps/server/priv/static/feeds"
