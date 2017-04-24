@@ -1,7 +1,8 @@
 defmodule Server.Web.FeedController do
   use Server.Web, :controller
 
-  def index(%Plug.Conn{params: %{"user_id" => user_id}, assigns: %{worker: :running}} = conn, _params) do
+  def index(%Plug.Conn{params: %{"user_id" => user_id},
+                       assigns: %{worker: :running}} = conn, _params) do
     conn
     |> put_resp_content_type("application/rss+xml")
     |> text(Soundcloud.get_feed(user_id))

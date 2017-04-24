@@ -46,10 +46,10 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
-  def get_feed({_user_id, likes, order}) do
+  def get_feed({user_id, likes, order}) do
     order
     |> Enum.map(fn id -> likes[id] end)
-    |> Feed.build
+    |> Feed.build(user_id)
   end
 
   defp insert(map, likes) do
