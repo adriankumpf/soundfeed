@@ -23,7 +23,14 @@ defmodule Soundcloud.Worker.Behavior do
   end
 
   def save_feed({user_id, _, _} = state) do
-    File.write!("#{@feeds_dir}/likes_#{user_id}.rss", get_feed(state))
+    path = "#{@feeds_dir}/#{user_id}/"
+    save = fn -> File.write!(path <> "likes.rss", get_feed(state)) end
+
+    case File.mkdir(path) do
+      {:error, :eexist} -> save.()
+      :ok -> save.()
+      err -> err
+    end
   end
 
   def get_feed({_user_id, likes, order}) do

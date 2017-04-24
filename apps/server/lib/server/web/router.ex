@@ -12,7 +12,6 @@ defmodule Server.Web.Router do
   end
 
   pipeline :feeds do
-    plug :fetch_user_id
     plug :start_genserver
     plug Plug.Static,
       at: "/", from: :server, gzip: true
@@ -25,6 +24,6 @@ defmodule Server.Web.Router do
 
   scope "/feeds", Server.Web do
     pipe_through :feeds
-    get "/:feed", FeedController, :index
+    get "/:user_id/likes.rss", FeedController, :index
   end
 end
