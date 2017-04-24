@@ -3,7 +3,7 @@ defmodule Soundcloud.Worker do
 
   alias Soundcloud.Worker.Behavior
 
-  @refresh_rate 1*60*1000
+  @refresh_rate 3*60*60*1000
 
   ### Public API
 

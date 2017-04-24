@@ -1,12 +1,8 @@
 defmodule Server.Web.FeedController do
   use Server.Web, :controller
 
-  def index(%Plug.Conn{params: %{"user_id" => user_id},
-                       assigns: %{worker: :running}} = conn, _params) do
-    conn
-    |> put_resp_content_type("application/rss+xml")
-    |> text(Soundcloud.get_feed(user_id))
-  end
+  # Usually Plug.Static handles the requests.
+  # This is called if e.g. the worker crashed or the user doesn't exist.
   def index(conn, _params) do
     conn
     |> put_status(:not_found)

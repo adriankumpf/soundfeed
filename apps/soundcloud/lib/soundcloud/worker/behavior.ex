@@ -8,7 +8,7 @@ defmodule Soundcloud.Worker.Behavior do
   @desc_length 100
 
   def init(user_id) do
-    case fetch_likes({user_id, Map.new, []}) do
+    case {user_id, Map.new, []} |> fetch_likes |> save_feed do
       {:error, reason} ->
         {:stop, reason}
       likes ->

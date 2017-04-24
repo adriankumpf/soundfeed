@@ -12,7 +12,7 @@ defmodule Server.Web.Router do
   end
 
   pipeline :feeds do
-    plug :start_genserver
+    plug :start_worker
     plug Plug.Static,
       at: "/", from: :server, gzip: true
   end
