@@ -1,3 +1,6 @@
-<div class="welcome">
-  Hello World!
+<div class="content">
+  <form class="generate">
+    <input class="generate-input" placeholder="Enter your username" />
+    <button class="generate-submit" type="button" id="generate">Generate</button>
+  </form>
 </div>
