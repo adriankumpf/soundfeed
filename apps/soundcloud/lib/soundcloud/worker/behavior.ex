@@ -27,10 +27,7 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
-  def get_likes({_user_id, likes, _order}) do
-    likes
-  end
-
+  def save_feed({:error, _reason} = err), do: err
   def save_feed({user_id, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
 
@@ -43,6 +40,10 @@ defmodule Soundcloud.Worker.Behavior do
       :ok -> save_and_return_state.()
       err -> err
     end
+  end
+
+  def get_likes({_user_id, likes, _order}) do
+    likes
   end
 
   def get_feed({user_id, likes, order}) do

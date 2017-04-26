@@ -37,6 +37,9 @@ defmodule Soundcloud.Client do
     |> Map.get(:errors, [])
     |> hd
   end
+  defp parse_json(%Response{status_code: 401}) do
+    %ErrorMessage{error_message: "Forbidden"}
+  end
   defp parse_json(%Response{status_code: _, body: body}) do
     %ErrorMessage{error_message: body}
   end
