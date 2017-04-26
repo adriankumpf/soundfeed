@@ -27,7 +27,7 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
-  def get_likes({user_id, likes, _order}) do
+  def get_likes({_user_id, likes, _order}) do
     likes
   end
 
@@ -39,8 +39,7 @@ defmodule Soundcloud.Worker.Behavior do
       state
     end
 
-    case File.mkdir(path) do
-      {:error, :eexist} -> save_and_return_state.()
+    case File.mkdir_p(path) do
       :ok -> save_and_return_state.()
       err -> err
     end
