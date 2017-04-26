@@ -1,6 +1,9 @@
-<div class="content">
-  <form class="generate">
-    <input class="generate-input" placeholder="Enter your username" />
-    <button class="generate-submit" type="button" id="generate">Generate</button>
-  </form>
-</div>
+<form>
+  <div class="input">
+    <input type="text" class="username" placeholder="Enter your username">
+    <input type="submit" class="submit" value="Generate">
+  </div>
+  <div class="description">
+    <p><code>soundcloud.com/<strong>yourUsername</strong></code></p>
+  </div>
+</form>

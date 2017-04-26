@@ -13,7 +13,7 @@
 
   <body>
     <header class="header">
-      <h1 class="header-brand">Soundcloud RSS</h1>
+      <h1 class="header-brand">Soundcloud<br/>RSS</h1>
     </header>
     <main role="main">
       <%= render @view_module, @view_template, assigns %>
