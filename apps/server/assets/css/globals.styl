@@ -1,12 +1,28 @@
-@import 'variables/colors';
+@import 'variables';
+
+html {
+  height: 100%;
+}
 
 body {
+  background: lighten($mediumgrey, 50%);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   font-family: 'Lato', sans-serif;
   text-align: center;
-  padding: 3.5vh 0;
+  margin: 0;
+  padding: 7.8vh 0;
+}
+
+h1 {
+  margin: 0;
 }
 
 input:focus,
