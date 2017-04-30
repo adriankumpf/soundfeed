@@ -1,8 +1,14 @@
 <form>
   <div class="input">
-    <input type="text" class="username" placeholder="Enter your username">
-    <input type="submit" class="submit" value="Generate">
+    <input type="text" spellcheck="false" class="username" autofocus>
+    <div class="select-wrapper">
+      <select>
+        <option selected>Likes</option>
+        <option>Reposts</option>
+      </select>
+    </div>
   </div>
+  <%# <input type="button" class="submit" value="Generate"> %>
   <div class="description">
     <p><code>soundcloud.com/<strong>yourUsername</strong></code></p>
   </div>

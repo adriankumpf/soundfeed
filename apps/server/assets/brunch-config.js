@@ -42,8 +42,8 @@ exports.config = {
     babel: {
       ignore: [/vendor/]
     },
-    cleancss: {
-      ignored: false
+    stylus: {
+      plugins: [require('autoprefixer-stylus')({browsers: ['last 3 versions']})]
     }
   },
 
