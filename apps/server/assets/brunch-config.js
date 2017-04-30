@@ -48,12 +48,24 @@ exports.config = {
   },
 
   modules: {
-    autoRequire: {
-      'js/app.js': ['js/app']
-    }
+    wrapper: false,
+    definition: false
   },
 
   npm: {
-    enabled: true
+    enabled: false
   }
+
+  // if npm modules are needed:
+
+  // modules: {
+  //   autoRequire: {
+  //     'js/app.js': ['js/app']
+  //   }
+  // },
+  //
+  // npm: {
+  //   enabled: true
+  // }
+
 }
