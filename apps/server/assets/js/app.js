@@ -6,7 +6,7 @@ function getWidth () {
 
 function setPlaceholder () {
   const placeholder = getWidth() < 400 ? 'Username' : 'Enter your username'
-  document.querySelector('.username').placeholder = placeholder
+  document.querySelector('.input-username').placeholder = placeholder
 }
 
 setPlaceholder()
