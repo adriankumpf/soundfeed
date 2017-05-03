@@ -1,14 +1,16 @@
-<form class="generator">
-  <div class="input">
-    <input class="input-username" type="text" spellcheck="false" autofocus>
-    <div class="input-type">
-      <select class="input-type-select">
+<div class="wrapper">
+
+  <form class="generator">
+    <input id="username" class="username" type="text" spellcheck="false">
+    <div id="type" class="type">
+      <select id="select" class="type-select">
         <option selected>Likes</option>
         <option>Reposts</option>
       </select>
     </div>
-  </div>
-  <div class="description">
-    <p><code>soundcloud.com/<strong>yourUsername</strong></code></p>
-  </div>
-</form>
+    <button class="submit">Generate</button>
+    <div id="feed-url" class="feed-url">
+    </div>
+  </form>
+
+</div>

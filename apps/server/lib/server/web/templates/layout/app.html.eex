@@ -20,11 +20,11 @@
       <a href="<%= page_path @conn, :index %>" class="footer-item">
         FAQ
       </a>
+      <span class="footer-item">
+        ☁
+      </span>
       <a href="https://github.com/adriankumpf/soundcloud-rss" class="footer-item">
         Github
-      </a>
-      <a href="<%= page_path @conn, :index %>" class="footer-item">
-        Imprint
       </a>
     </footer>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>

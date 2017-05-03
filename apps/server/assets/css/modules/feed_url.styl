@@ -1,0 +1,17 @@
+@import '../variables.styl'
+
+.feed-url{
+  display: block;
+  border-radius: 5px;
+  opacity: 0;
+  background: transparent;
+  padding: 40px 0;
+  margin-bottom: 10px;
+  height: 20px;
+  border: 1px solid $mediumgrey;
+  transition: opacity .3s linear;
+
+  &.show {
+    opacity: 1;
+  }
+}
