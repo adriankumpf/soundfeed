@@ -1,5 +1,16 @@
 const $username = document.getElementById('username')
 const $feedUrl = document.getElementById('feed-url')
+const $select = document.getElementById('select')
+
+const ctx = setupCanvasCtx()
+
+function setupCanvasCtx () {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  ctx.font = 'normal 18px Lato'
+
+  return ctx
+}
 
 function getWidth () {
   return window.innerWidth ||
@@ -18,11 +29,26 @@ function showFeedUrl ({ target: { value } }) {
   $feedUrl.innerHTML = `https://sndcld-rss.com/${value}/likes/feed.rss`
 }
 
+function getTextWidth (text) {
+  return ctx.measureText(text).width
+}
+
+function centerSelect (select) {
+  const optionsText = select[select.selectedIndex].text
+  const emptySpace = select.offsetWidth - getTextWidth(optionsText)
+
+  select.style['text-indent'] = `${emptySpace / 2}px`
+}
+
 // main
 
-setPlaceholder()
-window.addEventListener('resize', setPlaceholder)
-// $username.addEventListener('click', () => {$username.placeholder = ''})
-$username.addEventListener('input', showFeedUrl)
-$typeSel.addEventListener('click', showFeedUrl)
+const init = () => {
+  centerSelect($select)
+  setPlaceholder()
+}
 
+init()
+
+$select.addEventListener('change', ({ target }) => centerSelect(target))
+$username.addEventListener('input', showFeedUrl)
+window.addEventListener('resize', init)

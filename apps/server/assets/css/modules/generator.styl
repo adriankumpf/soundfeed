@@ -30,20 +30,18 @@
 // }
 
 .generator {
-  position: relative;
   width: $maxWidth;
   max-width: 300px;
 
   .username,
-  .type {
-    display: block;
-    appearance: none;
+  .submit
+  .type, {
     border: 1px solid rgba(255, 255, 255, 0.4);
-    background-color: rgba(255, 255, 255, 0.2);
+    height: 45px;
     width: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 3px;
-    padding: 10px 0;
-    margin: 0 auto 10px auto;
+    margin-bottom: 10px;
     text-align: center;
     font-size: 18px;
     color: white;
@@ -58,7 +56,6 @@
 
   .type {
     position: relative;
-    height: 23px;
 
     &-select {
       position: absolute;
@@ -68,7 +65,6 @@
       appearance: none;
       cursor: pointer;
       border: none;
-      text-indent: 40%; // todo
       width: 100%;
       background: transparent;
       font-size: 18px;
@@ -94,18 +90,9 @@
   }
 
   .submit {
-    appearance: none;
-    outline: 0;
     background-color: white;
-    border: 0;
-    padding: 10px 0;
-    margin: 0 auto 0 auto;
     color: $blue2;
-    border-radius: 3px;
-    width: 100%;
     cursor: pointer;
-    font-size: 18px;
-    transition-duration: 0.25s;
 
     &:hover {
       background-color: rgb(245, 247, 249);
