@@ -1,6 +1,8 @@
+const $generator = document.getElementById('generator')
 const $username = document.getElementById('username')
 const $feedUrl = document.getElementById('feed-url')
 const $select = document.getElementById('select')
+const $submit = document.getElementById('submit')
 
 const ctx = setupCanvasCtx()
 
@@ -24,31 +26,32 @@ function setPlaceholder () {
     : 'Enter your username'
 }
 
-function showFeedUrl ({ target: { value } }) {
-  $feedUrl.classList[value ? 'add' : 'remove']('show')
+function showFeedUrl (value = true) {
   $feedUrl.innerHTML = `https://sndcld-rss.com/${value}/likes/feed.rss`
+  $generator.classList[value ? 'add' : 'remove']('slideOut')
+  $feedUrl.classList[value ? 'add' : 'remove']('slideIn')
 }
 
 function getTextWidth (text) {
   return ctx.measureText(text).width
 }
 
-function centerSelect (select) {
-  const optionsText = select[select.selectedIndex].text
-  const emptySpace = select.offsetWidth - getTextWidth(optionsText)
+function centerSelect () {
+  const optionsText = $select[$select.selectedIndex].text
+  const emptySpace = $select.offsetWidth - getTextWidth(optionsText)
 
-  select.style['text-indent'] = `${emptySpace / 2}px`
+  $select.style['text-indent'] = `${emptySpace / 2}px`
 }
 
 // main
 
 const init = () => {
-  centerSelect($select)
   setPlaceholder()
+  centerSelect()
 }
 
 init()
 
-$select.addEventListener('change', ({ target }) => centerSelect(target))
-$username.addEventListener('input', showFeedUrl)
+$select.addEventListener('change', centerSelect)
+$submit.addEventListener('click', showFeedUrl)
 window.addEventListener('resize', init)

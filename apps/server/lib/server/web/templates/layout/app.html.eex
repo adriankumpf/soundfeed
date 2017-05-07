@@ -20,9 +20,7 @@
       <a href="<%= page_path @conn, :index %>" class="footer-item">
         FAQ
       </a>
-      <span class="footer-item">
-        ☁
-      </span>
+      <span class="footer-item">☁ </span>
       <a href="https://github.com/adriankumpf/soundcloud-rss" class="footer-item">
         Github
       </a>

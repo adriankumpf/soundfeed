@@ -1,17 +1,19 @@
 @import '../variables.styl'
 
 .feed-url{
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: $maxWidth;
+  background: white;
+  padding: 10px;
+  height: 155px;
+  font-size: 14px;
+  color: $blue2;
+  font-weight: bold;
   border-radius: 5px;
-  opacity: 0;
-  background: transparent;
-  padding: 40px 0;
-  margin-bottom: 10px;
-  height: 20px;
-  border: 1px solid $mediumgrey;
-  transition: opacity .3s linear;
-
-  &.show {
-    opacity: 1;
-  }
+  transform: translate3d(-200%, 0, 0);
+  position: absolute;
+  top: 0;
 }
+

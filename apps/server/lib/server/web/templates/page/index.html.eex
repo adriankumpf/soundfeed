@@ -1,6 +1,6 @@
 <div class="wrapper">
 
-  <form class="generator">
+  <form id="generator" class="generator">
     <input id="username" class="username" type="text" spellcheck="false">
     <div id="type" class="type">
       <select id="select" class="type-select">
@@ -8,9 +8,8 @@
         <option>Reposts</option>
       </select>
     </div>
-    <button class="submit">Generate</button>
-    <div id="feed-url" class="feed-url">
-    </div>
+    <button type="button" id="submit" class="submit">Generate</button>
   </form>
+  <code id="feed-url" class="feed-url"></code>
 
 </div>

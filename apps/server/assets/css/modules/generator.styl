@@ -1,41 +1,16 @@
 @import '../variables';
 
-::-webkit-input-placeholder { /* WebKit browsers */
-  font-weight: 300;
-  color: $white;
+.wrapper {
+  position: relative;
 }
-
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  opacity: 1;
-  font-weight: 300;
-  color: $white;
-}
-
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-  opacity: 1;
-  font-weight: 300;
-  color: $white;
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-  font-weight: 300;
-  color: $white;
-}
-
-// h1 {
-//   font-size: 40px;
-//   transition-duration: 1s;
-//   transition-timing-function: ease-in-put;
-//   font-weight: 200;
-// }
 
 .generator {
   width: $maxWidth;
   max-width: 300px;
 
   .username,
-  .submit
-  .type, {
+  .submit,
+  .type {
     border: 1px solid rgba(255, 255, 255, 0.4);
     height: 45px;
     width: 100%;
@@ -51,6 +26,13 @@
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+
+  .username{
+    &::placeholder {
+      font-weight: 300;
+      color: $white;
     }
   }
 
@@ -93,17 +75,11 @@
     background-color: white;
     color: $blue2;
     cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    margin-bottom: 0;
 
     &:hover {
       background-color: rgb(245, 247, 249);
     }
   }
 }
-
-//   .description {
-//     font-size: 12px;
-//     letter-spacing: 1px;
-//     color: $darkgrey;
-//     line-height: 1.3em;
-//     margin-top: 15px;
-//   }
