@@ -1,8 +1,8 @@
-const $generator = document.getElementById('generator')
 const $username = document.getElementById('username')
-const $feedUrl = document.getElementById('feed-url')
 const $select = document.getElementById('select')
 const $submit = document.getElementById('submit')
+
+// Centering select element
 
 const ctx = setupCanvasCtx()
 
@@ -13,6 +13,19 @@ function setupCanvasCtx () {
 
   return ctx
 }
+
+function getTextWidth (text) {
+  return ctx.measureText(text).width
+}
+
+function centerSelect (select) {
+  const optionsText = select[select.selectedIndex].text
+  const emptySpace = select.offsetWidth - getTextWidth(optionsText)
+
+  select.style['text-indent'] = `${emptySpace / 2}px`
+}
+
+// Setting placeholder text
 
 function getWidth () {
   return window.innerWidth ||
@@ -26,32 +39,31 @@ function setPlaceholder () {
     : 'Enter your username'
 }
 
-function showFeedUrl (value = true) {
-  $feedUrl.innerHTML = `https://sndcld-rss.com/${value}/likes/feed.rss`
-  $generator.classList[value ? 'add' : 'remove']('slideOut')
-  $feedUrl.classList[value ? 'add' : 'remove']('slideIn')
-}
+// Showing feed url
 
-function getTextWidth (text) {
-  return ctx.measureText(text).width
-}
+let state = true
+function showFeedUrl () {
+  const $btn = document.querySelector('.submit-btn')
+  const $url = document.querySelector('.submit-url')
 
-function centerSelect () {
-  const optionsText = $select[$select.selectedIndex].text
-  const emptySpace = $select.offsetWidth - getTextWidth(optionsText)
+  $url.innerHTML = `https://sndcld-rss.com/${$username.value}/likes/feed.rss`
+  $url.classList[!state ? 'add' : 'remove']('hide')
+  $btn.classList[state ? 'add' : 'remove']('hide')
 
-  $select.style['text-indent'] = `${emptySpace / 2}px`
+  $submit.classList[state ? 'add' : 'remove']('full')
+
+  state = !state
 }
 
 // main
 
 const init = () => {
+  centerSelect($select)
   setPlaceholder()
-  centerSelect()
 }
 
 init()
 
-$select.addEventListener('change', centerSelect)
+$select.addEventListener('change', centerSelect.bind(null, $select))
 $submit.addEventListener('click', showFeedUrl)
 window.addEventListener('resize', init)

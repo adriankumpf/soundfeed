@@ -8,8 +8,11 @@
         <option>Reposts</option>
       </select>
     </div>
-    <button type="button" id="submit" class="submit">Generate</button>
+    <button type="button" id="submit" class="submit">
+      <span class="submit-btn">Generate</span>
+      <span class="submit-url"></span>
+    </button>
   </form>
-  <code id="feed-url" class="feed-url"></code>
 
 </div>
+
