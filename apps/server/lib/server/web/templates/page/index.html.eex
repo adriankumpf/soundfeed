@@ -8,9 +8,10 @@
         <option>Reposts</option>
       </select>
     </div>
-    <button type="button" id="submit" class="submit">
-      <span class="submit-btn">Generate</span>
-      <span class="submit-url"></span>
+    <button type="button" id="submit" class="submit" disabled>
+      <div class="submit-btn">Generate</div>
+      <input class="submit-url hide" type="text" value='' />
+      <div class="arrow hide"></div>
     </button>
   </form>
 

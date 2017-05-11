@@ -1,4 +1,6 @@
 const $username = document.getElementById('username')
+const $btn = document.querySelector('.submit-btn')
+const $url = document.querySelector('.submit-url')
 const $select = document.getElementById('select')
 const $submit = document.getElementById('submit')
 
@@ -18,11 +20,11 @@ function getTextWidth (text) {
   return ctx.measureText(text).width
 }
 
-function centerSelect (select) {
-  const optionsText = select[select.selectedIndex].text
-  const emptySpace = select.offsetWidth - getTextWidth(optionsText)
+function centerSelect () {
+  const optionsText = $select[$select.selectedIndex].text
+  const emptySpace = $select.offsetWidth - getTextWidth(optionsText)
 
-  select.style['text-indent'] = `${emptySpace / 2}px`
+  $select.style['text-indent'] = `${emptySpace / 2}px`
 }
 
 // Setting placeholder text
@@ -41,18 +43,25 @@ function setPlaceholder () {
 
 // Showing feed url
 
-let state = true
-function showFeedUrl () {
-  const $btn = document.querySelector('.submit-btn')
-  const $url = document.querySelector('.submit-url')
+function showFeedUrl ({ target: { className } }) {
+  if (['arrow', 'submit-btn'].indexOf(className) < 0) return
 
-  $url.innerHTML = `https://sndcld-rss.com/${$username.value}/likes/feed.rss`
+  const state = className !== 'arrow'
+
+  $url.value = `https://sndcld-rss.com/${$username.value}/likes/feed.rss`
   $url.classList[!state ? 'add' : 'remove']('hide')
   $btn.classList[state ? 'add' : 'remove']('hide')
 
   $submit.classList[state ? 'add' : 'remove']('full')
 
-  state = !state
+  document.querySelector('.arrow').classList[!state ? 'add' : 'remove']('hide')
+
+  // $url.focus()
+  $url.select()
+}
+
+function enableButton () {
+  $submit.disabled = false
 }
 
 // main
@@ -64,6 +73,7 @@ const init = () => {
 
 init()
 
-$select.addEventListener('change', centerSelect.bind(null, $select))
+$username.addEventListener('input', enableButton)
+$select.addEventListener('change', centerSelect)
 $submit.addEventListener('click', showFeedUrl)
 window.addEventListener('resize', init)

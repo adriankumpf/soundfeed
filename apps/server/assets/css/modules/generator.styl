@@ -5,9 +5,9 @@
 }
 
 .generator {
-  width: $maxWidth;
-  max-width: 300px;
   height: 155px;
+  width: $width;
+  max-width: $maxWidth;
 
   .username,
   .submit,
@@ -24,16 +24,17 @@
     transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
     font-weight: 300;
     outline: 0;
-
-    &:hover {
-      background-color: rgba($white, 0.4);
-    }
   }
 
-  .username {
+  .username,
+  .type {
     &::placeholder {
       font-weight: 300;
       color: $white;
+    }
+
+    &:hover {
+      background-color: rgba($white, 0.4);
     }
   }
 
@@ -82,19 +83,57 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     margin-bottom: 0;
 
-    &:hover {
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover:enabled:not(.full) {
       background-color: rgb(245, 247, 249);
     }
 
     &.full {
+      cursor: default;
       height: 155px;
-    }
 
-    &-btn,
-    &-url {
-      &.hide {
-        display: none;
+      $width=15;
+      .arrow {
+        display: inline-block;
+        cursor: pointer;
+        width: $width px;
+        height: $width px;
+        margin: -($width / 2)px 0 0 - ($width / 2)px;
+        transform: rotate(45deg);
+        border-left: none;
+        border-top: none;
+        border-right: 2px $blue3 solid;
+        border-bottom: 2px $blue3 solid;
+
+        &:hover {
+          border-color: lighten($blue3, 20%);
+        }
+      }
+
+      .submit-url {
+        display: block;
+        margin: 0 auto;
+        font-family: monospace
+        border: none;
+        border-radius: 2px;
+        margin-bottom: 20px;
+        font-size: 0.8em;
+        padding: 1em;
+        width: 90%;
+        background-color: #f3f3f3;
+        color: #454545;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
+
+    .hide {
+      display: none;
+    }
   }
+
 }
