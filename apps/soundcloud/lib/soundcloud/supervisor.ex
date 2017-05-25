@@ -15,7 +15,7 @@ defmodule Soundcloud.Supervisor do
     supervise(children, strategy: :simple_one_for_one)
   end
 
-  def start_worker(user_id) do
-    Supervisor.start_child(@name, [user_id])
+  def start_worker(type, user_id) do
+    Supervisor.start_child(@name, [type, user_id])
   end
 end

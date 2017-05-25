@@ -8,13 +8,13 @@ defmodule Soundcloud.Feed do
     https://github.com/adriankumpf/soundcloud-rss
   """
 
-  def build(likes, user_id) do
+  def build(tracks, type, user_id) do
     user_name = user_name(user_id)
     url = profile_page(user_id)
     now = Helper.now_rfc1123()
 
     channel = RSS.channel(user_name, url, @desc, now)
-    items = Enum.map(likes, &create_item/1)
+    items = Enum.map(tracks, &create_item/1)
 
     RSS.feed(channel, items)
   end
@@ -37,6 +37,6 @@ defmodule Soundcloud.Feed do
   defp prettify([c | rest]), do: [c] ++ prettify(rest)
 
   defp profile_page(user_id) do
-    "https://soundcloud.com/#{user_id}/likes"
+    "https://soundcloud.com/#{user_id}"
   end
 end

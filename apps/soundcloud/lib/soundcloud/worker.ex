@@ -7,21 +7,21 @@ defmodule Soundcloud.Worker do
 
   ### Public API
 
-  def start_link(user_id) do
-    case :global.whereis_name(user_id) do
+  def start_link(type, user_id) do
+    case :global.whereis_name({type, user_id}) do
       :undefined ->
-        start_and_fetch(user_id)
+        start_and_fetch(type, user_id)
       pid ->
         {:ok, pid}
     end
   end
 
-  def get_likes(user_id) do
-    GenServer.call({:global, user_id}, :get_likes)
+  def get_tracks(type, user_id) do
+    GenServer.call({:global, {type, user_id}}, :get_tracks)
   end
 
-  def get_feed(user_id) do
-    GenServer.call({:global, user_id}, :get_feed)
+  def get_feed(type, user_id) do
+    GenServer.call({:global, {type, user_id}}, :get_feed)
   end
 
   ### Server API
@@ -30,16 +30,16 @@ defmodule Soundcloud.Worker do
     Behavior.init(user_id)
   end
 
-  def handle_info(:fetch_likes, state) do
-    {:noreply, Behavior.fetch_likes(state)}
+  def handle_info(:fetch, state) do
+    {:noreply, Behavior.fetch(state)}
   end
 
   def handle_info(:save_feed, state) do
     {:noreply, Behavior.save_feed(state)}
   end
 
-  def handle_call(:get_likes, _from, state) do
-    {:reply, Behavior.get_likes(state), state}
+  def handle_call(:get_tracks, _from, state) do
+    {:reply, Behavior.get_tracks(state), state}
   end
   def handle_call(:get_feed, _from, state) do
     {:reply, Behavior.get_feed(state), state}
@@ -47,10 +47,10 @@ defmodule Soundcloud.Worker do
 
   ### Private
 
-  defp start_and_fetch(user_id) do
-    case GenServer.start_link(__MODULE__, user_id) do
+  defp start_and_fetch(type, user_id) do
+    case GenServer.start_link(__MODULE__, {type, user_id}) do
       ok = {:ok, pid} ->
-        :yes = :global.register_name(user_id, pid)
+        :yes = :global.register_name({type, user_id}, pid)
         periodically_refresh(pid)
         ok
       err = {:error, _} ->
@@ -67,7 +67,7 @@ defmodule Soundcloud.Worker do
 
   defp loop(pid) do
     :timer.sleep(@refresh_rate)
-    send pid, :fetch_likes
+    send pid, :fetch
     send pid, :save_feed
     loop(pid)
   end
