@@ -6,6 +6,7 @@
       <select id="select" class="type-select">
         <option selected>Likes</option>
         <option>Reposts</option>
+        <option>Tracks</option>
       </select>
     </div>
     <button type="button" id="submit" class="submit" disabled>

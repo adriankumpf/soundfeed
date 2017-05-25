@@ -34,6 +34,7 @@ defmodule Server.Web.Router do
   scope "/feeds", Server.Web do
     pipe_through :feeds
     get "/:user_id/likes.rss", FeedController, :index
+    get "/:user_id/tracks.rss", FeedController, :index
     get "/:user_id/reposts.rss", FeedController, :index
   end
 end
