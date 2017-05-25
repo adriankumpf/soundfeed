@@ -1,6 +1,6 @@
 defmodule Soundcloud.Worker.Behavior do
 
-  alias Soundcloud.Models.Like
+  alias Soundcloud.Models.Track
   alias Soundcloud.Client
   alias Soundcloud.Feed
 
@@ -20,7 +20,7 @@ defmodule Soundcloud.Worker.Behavior do
     case Client.fetch_likes(user_id) do
       {:ok, fetched_likes} ->
         new_likes = likes |> insert(fetched_likes)
-        new_order = Enum.map(fetched_likes, fn %Like{id: id} -> id end)
+        new_order = Enum.map(fetched_likes, fn %Track{id: id} -> id end)
         {user_id, new_likes, new_order}
       error ->
         error
@@ -56,14 +56,14 @@ defmodule Soundcloud.Worker.Behavior do
     Enum.reduce(likes, map, &do_insert/2)
   end
 
-  defp do_insert(%Like{id: id, description: nil} = fav, acc) do
+  defp do_insert(%Track{id: id, description: nil} = fav, acc) do
     Map.put_new(acc, id, %{fav | description: ""})
   end
-  defp do_insert(%Like{id: id, description: desc} = fav, acc) when byte_size(desc) > @desc_length do
+  defp do_insert(%Track{id: id, description: desc} = fav, acc) when byte_size(desc) > @desc_length do
     {description, _} = String.split_at(desc, @desc_length)
     Map.put_new(acc, id, %{fav | description: description <> "..."})
   end
-  defp do_insert(%Like{id: id, description: description} = fav, acc) do
+  defp do_insert(%Track{id: id, description: description} = fav, acc) do
     Map.put_new(acc, id, %{fav | description: description})
   end
 end
