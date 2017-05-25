@@ -10,14 +10,14 @@ defmodule Soundcloud.Client.API do
 
       @client_id Application.get_env(:soundcloud, :client_id)
 
-      def url(_userId), do: ''
+      def url(_user_id), do: ''
       def collection, do: []
       def normalize(tracks), do: tracks
 
       defoverridable [url: 1, collection: 0, normalize: 1]
 
-      def fetch(userId) do
-        tracks = get(url(userId), [
+      def fetch(user_id) do
+        tracks = get(url(user_id), [
           linked_partitioning: 1,
           client_id: @client_id,
           limit: 200

@@ -11,6 +11,10 @@ defmodule Server.Web.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :api do
+    plug :accepts, ["json"]
+  end
+
   pipeline :feeds do
     plug :start_worker
     plug Plug.Static,
@@ -20,6 +24,11 @@ defmodule Server.Web.Router do
   scope "/", Server.Web do
     pipe_through :browser
     get "/", PageController, :index
+  end
+
+  scope "/lookup", Server.Web do
+    pipe_through :api
+    get "/:user", ApiController, :show
   end
 
   scope "/feeds", Server.Web do
