@@ -48,7 +48,10 @@ function showFeedUrl ({ target: { className } }) {
 
   const state = className !== 'arrow'
 
-  $url.value = `https://sndcld-rss.com/${$username.value}/likes/feed.rss`
+  const type = $select.value.toLowerCase()
+  const user = $username.value
+
+  $url.value = `https://sndcld-rss.com/feeds/${user}/${type}.rss`
   $url.classList[!state ? 'add' : 'remove']('hide')
   $btn.classList[state ? 'add' : 'remove']('hide')
 
