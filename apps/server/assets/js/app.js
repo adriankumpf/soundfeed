@@ -15,7 +15,7 @@ const ctx = setupCanvasCtx()
 function setupCanvasCtx () {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
-  ctx.font = 'normal 18px Lato'
+  ctx.font = 'normal 18px sans-sarif'
 
   return ctx
 }

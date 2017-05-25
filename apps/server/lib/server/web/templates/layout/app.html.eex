@@ -11,7 +11,8 @@
   </head>
   <body>
     <header class="header">
-      <h1>Soundfeed</h1>
+      <h1 class="main">SoundFeed</h1>
+      <p class="subheader">Generate RSS feeds for any SoundCloud user</p>
     </header>
     <main role="main">
       <%= render @view_module, @view_template, assigns %>

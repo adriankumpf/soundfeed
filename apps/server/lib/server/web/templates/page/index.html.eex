@@ -10,7 +10,7 @@
       </select>
     </div>
     <button type="button" id="submit" class="submit" disabled>
-      <div class="submit-btn">Generate</div>
+      <div class="submit-btn">Generate RSS</div>
       <div class="submit-spinner hide">
         <div class="bounce1"></div>
         <div class="bounce2"></div>
