@@ -1,10 +1,14 @@
+/* global self, fetch */
+
 const $username = document.getElementById('username')
-const $btn = document.querySelector('.submit-btn')
-const $url = document.querySelector('.submit-url')
+const $spinner = document.querySelector('.submit-spinner')
 const $select = document.getElementById('select')
 const $submit = document.getElementById('submit')
+const $arrow = document.querySelector('.arrow')
+const $url = document.querySelector('.submit-url')
+const $btn = document.querySelector('.submit-btn')
 
-// Centering select element
+// Center select element
 
 const ctx = setupCanvasCtx()
 
@@ -27,7 +31,7 @@ function centerSelect () {
   $select.style['text-indent'] = `${emptySpace / 2}px`
 }
 
-// Setting placeholder text
+// Set placeholder text
 
 function getWidth () {
   return window.innerWidth ||
@@ -43,24 +47,44 @@ function setPlaceholder () {
 
 // Showing feed url
 
-function showFeedUrl ({ target: { className } }) {
+function toggleClass (el, cl, s) {
+  el.classList[s ? 'add' : 'remove'](cl)
+}
+
+function lookupUserId (done) {
+  fetch(`/lookup/${$username.value}`)
+    .then(res => res.json())
+    .then(({ user_id }) => done(user_id))
+    .catch(console.err)
+}
+
+function onBtnPress ({ target: { className } }) {
   if (['arrow', 'submit-btn'].indexOf(className) < 0) return
+  if (className === 'arrow') return extendBtn(false)
 
-  const state = className !== 'arrow'
+  showSpinner()
+  lookupUserId(showFeedUrl)
+}
 
+function showSpinner () {
+  toggleClass($spinner, 'hide', false)
+  toggleClass($btn, 'hide', true)
+}
+
+function extendBtn (state) {
+  toggleClass($url, 'hide', !state)
+  toggleClass($btn, 'hide', state)
+  toggleClass($arrow, 'hide', !state)
+  toggleClass($submit, 'full', state)
+  toggleClass($spinner, 'hide', state)
+}
+
+function showFeedUrl (userId) {
   const type = $select.value.toLowerCase()
-  const user = $username.value
-
-  $url.value = `https://sndcld-rss.com/feeds/${user}/${type}.rss`
-  $url.classList[!state ? 'add' : 'remove']('hide')
-  $btn.classList[state ? 'add' : 'remove']('hide')
-
-  $submit.classList[state ? 'add' : 'remove']('full')
-
-  document.querySelector('.arrow').classList[!state ? 'add' : 'remove']('hide')
-
-  // $url.focus()
-  $url.select()
+  const url = `http://0.0.0.0:4000/feeds/${userId}/${type}.rss`
+  $url.setAttribute('href', url)
+  $url.innerHTML = url
+  extendBtn(true)
 }
 
 function enableButton () {
@@ -76,7 +100,9 @@ const init = () => {
 
 init()
 
+if (!self.fetch) throw Error('Use a modern browser')
+
 $username.addEventListener('input', enableButton)
 $select.addEventListener('change', centerSelect)
-$submit.addEventListener('click', showFeedUrl)
+$submit.addEventListener('click', onBtnPress)
 window.addEventListener('resize', init)

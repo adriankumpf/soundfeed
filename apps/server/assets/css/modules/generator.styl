@@ -83,6 +83,14 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     margin-bottom: 0;
 
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover:enabled:not(.full) {
+      background-color: rgb(245, 247, 249);
+    }
+
     &-btn {
       height: 100%;
       display: flex;
@@ -90,12 +98,39 @@
       align-items: center;
     }
 
-    &:disabled {
-      cursor: not-allowed;
-    }
+    &-spinner {
+      display: inline-block;
+      width: 70px;
+      text-align: center;
 
-    &:hover:enabled:not(.full) {
-      background-color: rgb(245, 247, 249);
+      & > div {
+        width: 10px;
+        height: 10px;
+        background-color: $blue2;
+        border-radius: 100%;
+        display: inline-block;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+      }
+
+      .bounce1 {
+        animation-delay: -0.32s;
+      }
+
+      .bounce2 {
+        animation-delay: -0.16s;
+      }
+
+      @keyframes sk-bouncedelay {
+        0%,
+        80%,
+        100% {
+          transform: scale(0);
+        }
+
+        40% {
+          transform: scale(1.0);
+        }
+      }
     }
 
     &.full {
@@ -122,6 +157,7 @@
 
       .submit-url {
         display: block;
+        overflow-wrap: break-word; // doesn't work in IE & Edge
         margin: 0 auto;
         font-family: monospace;
         border: none;
@@ -132,9 +168,6 @@
         width: 90%;
         background-color: #f3f3f3;
         color: #454545;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
       }
     }
 

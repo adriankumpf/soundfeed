@@ -11,7 +11,12 @@
     </div>
     <button type="button" id="submit" class="submit" disabled>
       <div class="submit-btn">Generate</div>
-      <input class="submit-url hide" type="text" value='' />
+      <div class="submit-spinner hide">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+      <a class="submit-url hide"></a>
       <div class="arrow hide"></div>
     </button>
   </form>
