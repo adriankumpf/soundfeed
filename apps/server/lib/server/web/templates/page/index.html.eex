@@ -8,7 +8,7 @@
         <option>Tracks</option>
       </select>
     </div>
-    <button type="button" id="submit" class="submit" disabled>
+    <button type="button" id="submit" class="submit">
       <div class="submit-btn">Generate RSS</div>
       <div class="submit-spinner hide">
         <div class="bounce1"></div>

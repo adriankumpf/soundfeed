@@ -7,6 +7,7 @@ const $submit = document.getElementById('submit')
 const $arrow = document.querySelector('.arrow')
 const $url = document.querySelector('.submit-url')
 const $btn = document.querySelector('.submit-btn')
+const $form = document.querySelector('.form')
 
 // Center select element
 
@@ -52,23 +53,52 @@ function toggleClass (el, cl, s) {
 }
 
 function lookupUserId (done) {
+  if (!$username.value) {
+    return shakeForm()
+  }
+
+  showSpinner()
+
   fetch(`/lookup/${$username.value}`)
     .then(res => res.json())
     .then(({ user_id }) => done(user_id))
-    .catch(console.err)
+    .catch(() => {
+      shakeForm()
+      showSpinner(false)
+      $username.focus()
+    })
+}
+
+function shakeForm () {
+  toggleClass($form, 'shake', true)
+  setTimeout(toggleClass.bind(null, $form, 'shake', false), 250)
 }
 
 function onBtnPress ({ target: { className } }) {
   if (['arrow', 'submit-btn'].indexOf(className) < 0) return
   if (className === 'arrow') return extendBtn(false)
 
-  showSpinner()
   lookupUserId(showFeedUrl)
 }
 
-function showSpinner () {
-  toggleClass($spinner, 'hide', false)
-  toggleClass($btn, 'hide', true)
+function checkEnter (e) {
+  if ((e.keyCode || e.which || e.charCode || 0) === 13) {
+    e.preventDefault()
+    if (!$submit.classList.contains('full')) {
+      onBtnPress({ target: { className: 'submit-btn' } })
+    }
+  }
+}
+
+function checkEscape (e) {
+  if ((e.keyCode || e.which || e.charCode || 0) === 27) {
+    extendBtn(false)
+  }
+}
+
+function showSpinner (state = true) {
+  toggleClass($spinner, 'hide', !state)
+  toggleClass($btn, 'hide', state)
 }
 
 function extendBtn (state) {
@@ -103,6 +133,8 @@ init()
 if (!self.fetch) throw Error('Use a modern browser')
 
 $username.addEventListener('input', enableButton)
+$username.addEventListener('keypress', checkEnter)
+window.addEventListener('keypress', checkEscape)
 $select.addEventListener('change', centerSelect)
 $submit.addEventListener('click', onBtnPress)
 window.addEventListener('resize', init)

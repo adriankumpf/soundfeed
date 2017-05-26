@@ -9,6 +9,30 @@
     width: $width;
     max-width: $maxWidth;
 
+    @keyframes shake {
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      10%,
+      50%,
+      90% {
+        transform: translateX(-3px);
+      }
+
+      20%,
+      60% {
+        transform: translateX(3px);
+      }
+    }
+
+    &.shake {
+      animation-duration: 0.25s;
+      animation-fill-mode: both;
+      animation-name: shake;
+    }
+
     .username,
     .submit,
     .type {
@@ -82,10 +106,6 @@
       color: $main;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       margin-bottom: 0;
-
-      &:disabled {
-        cursor: not-allowed;
-      }
 
       &:hover:enabled:not(.full) {
         background-color: lighten($highlight, 5%);
