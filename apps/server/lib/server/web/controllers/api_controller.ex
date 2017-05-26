@@ -1,8 +1,10 @@
 defmodule Server.Web.ApiController do
   use Server.Web, :controller
 
+  alias Server.Web.Cache
+
   def show(conn, %{"user" => user}) do
-    case Soundcloud.lookup(user) do
+    case Cache.get(Soundcloud, :lookup, [user]) do
       {:ok, user_id} ->
         json conn, %{user_id: user_id}
       {:error, :not_found} ->

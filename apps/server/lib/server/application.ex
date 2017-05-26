@@ -6,7 +6,7 @@ defmodule Server.Application do
 
     children = [
       supervisor(Server.Web.Endpoint, []),
-      # worker(Server.Worker, [arg1, arg2, arg3]),
+      worker(Server.Web.Cache, []),
     ]
 
     opts = [strategy: :one_for_one, name: Server.Supervisor]
