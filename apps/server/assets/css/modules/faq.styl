@@ -1,0 +1,26 @@
+@import '../variables';
+
+.faq {
+  max-width: $maxWidth;
+  width: $width;
+  margin: 50px 0;
+
+  .qa {
+    margin-bottom: 20px;
+    background-color: rgba($main, 0.2);
+    overflow-wrap: break-word;
+    text-align: center;
+    border-radius: 5px;
+    padding: 15px;
+
+    .question {
+      color: darken($main, 25%);
+      font-size: 18px;
+    }
+
+    .answer {
+      color: $main;
+      font-size: 16px;
+    }
+  }
+}

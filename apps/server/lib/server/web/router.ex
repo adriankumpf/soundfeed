@@ -24,6 +24,7 @@ defmodule Server.Web.Router do
   scope "/", Server.Web do
     pipe_through :browser
     get "/", PageController, :index
+    get "/faq", PageController, :faq
   end
 
   scope "/lookup", Server.Web do
