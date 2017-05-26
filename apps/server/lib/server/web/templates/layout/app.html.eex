@@ -11,7 +11,9 @@
   </head>
   <body>
     <header class="header">
-      <h1 class="main">SoundFeed</h1>
+      <a href="<%= page_path @conn, :index %>" class="main">
+        <h1>SoundFeed</h1>
+      </a>
       <p class="subheader">Generate RSS feeds for any SoundCloud user</p>
     </header>
     <main role="main">
@@ -21,7 +23,9 @@
       <a href="<%= page_path @conn, :faq %>" class="footer-item">
         FAQ
       </a>
-      <span class="cloud">☁ </span>
+      <a href="<%= page_path @conn, :index %>" class="footer-item">
+        ☁
+      </a>
       <a href="https://github.com/adriankumpf/soundcloud-rss" class="footer-item">
         Github
       </a>

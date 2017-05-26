@@ -1,14 +1,14 @@
 <div class="generator">
   <form class="form">
-    <input id="username" class="username" type="text" spellcheck="false">
-    <div id="type" class="type">
-      <select id="select" class="type-select">
+    <input class="profile-url" type="text" spellcheck="false">
+    <div class="type">
+      <select class="type-select">
         <option selected>Likes</option>
         <option>Reposts</option>
         <option>Tracks</option>
       </select>
     </div>
-    <button type="button" id="submit" class="submit">
+    <button type="button" class="submit">
       <div class="submit-btn">Generate RSS</div>
       <div class="submit-spinner hide">
         <div class="bounce1"></div>

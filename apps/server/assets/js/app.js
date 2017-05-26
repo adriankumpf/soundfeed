@@ -1,13 +1,29 @@
 /* global self, fetch */
 
-const $username = document.getElementById('username')
+const $profileUrl = document.querySelector('.profile-url')
 const $spinner = document.querySelector('.submit-spinner')
-const $select = document.getElementById('select')
-const $submit = document.getElementById('submit')
+const $select = document.querySelector('.type-select')
+const $submit = document.querySelector('.submit')
 const $arrow = document.querySelector('.arrow')
 const $url = document.querySelector('.submit-url')
 const $btn = document.querySelector('.submit-btn')
 const $form = document.querySelector('.form')
+
+// Utility
+
+function toggleClass (el, cl, s) {
+  el.classList[s ? 'add' : 'remove'](cl)
+}
+
+function keyCode (e) {
+  return (e.keyCode || e.which || e.charCode || 0)
+}
+
+function getWidth () {
+  return window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth
+}
 
 // Center select element
 
@@ -34,42 +50,40 @@ function centerSelect () {
 
 // Set placeholder text
 
-function getWidth () {
-  return window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth
-}
-
 function setPlaceholder () {
-  $username.placeholder = getWidth() < 400
+  $profileUrl.placeholder = getWidth() < 400
     ? 'Your profile URL'
     : 'Enter your profile URL'
 }
 
-// Showing feed url
+// Show feed url
 
-function toggleClass (el, cl, s) {
-  el.classList[s ? 'add' : 'remove'](cl)
+function extractUserId (profileUrl) {
+  const uId = profileUrl.split('soundcloud.com/')[1]
+  const isValid = (
+    uId && !uId.includes('#') && !uId.includes('?') && !uId.includes('/')
+  )
+
+  return isValid ? uId : false
 }
 
 function lookupUserId (done) {
-  if (!$username.value) {
-    return shakeForm()
-  }
+  const userId = extractUserId($profileUrl.value)
+  if (!userId) return shakeForm()
 
   showSpinner()
 
-  fetch(`/lookup/${$username.value}`)
+  fetch(`/lookup/${userId}`)
     .then(res => res.json())
     .then(({ user_id }) => done(user_id))
     .catch(() => {
       shakeForm()
       showSpinner(false)
-      $username.focus()
     })
 }
 
 function shakeForm () {
+  $profileUrl.focus()
   toggleClass($form, 'shake', true)
   setTimeout(toggleClass.bind(null, $form, 'shake', false), 250)
 }
@@ -81,19 +95,18 @@ function onBtnPress ({ target: { className } }) {
   lookupUserId(showFeedUrl)
 }
 
-function checkEnter (e) {
-  if ((e.keyCode || e.which || e.charCode || 0) === 13) {
-    e.preventDefault()
-    if (!$submit.classList.contains('full')) {
-      onBtnPress({ target: { className: 'submit-btn' } })
-    }
+function onEnter (e) {
+  if (keyCode(e) !== 13) return
+
+  e.preventDefault()
+
+  if (!$submit.classList.contains('full')) {
+    onBtnPress({ target: { className: 'submit-btn' } })
   }
 }
 
-function checkEscape (e) {
-  if ((e.keyCode || e.which || e.charCode || 0) === 27) {
-    extendBtn(false)
-  }
+function onEsc (e) {
+  if (keyCode(e) === 27) extendBtn(false)
 }
 
 function showSpinner (state = true) {
@@ -117,10 +130,6 @@ function showFeedUrl (userId) {
   extendBtn(true)
 }
 
-function enableButton () {
-  $submit.disabled = false
-}
-
 // main
 
 const init = () => {
@@ -132,9 +141,8 @@ init()
 
 if (!self.fetch) throw Error('Use a modern browser')
 
-$username.addEventListener('input', enableButton)
-$username.addEventListener('keypress', checkEnter)
-window.addEventListener('keypress', checkEscape)
+$profileUrl.addEventListener('keypress', onEnter)
+window.addEventListener('keypress', onEsc)
 $select.addEventListener('change', centerSelect)
 $submit.addEventListener('click', onBtnPress)
 window.addEventListener('resize', init)
