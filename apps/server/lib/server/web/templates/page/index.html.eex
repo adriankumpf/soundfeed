@@ -1,6 +1,5 @@
-<div class="wrapper">
-
-  <form id="generator" class="generator">
+<div class="generator">
+  <form class="form">
     <input id="username" class="username" type="text" spellcheck="false">
     <div id="type" class="type">
       <select id="select" class="type-select">
@@ -20,6 +19,5 @@
       <div class="arrow hide"></div>
     </button>
   </form>
-
 </div>
 

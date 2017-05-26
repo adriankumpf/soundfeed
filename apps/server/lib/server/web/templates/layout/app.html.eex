@@ -18,10 +18,10 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="footer">
-      <a href="<%= page_path @conn, :index %>" class="footer-item">
+      <a href="<%= page_path @conn, :faq %>" class="footer-item">
         FAQ
       </a>
-      <span class="footer-item">☁ </span>
+      <span class="cloud">☁ </span>
       <a href="https://github.com/adriankumpf/soundcloud-rss" class="footer-item">
         Github
       </a>

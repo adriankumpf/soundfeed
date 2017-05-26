@@ -41,8 +41,8 @@ function getWidth () {
 
 function setPlaceholder () {
   $username.placeholder = getWidth() < 400
-    ? 'Username'
-    : 'Enter your username'
+    ? 'Your profile URL'
+    : 'Enter your profile URL'
 }
 
 // Showing feed url
@@ -76,7 +76,7 @@ function extendBtn (state) {
   toggleClass($btn, 'hide', state)
   toggleClass($arrow, 'hide', !state)
   toggleClass($submit, 'full', state)
-  toggleClass($spinner, 'hide', state)
+  toggleClass($spinner, 'hide', true)
 }
 
 function showFeedUrl (userId) {

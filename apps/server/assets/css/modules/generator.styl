@@ -1,179 +1,180 @@
 @import '../variables';
 
-.wrapper {
+.generator {
   margin-top: -20%;
   position: relative;
-}
 
-.generator {
-  height: 155px;
-  width: $width;
-  max-width: $maxWidth;
+  .form {
+    height: 155px;
+    width: $width;
+    max-width: $maxWidth;
 
-  .username,
-  .submit,
-  .type {
-    border: 1px solid rgba($white, 0.4);
-    height: 45px;
-    width: 100%;
-    background-color: rgba($white, 0.2);
-    border-radius: 3px;
-    margin-bottom: 10px;
-    text-align: center;
-    font-size: 18px;
-    color: white;
-    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-    font-weight: 300;
-    outline: 0;
-  }
-
-  .username,
-  .type {
-    &::placeholder {
-      font-weight: 300;
-      color: $white;
-    }
-
-    &:hover {
-      background-color: rgba($white, 0.4);
-    }
-  }
-
-  .type {
-    position: relative;
-
-    &-select {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      appearance: none;
-      cursor: pointer;
-      border: none;
+    .username,
+    .submit,
+    .type {
+      border: 1px solid rgba($main, 0.4);
+      height: 45px;
       width: 100%;
-      background: transparent;
-      font-size: 18px;
-      font-weight: 300;
-      color: white;
-    }
-
-    &:after {
-      pointer-events: none;
-      position: absolute;
-      display: block;
-      content: '';
-      width: 10px;
-      height: 10px;
-      top: 50%;
-      right: 15px;
-      margin-top: -3px;
-      border-bottom: 1px solid $white;
-      border-right: 1px solid $white;
-      transform: rotate(45deg) translateY(-50%);
-      transform-origin: 50% 0%;
-    }
-  }
-
-  .submit {
-    display: block;
-    position: absolute;
-    bottom: 0;
-    cursor: pointer;
-    background-color: $white;
-    color: $blue2;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    margin-bottom: 0;
-
-    &:disabled {
-      cursor: not-allowed;
-    }
-
-    &:hover:enabled:not(.full) {
-      background-color: rgb(245, 247, 249);
-    }
-
-    &-btn {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    &-spinner {
-      display: inline-block;
-      width: 70px;
+      background-color: rgba($main, 0.1);
+      border-radius: $borderRadius;
+      margin-bottom: 10px;
       text-align: center;
+      font-size: 18px;
+      color: $main;
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      font-weight: 300;
+      outline: 0;
+    }
 
-      & > div {
+    .username,
+    .type {
+      &::placeholder {
+        font-weight: 300;
+        color: $main;
+      }
+
+      &:hover {
+        background-color: rgba($main, 0.2);
+      }
+    }
+
+    .type {
+      position: relative;
+
+      &-select {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        appearance: none;
+        cursor: pointer;
+        border: none;
+        width: 100%;
+        background: transparent;
+        font-size: 18px;
+        font-weight: 300;
+        color: $main;
+      }
+
+      &:after {
+        pointer-events: none;
+        position: absolute;
+        display: block;
+        content: '';
         width: 10px;
         height: 10px;
-        background-color: $blue2;
-        border-radius: 100%;
-        display: inline-block;
-        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-      }
-
-      .bounce1 {
-        animation-delay: -0.32s;
-      }
-
-      .bounce2 {
-        animation-delay: -0.16s;
-      }
-
-      @keyframes sk-bouncedelay {
-        0%,
-        80%,
-        100% {
-          transform: scale(0);
-        }
-
-        40% {
-          transform: scale(1.0);
-        }
+        top: 50%;
+        right: 15px;
+        margin-top: -3px;
+        border-bottom: 1px solid $main;
+        border-right: 1px solid $main;
+        transform: rotate(45deg) translateY(-50%);
+        transform-origin: 50% 0%;
       }
     }
 
-    &.full {
-      cursor: default;
-      height: 155px;
+    .submit {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      cursor: pointer;
+      background-color: $highlight;
+      color: $main;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      margin-bottom: 0;
 
-      $width=15;
-      .arrow {
+      &:disabled {
+        cursor: not-allowed;
+      }
+
+      &:hover:enabled:not(.full) {
+        background-color: lighten($highlight, 5%);
+      }
+
+      &-btn {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &-spinner {
         display: inline-block;
-        cursor: pointer;
-        width: $width px;
-        height: $width px;
-        margin: -($width / 2)px 0 0 - ($width / 2)px;
-        transform: rotate(45deg);
-        border-left: none;
-        border-top: none;
-        border-right: 2px $blue3 solid;
-        border-bottom: 2px $blue3 solid;
+        width: 70px;
+        text-align: center;
 
-        &:hover {
-          border-color: lighten($blue3, 20%);
+        & > div {
+          width: 10px;
+          height: 10px;
+          background-color: $main;
+          border-radius: 100%;
+          display: inline-block;
+          animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        }
+
+        .bounce1 {
+          animation-delay: -0.32s;
+        }
+
+        .bounce2 {
+          animation-delay: -0.16s;
+        }
+
+        @keyframes sk-bouncedelay {
+          0%,
+          80%,
+          100% {
+            transform: scale(0);
+          }
+
+          40% {
+            transform: scale(1.0);
+          }
         }
       }
 
-      .submit-url {
-        display: block;
-        overflow-wrap: break-word; // doesn't work in IE & Edge
-        margin: 0 auto;
-        font-family: monospace;
-        border: none;
-        border-radius: 2px;
-        margin-bottom: 20px;
-        font-size: 0.8em;
-        padding: 1em;
-        width: 90%;
-        background-color: #f3f3f3;
-        color: #454545;
-      }
-    }
+      &.full {
+        cursor: default;
+        height: 155px;
+        background-color: $main;
 
-    .hide {
-      display: none;
+        $width=15;
+        .arrow {
+          display: inline-block;
+          cursor: pointer;
+          width: $width px;
+          height: $width px;
+          margin: -($width / 2)px 0 0 - ($width / 2)px;
+          transform: rotate(45deg);
+          border-left: none;
+          border-top: none;
+          border-right: 2px $highlight solid;
+          border-bottom: 2px $highlight solid;
+
+          &:hover {
+            border-color: lighten($highlight, 15%);
+          }
+        }
+
+        .submit-url {
+          display: block;
+          overflow-wrap: break-word;
+          margin: 0 auto;
+          font-family: monospace;
+          border: none;
+          border-radius: $borderRadius;
+          margin-bottom: 20px;
+          font-size: 0.8em;
+          padding: 1em;
+          width: 90%;
+          background-color: darken($main, 10%);
+          color: $background;
+        }
+      }
+
+      .hide {
+        display: none;
+      }
     }
   }
 }
