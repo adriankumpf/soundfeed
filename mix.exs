@@ -9,6 +9,8 @@ defmodule SoundcloudRss.Mixfile do
   end
 
   defp deps do
-    []
+    [
+      {:distillery, "~> 1.4"}
+    ]
   end
 end

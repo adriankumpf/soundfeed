@@ -1,6 +1,8 @@
 defmodule Soundcloud.Feed.Helper do
+  use Timex
+
   def now_rfc1123 do
-    :erlang.localtime
-    |> :httpd_util.rfc1123_date
+    {:ok, date} = Timex.format(Timex.now, "{RFC1123}")
+    date
   end
 end

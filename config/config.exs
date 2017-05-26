@@ -4,8 +4,8 @@ import_config "../apps/*/config/config.exs"
 
 config :soundcloud,
 
-  # Soundcloud credentials
-  client_id: "yourClientId",
-
   # Project specifics
-  feeds_dir: "./apps/server/priv/static/feeds"
+  feeds_dir: "./feeds"
+
+  # Soundcloud credentials
+  import_config "client_id.secret.exs"

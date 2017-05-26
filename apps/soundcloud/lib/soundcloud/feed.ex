@@ -8,7 +8,7 @@ defmodule Soundcloud.Feed do
     https://github.com/adriankumpf/soundcloud-rss
   """
 
-  def build(tracks, type, user_id) do
+  def build(tracks, _type, user_id) do
     user_name = user_name(user_id)
     url = profile_page(user_id)
     now = Helper.now_rfc1123()

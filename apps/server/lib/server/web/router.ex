@@ -18,7 +18,7 @@ defmodule Server.Web.Router do
   pipeline :feeds do
     plug :start_worker
     plug Plug.Static,
-      at: "/", from: :server, gzip: true
+      at: "/", from: ".", gzip: true
   end
 
   scope "/", Server.Web do

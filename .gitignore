@@ -7,3 +7,8 @@
 
 erl_crash.dump
 *.ez
+
+feeds/*
+!feeds/.gitkeep
+
+/config/*.secret.exs
