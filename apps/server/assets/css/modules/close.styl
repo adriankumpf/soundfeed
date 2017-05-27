@@ -1,0 +1,36 @@
+@import '../variables';
+
+$dimensions=15px
+$thickness=2px
+
+.close {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  padding: 10px;
+  width: $dimensions;
+  height: $dimensions;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    height: $thickness;
+    width: $dimensions;
+    top: 50%;
+    left: 2px;
+    background: $highlight;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

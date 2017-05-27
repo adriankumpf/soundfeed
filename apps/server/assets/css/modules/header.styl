@@ -19,5 +19,9 @@
     width: $width;
     responsive-font(4.0vw, 14px, 22px)
     color: $main;
+
+    @media (max-height: $minHeight) {
+      display: none;
+    }
   }
 }

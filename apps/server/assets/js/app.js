@@ -1,12 +1,9 @@
 /* global self, fetch */
 
 const $profileUrl = document.querySelector('.profile-url')
-const $spinner = document.querySelector('.submit-spinner')
 const $select = document.querySelector('.type-select')
 const $submit = document.querySelector('.submit')
-const $arrow = document.querySelector('.arrow')
 const $url = document.querySelector('.submit-url')
-const $btn = document.querySelector('.submit-btn')
 const $form = document.querySelector('.form')
 
 // Utility
@@ -17,12 +14,6 @@ function toggleClass (el, cl, s) {
 
 function keyCode (e) {
   return (e.keyCode || e.which || e.charCode || 0)
-}
-
-function getWidth () {
-  return window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth
 }
 
 // Center select element
@@ -48,14 +39,6 @@ function centerSelect () {
   $select.style['text-indent'] = `${emptySpace / 2}px`
 }
 
-// Set placeholder text
-
-function setPlaceholder () {
-  $profileUrl.placeholder = getWidth() < 400
-    ? 'Your profile URL'
-    : 'Enter your profile URL'
-}
-
 // Show feed url
 
 function extractUserId (profileUrl) {
@@ -76,9 +59,10 @@ function lookupUserId (done) {
   fetch(`/lookup/${userId}`)
     .then(res => res.json())
     .then(({ user_id }) => done(user_id))
+    .then(() => showSpinner(false))
     .catch(() => {
-      shakeForm()
       showSpinner(false)
+      shakeForm()
     })
 }
 
@@ -88,14 +72,32 @@ function shakeForm () {
   setTimeout(toggleClass.bind(null, $form, 'shake', false), 250)
 }
 
-function onBtnPress ({ target: { className } }) {
-  if (['arrow', 'submit-btn'].indexOf(className) < 0) return
-  if (className === 'arrow') return extendBtn(false)
+function showSpinner (state = true) {
+  toggleClass($submit, 'loading', state)
+}
+
+function extendBtn (state = true) {
+  toggleClass($submit, 'full', state)
+}
+
+function showFeedUrl (userId) {
+  const type = $select.value.toLowerCase()
+  const url = `${window.location}feeds/${userId}/${type}.rss`
+  $url.setAttribute('href', url)
+  $url.innerHTML = url
+  extendBtn()
+}
+
+// main
+
+const onBtnPress = ({ target: { className } }) => {
+  if (['close', 'submit-btn'].indexOf(className) < 0) return
+  if (className === 'close') return extendBtn(false)
 
   lookupUserId(showFeedUrl)
 }
 
-function onEnter (e) {
+const onEnter = (e) => {
   if (keyCode(e) !== 13) return
 
   e.preventDefault()
@@ -105,44 +107,16 @@ function onEnter (e) {
   }
 }
 
-function onEsc (e) {
+const onEsc = (e) => {
   if (keyCode(e) === 27) extendBtn(false)
 }
 
-function showSpinner (state = true) {
-  toggleClass($spinner, 'hide', !state)
-  toggleClass($btn, 'hide', state)
-}
-
-function extendBtn (state) {
-  toggleClass($url, 'hide', !state)
-  toggleClass($btn, 'hide', state)
-  toggleClass($arrow, 'hide', !state)
-  toggleClass($submit, 'full', state)
-  toggleClass($spinner, 'hide', true)
-}
-
-function showFeedUrl (userId) {
-  const type = $select.value.toLowerCase()
-  const url = `http://0.0.0.0:4000/feeds/${userId}/${type}.rss`
-  $url.setAttribute('href', url)
-  $url.innerHTML = url
-  extendBtn(true)
-}
-
-// main
-
-const init = () => {
-  centerSelect($select)
-  setPlaceholder()
-}
-
-init()
-
-if (!self.fetch) throw Error('Use a modern browser')
+centerSelect()
 
 $profileUrl.addEventListener('keypress', onEnter)
-window.addEventListener('keypress', onEsc)
 $select.addEventListener('change', centerSelect)
+window.addEventListener('resize', centerSelect)
 $submit.addEventListener('click', onBtnPress)
-window.addEventListener('resize', init)
+window.addEventListener('keypress', onEsc)
+
+if (!self.fetch) window.alert('Please upgrade your browser!')
