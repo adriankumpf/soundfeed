@@ -1,34 +1,47 @@
 defmodule Soundcloud.Worker.Behavior do
 
-  alias Soundcloud.Models.Track
+  alias Soundcloud.Models.{Track, User}
   alias Soundcloud.Client
   alias Soundcloud.Feed
 
+  @desc_length Application.get_env(:soundcloud, :feed_item_desc_length)
   @feeds_dir Application.get_env(:soundcloud, :feeds_dir)
-  @desc_length 100
 
   def init({type, user_id}) do
-    case {type, user_id, Map.new, []} |> fetch |> save_feed do
-      {:error, reason} ->
-        {:stop, reason}
-      tracks ->
-        {:ok, tracks}
+    initital_state = {type, %User{id: user_id}, Map.new, []}
+
+    task_user_info = Task.async(fn -> fetch_user_info(user_id) end)
+    task_tracks = Task.async(fn -> fetch(initital_state) end)
+
+    with user = %User{} <- Task.await(task_user_info),
+         {type, _user, tracks, order} <- Task.await(task_tracks),
+         state = {_, _, _, _} <- save_feed({type, user, tracks, order}) do
+      {:ok, state}
+    else
+      {:error, reason} -> {:stop, reason}
     end
   end
 
-  def fetch({type, user_id, tracks, _order}) do
+  def fetch_user_info(user_id) do
+    case Client.fetch(:user, user_id) do
+      {:ok, user} -> user
+      error -> error
+    end
+  end
+
+  def fetch({type, %User{id: user_id} = user, tracks, _order}) do
     case Client.fetch(type, user_id) do
       {:ok, fetched_tracks} ->
         new_tracks = tracks |> insert(fetched_tracks)
         new_order = Enum.map(fetched_tracks, fn %Track{id: id} -> id end)
-        {type, user_id, new_tracks, new_order}
+        {type, user, new_tracks, new_order}
       error ->
         error
     end
   end
 
   def save_feed({:error, _reason} = err), do: err
-  def save_feed({type, user_id, _, _} = state) do
+  def save_feed({type, %User{id: user_id}, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
 
     save_and_return_state = fn ->
@@ -42,14 +55,14 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
-  def get_tracks({_type, _user_id, tracks, _order}) do
+  def get_tracks({_type, _user, tracks, _order}) do
     tracks
   end
 
-  def get_feed({type, user_id, tracks, order}) do
+  def get_feed({type, user, tracks, order}) do
     order
     |> Enum.map(fn id -> tracks[id] end)
-    |> Feed.build(type, user_id)
+    |> Feed.build(type, user)
   end
 
   defp insert(map, tracks) do

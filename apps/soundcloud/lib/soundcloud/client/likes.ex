@@ -4,5 +4,4 @@ defmodule Soundcloud.Client.Likes do
   alias Soundcloud.Models.Track
 
   def url(user_id), do: "https://api.soundcloud.com/users/#{user_id}/favorites"
-  def collection, do: [%Track{}]
 end
