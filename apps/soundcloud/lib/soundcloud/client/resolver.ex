@@ -22,8 +22,15 @@ defmodule Soundcloud.Client.Resolver do
   defp get_location([_ | headers]), do: get_location(headers)
 
   defp get_user_id("https://api.soundcloud.com/users/" <> user_id) do
-    user_id
-    |> String.split("?")
-    |> hd
+    split_left(user_id, "?")
+  end
+
+  defp split_left(string, sep) do
+    case :binary.match(string, [sep]) do
+      {start, _length} ->
+        <<left::binary-size(start), _::binary>> = string
+        left
+      :nomatch -> string
+    end
   end
 end
