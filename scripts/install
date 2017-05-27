@@ -1,4 +1,0 @@
-#!/bin/bash
-
-mix deps.get
-cd ./apps/server/assets && npm install && cd -

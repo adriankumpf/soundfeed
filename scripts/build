@@ -1,6 +1,0 @@
-#!/bin/bash
-
-./apps/server/assets/node_modules/brunch/bin/brunch b -p apps/server/assets/
-MIX_ENV=prod mix do phx.digest, release
-
-
