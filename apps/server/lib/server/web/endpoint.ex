@@ -3,7 +3,11 @@ defmodule Server.Web.Endpoint do
 
   plug Plug.Static,
     at: "/", from: :server, gzip: true,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js favicon.ico robots.txt
+             android-chrome-192x192.png android-chrome-512x512.png
+             apple-touch-icon.png browserconfig.xml favicon-16x16.png
+             favicon-32x32.png manifest.json mstile-150x150.png
+             safari-pinned-tab.svg )
 
   if code_reloading? do
     socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
@@ -32,13 +36,6 @@ defmodule Server.Web.Endpoint do
 
   plug Server.Web.Router
 
-  @doc """
-  Dynamically loads configuration from the system environment
-  on startup.
-
-  It receives the endpoint configuration from the config files
-  and must return the updated configuration.
-  """
   def load_from_system_env(config) do
     port = System.get_env("PORT") || raise "expected the PORT environment variable to be set"
     {:ok, Keyword.put(config, :http, [:inet6, port: port])}
