@@ -1,8 +1,10 @@
 @import '../variables';
+@import '../mixins';
 
 .header {
-  font-size: 4.5vmin;
+  responsive-font(6.6vw, 20px, 40px)
   letter-spacing: 5px;
+  text-align: center;
 
   .main {
     cursor: pointer;
@@ -15,7 +17,7 @@
     margin-top: 10px;
     max-width: $maxWidth;
     width: $width;
-    font-size: 2.8vmin;
+    responsive-font(4.0vw, 14px, 22px)
     color: $main;
   }
 }
