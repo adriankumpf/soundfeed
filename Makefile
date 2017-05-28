@@ -14,4 +14,4 @@ getdeps:
 	mix deps.get && cd ${ASSETS} && npm install && cd ${CWD}
 
 shell:
-	mix phx.server
+	iex -S mix phx.server
