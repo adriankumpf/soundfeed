@@ -1,6 +1,6 @@
-defmodule SoundcloudRssTest do
+defmodule SoundcloudTest do
   use ExUnit.Case
-  doctest SoundcloudRss
+  doctest Soundcloud
 
   test "the truth" do
     assert 1 + 1 == 2

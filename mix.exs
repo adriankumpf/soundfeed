@@ -1,4 +1,4 @@
-defmodule SoundcloudRss.Mixfile do
+defmodule SoundFeed.Mixfile do
   use Mix.Project
 
   def project do

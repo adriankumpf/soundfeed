@@ -32,7 +32,7 @@
       <a href="<%= page_path @conn, :index %>" class="footer-item">
         ☁
       </a>
-      <a href="https://github.com/adriankumpf/soundcloud-rss" class="footer-item">
+      <a href="https://github.com/adriankumpf/soundfeed" class="footer-item">
         Github
       </a>
     </footer>
