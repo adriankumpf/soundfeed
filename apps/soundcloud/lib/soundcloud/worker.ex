@@ -24,9 +24,14 @@ defmodule Soundcloud.Worker do
     GenServer.call({:global, {type, user_id}}, :get_feed)
   end
 
+  def get_user(type, user_id) do
+    GenServer.call({:global, {type, user_id}}, :get_user)
+  end
+
   ### Server API
 
   def init(user_id) do
+    schedule_refresh()
     Behavior.init(user_id)
   end
 
@@ -38,11 +43,21 @@ defmodule Soundcloud.Worker do
     {:noreply, Behavior.save_feed(state)}
   end
 
+  def handle_info(:refresh, state) do
+    send(self(), :fetch)
+    send(self(), :save_feed)
+    schedule_refresh()
+    {:noreply, state}
+  end
+
   def handle_call(:get_tracks, _from, state) do
     {:reply, Behavior.get_tracks(state), state}
   end
   def handle_call(:get_feed, _from, state) do
     {:reply, Behavior.get_feed(state), state}
+  end
+  def handle_call(:get_user, _from, state) do
+    {:reply, Behavior.get_user(state), state}
   end
 
   ### Private
@@ -51,24 +66,13 @@ defmodule Soundcloud.Worker do
     case GenServer.start_link(__MODULE__, {type, user_id}) do
       ok = {:ok, pid} ->
         :yes = :global.register_name({type, user_id}, pid)
-        periodically_refresh(pid)
         ok
       err = {:error, _} ->
         err
     end
   end
 
-  defp periodically_refresh(pid) do
-    spawn_link(fn ->
-      Process.link(pid)
-      loop(pid)
-    end)
-  end
-
-  defp loop(pid) do
-    :timer.sleep(@refresh_rate)
-    send pid, :fetch
-    send pid, :save_feed
-    loop(pid)
+  defp schedule_refresh() do
+    Process.send_after(self(), :refresh, @refresh_rate)
   end
 end

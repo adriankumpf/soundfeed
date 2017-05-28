@@ -55,15 +55,14 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
-  def get_tracks({_type, _user, tracks, _order}) do
-    tracks
-  end
-
+  def get_tracks({_type, _user, tracks, _order}), do: tracks
+  def get_user({_type, user, _tracks, _order}), do: user
   def get_feed({type, user, tracks, order}) do
     order
     |> Enum.map(fn id -> tracks[id] end)
     |> Feed.build(type, user)
   end
+
 
   defp insert(map, tracks) do
     Enum.reduce(tracks, map, &do_insert/2)
