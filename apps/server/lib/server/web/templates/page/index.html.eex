@@ -8,7 +8,7 @@
         <option>Tracks</option>
       </select>
     </div>
-    <button type="button" class="submit">
+    <div role="button" class="submit">
       <div class="submit-btn">Generate</div>
       <div class="submit-spinner">
         <div class="spinner">
@@ -21,7 +21,7 @@
         <span class="close"></span>
       </div>
       <a class="submit-url"></a>
-    </button>
+    </div>
   </form>
 </div>
 

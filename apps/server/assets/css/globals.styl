@@ -12,6 +12,8 @@ html {
 }
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background: $background;
   display: flex;
   min-height: 100%;
@@ -28,9 +30,12 @@ h1 {
   margin: 0;
 }
 
-input:focus,
-select:focus {
-  outline: none;
+input,
+button,
+select {
+  &:focus {
+    outline: none;
+  }
 }
 
 button {

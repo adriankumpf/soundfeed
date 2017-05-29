@@ -33,6 +33,7 @@ function getTextWidth (text) {
 }
 
 function centerSelect () {
+  if (typeof InstallTrigger !== 'undefined') return // skip FireFox
   const optionsText = $select[$select.selectedIndex].text
   const emptySpace = $select.offsetWidth - getTextWidth(optionsText)
 
