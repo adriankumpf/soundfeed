@@ -2,7 +2,7 @@ defmodule Server.Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :server
 
   plug Plug.Static,
-    at: "/", from: :server, gzip: true,
+    at: "/", from: :server, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt
              android-chrome-192x192.png android-chrome-512x512.png
              apple-touch-icon.png browserconfig.xml favicon-16x16.png
