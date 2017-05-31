@@ -9,6 +9,7 @@ defmodule Server.Web.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :cache_headers
   end
 
   pipeline :api do
@@ -38,5 +39,9 @@ defmodule Server.Web.Router do
     get "/:user_id/likes.rss", FeedController, :index
     get "/:user_id/tracks.rss", FeedController, :index
     get "/:user_id/reposts.rss", FeedController, :index
+  end
+
+  defp cache_headers(conn, _) do
+    Plug.Conn.put_resp_header(conn, "cache-control", "public, max-age=86400")
   end
 end

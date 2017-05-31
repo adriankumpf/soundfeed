@@ -1,4 +1,5 @@
 @import '../variables';
+@import '../mixins';
 
 .generator {
   position: relative;
@@ -9,8 +10,8 @@
 
   .form {
     height: 155px;
-    width: $width;
     max-width: $maxWidth;
+    vWidth($width);
 
     &.shake {
       animation-duration: 0.25s;
@@ -100,6 +101,7 @@
       color: $main;
       box-shadow: 0 4px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
       margin-bottom: 0;
+      padding: 0;
       border: none;
 
       &:hover:enabled:not(.full) {
@@ -135,6 +137,7 @@
       &-btn {
         display: flex;
         height: 100%;
+        width: 100%;
         justify-content: center;
         align-items: center;
       }

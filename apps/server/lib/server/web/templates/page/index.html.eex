@@ -8,8 +8,8 @@
         <option>Tracks</option>
       </select>
     </div>
-    <div role="button" class="submit">
-      <div class="submit-btn">Generate</div>
+    <div class="submit">
+      <div role="button" class="submit-btn">Generate</div>
       <div class="submit-spinner">
         <div class="spinner">
           <div class="bounce1"></div>
@@ -17,7 +17,7 @@
           <div class="bounce3"></div>
         </div>
       </div>
-      <div class="submit-close">
+      <div role="button" class="submit-close">
         <span class="close"></span>
       </div>
       <a class="submit-url"></a>

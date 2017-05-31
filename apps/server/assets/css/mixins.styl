@@ -21,3 +21,9 @@ responsive-font($responsive, $min, $max = false, $fallback = false) {
 
   font-size: $responsive;
 }
+
+vWidth(n) {
+  width: n vw; // Edge fallback
+  width: n vmax;
+}
+

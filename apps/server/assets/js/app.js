@@ -37,7 +37,7 @@ function centerSelect () {
   const optionsText = $select[$select.selectedIndex].text
   const emptySpace = $select.offsetWidth - getTextWidth(optionsText)
 
-  $select.style['text-indent'] = `${emptySpace / 2}px`
+  $select.style['padding-left'] = `${emptySpace / 2}px`
 }
 
 // Show feed url
@@ -118,6 +118,6 @@ $profileUrl.addEventListener('keypress', onEnter)
 $select.addEventListener('change', centerSelect)
 window.addEventListener('resize', centerSelect)
 $submit.addEventListener('click', onBtnPress)
-window.addEventListener('keypress', onEsc)
+window.addEventListener('keydown', onEsc)
 
 if (!self.fetch) window.alert('Please upgrade your browser!')
