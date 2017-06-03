@@ -4,6 +4,7 @@ defmodule Soundcloud.Worker do
   alias Soundcloud.Worker.Behavior
 
   @refresh_rate 3*60*60*1000
+  @lifetime 11.95*60*60*1000 |> trunc
 
   ### Public API
 
@@ -32,6 +33,7 @@ defmodule Soundcloud.Worker do
 
   def init(user_id) do
     schedule_refresh()
+    schedule_shutdown()
     Behavior.init(user_id)
   end
 
@@ -48,6 +50,10 @@ defmodule Soundcloud.Worker do
     send(self(), :save_feed)
     schedule_refresh()
     {:noreply, state}
+  end
+
+  def handle_info(:quit, _state) do
+    Process.exit(self(), :normal)
   end
 
   def handle_call(:get_tracks, _from, state) do
@@ -74,5 +80,9 @@ defmodule Soundcloud.Worker do
 
   defp schedule_refresh() do
     Process.send_after(self(), :refresh, @refresh_rate)
+  end
+
+  defp schedule_shutdown() do
+    Process.send_after(self(), :quit, @lifetime)
   end
 end
