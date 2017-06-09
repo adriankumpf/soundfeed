@@ -8,6 +8,14 @@ config :server, Server.Web.Endpoint,
   root: ".",
   version: Mix.Project.config[:version]
 
-config :logger, level: :info
+config :logger,
+  handle_otp_reports: true,
+  handle_sasl_reports: true
+
+config :logger, backends: [{LoggerFileBackend, :error_log}]
+
+config :logger, :error_log,
+  path: "/var/log/soundfeed/error.log",
+  level: :error
 
 import_config "prod.secret.exs"

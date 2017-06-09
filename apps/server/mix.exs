@@ -30,6 +30,7 @@ defmodule Server.Mixfile do
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 1.0"},
+      {:logger_file_backend, "~> 0.0.9"},
       {:soundcloud, in_umbrella: true},
     ]
   end

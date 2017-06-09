@@ -29,6 +29,7 @@ defmodule Soundcloud.Worker.Behavior do
     end
   end
 
+  def fetch({:error, _reason} = err), do: err
   def fetch({type, %User{id: user_id} = user, tracks, _order}) do
     case Client.fetch(type, user_id) do
       {:ok, fetched_tracks} ->

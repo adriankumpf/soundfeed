@@ -18,7 +18,7 @@ defmodule Server.Web.Plugs.SoundcloudWorker do
       {:ok, _pid} ->
         assign(conn, :worker, :running)
       {:error, reason} ->
-        Logger.debug("Worker failed: #{reason}")
+        Logger.error("Worker failed: #{reason}")
         assign(conn, :worker, :failed)
     end
   end

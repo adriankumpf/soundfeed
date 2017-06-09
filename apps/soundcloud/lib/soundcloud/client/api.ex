@@ -1,5 +1,6 @@
 defmodule Soundcloud.Client.API do
-  alias HTTPoison.Response
+
+  alias HTTPoison.{Error, Response}
 
   alias Soundcloud.Models.{ErrorMessage, Errors}
   alias Soundcloud.Models.PagedResponse, as: Page
@@ -51,6 +52,9 @@ defmodule Soundcloud.Client.API do
       end
       defp parse_json(%Response{status_code: _, body: body}) do
         %ErrorMessage{error_message: body}
+      end
+      defp parse_json(%Error{reason: reason}) do
+        %ErrorMessage{error_message: reason}
       end
 
       defp paginate(%Page{collection: col, next_href: nil}), do: col
