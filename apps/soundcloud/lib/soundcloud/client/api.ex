@@ -19,17 +19,21 @@ defmodule Soundcloud.Client.API do
       defoverridable [url: 1, body: 0, normalize: 1]
 
       def fetch(user_id) do
-        tracks = get(url(user_id), [
-          linked_partitioning: 1,
-          client_id: @client_id,
-          limit: 200
-        ])
+        try do
+          tracks = get(url(user_id), [
+            linked_partitioning: 1,
+            client_id: @client_id,
+            limit: 200
+          ])
 
-        case tracks do
-          %ErrorMessage{error_message: msg} ->
-            {:error, msg}
-          _ ->
-            {:ok, normalize(tracks)}
+          case tracks do
+            %ErrorMessage{error_message: msg} ->
+              {:error, msg}
+            _ ->
+              {:ok, normalize(tracks)}
+          end
+        catch
+          err -> {:error, err}
         end
       end
 

@@ -6,6 +6,7 @@ defmodule Soundcloud.Worker.Behavior do
 
   @desc_length Application.get_env(:soundcloud, :feed_item_desc_length)
   @feeds_dir Application.get_env(:soundcloud, :feeds_dir)
+  @timeout 65000
 
   def init({type, user_id}) do
     initital_state = {type, %User{id: user_id}, Map.new, []}
@@ -13,8 +14,8 @@ defmodule Soundcloud.Worker.Behavior do
     task_user_info = Task.async(fn -> fetch_user_info(user_id) end)
     task_tracks = Task.async(fn -> fetch(initital_state) end)
 
-    with user = %User{} <- Task.await(task_user_info),
-         {type, _user, tracks, order} <- Task.await(task_tracks),
+    with user = %User{} <- Task.await(task_user_info, @timeout),
+         {type, _user, tracks, order} <- Task.await(task_tracks, @timeout),
          state = {_, _, _, _} <- save_feed({type, user, tracks, order}) do
       {:ok, state}
     else
