@@ -1,4 +1,5 @@
 defmodule Soundcloud.Worker.Behavior do
+  require Logger
 
   alias Soundcloud.Models.{Track, User}
   alias Soundcloud.Client
@@ -70,14 +71,18 @@ defmodule Soundcloud.Worker.Behavior do
     Enum.reduce(tracks, map, &do_insert/2)
   end
 
-  defp do_insert(%Track{id: id, description: nil} = fav, acc) do
-    Map.put_new(acc, id, %{fav | description: ""})
+  defp do_insert(%Track{id: id, description: nil} = track, acc) do
+    Map.put_new(acc, id, %{track | description: ""})
   end
-  defp do_insert(%Track{id: id, description: desc} = fav, acc) when byte_size(desc) > @desc_length do
+  defp do_insert(%Track{id: id, description: desc} = track, acc) when byte_size(desc) > @desc_length do
     {description, _} = String.split_at(desc, @desc_length)
-    Map.put_new(acc, id, %{fav | description: description <> "..."})
+    Map.put_new(acc, id, %{track | description: description <> "..."})
   end
-  defp do_insert(%Track{id: id, description: description} = fav, acc) do
-    Map.put_new(acc, id, %{fav | description: description})
+  defp do_insert(%Track{id: id, description: description} = track, acc) do
+    Map.put_new(acc, id, %{track | description: description})
+  end
+  defp do_insert(track, acc) do
+    Logger.error("Could not process track: #{track}")
+    acc
   end
 end

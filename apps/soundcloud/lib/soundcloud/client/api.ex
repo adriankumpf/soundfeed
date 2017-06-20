@@ -1,5 +1,4 @@
 defmodule Soundcloud.Client.API do
-
   alias HTTPoison.{Error, Response}
 
   alias Soundcloud.Models.{ErrorMessage, Errors}

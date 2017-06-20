@@ -1,10 +1,5 @@
 defmodule Soundcloud.Client do
-
-  alias Soundcloud.Client.Resolver
-  alias Soundcloud.Client.Reposts
-  alias Soundcloud.Client.Tracks
-  alias Soundcloud.Client.Likes
-  alias Soundcloud.Client.User
+  alias Soundcloud.Client.{ Resolver, Reposts, Tracks, Likes, User }
 
   def fetch(:reposts, user_id), do: Reposts.fetch(user_id)
   def fetch(:tracks, user_id), do: Tracks.fetch(user_id)

@@ -1,5 +1,5 @@
 defmodule Soundcloud.Client.Resolver do
-  alias HTTPoison.Response
+  alias HTTPoison.{Error, Response}
 
   @client_id Application.get_env(:soundcloud, :client_id)
 
@@ -17,6 +17,8 @@ defmodule Soundcloud.Client.Resolver do
               |> get_user_id
     {:ok, user_id}
   end
+  defp extract_user_id(%Response{status_code: _}), do: {:error, :bad_status_code}
+  defp extract_user_id(%Error{reason: reason}), do: {:error, reason}
 
   defp get_location([{"Location", loc} | _]), do: loc
   defp get_location([_ | headers]), do: get_location(headers)
