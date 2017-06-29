@@ -53,8 +53,9 @@ defmodule Server.Web.Cache do
 
   defp cache_apply(ets, mod, fun, args, ttl) do
     result = apply(mod, fun, args)
-    :ets.insert(ets, {[mod, fun, args], result})
-    Process.send_after(__MODULE__, {:expire, [mod, fun, args]}, ttl)
+    key = [mod, fun, args]
+    :ets.insert(ets, {key, result})
+    Process.send_after(__MODULE__, {:expire, key}, ttl)
     result
   end
 end

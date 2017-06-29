@@ -43,7 +43,11 @@ function centerSelect () {
 // Show feed url
 
 function extractUserId (profileUrl) {
-  const uId = profileUrl.split('soundcloud.com/')[1]
+  const uId = profileUrl
+    .trim()
+    .toLowerCase()
+    .split('soundcloud.com/')[1]
+
   const isValid = (
     uId && !uId.includes('#') && !uId.includes('?') && !uId.includes('/')
   )

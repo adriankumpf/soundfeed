@@ -15,23 +15,23 @@ defmodule Soundcloud.Client.API do
 
       def url(_user_id), do: ''
       def body, do: %Page{collection: [%Track{}]}
-      def normalize(tracks), do: tracks
+      def normalize(data), do: data
 
       defoverridable [url: 1, body: 0, normalize: 1]
 
       def fetch(user_id) do
         try do
-          tracks = user_id |> url |> get([
+          data = user_id |> url |> get([
             linked_partitioning: 1,
             client_id: @client_id,
             limit: 200
           ])
 
-          case tracks do
+          case data do
             %ErrorMessage{error_message: msg} ->
               {:error, msg}
             _ ->
-              {:ok, normalize(tracks)}
+              {:ok, normalize(data)}
           end
         catch
           err -> {:error, err}

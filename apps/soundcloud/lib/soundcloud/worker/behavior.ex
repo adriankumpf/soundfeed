@@ -12,49 +12,38 @@ defmodule Soundcloud.Worker.Behavior do
   def init({type, user_id}) do
     initital_state = {type, %User{id: user_id}, Map.new, []}
 
-    task_user_info = Task.async(fn -> fetch_user_info(user_id) end)
+    task_user_info = Task.async(fn -> Client.fetch(:user, user_id) end)
     task_tracks = Task.async(fn -> fetch(initital_state) end)
 
-    with user = %User{} <- Task.await(task_user_info, @timeout),
-         {type, _user, tracks, order} <- Task.await(task_tracks, @timeout),
-         state = {_, _, _, _} <- save_feed({type, user, tracks, order}) do
+    with {:ok, user = %User{}} <- Task.await(task_user_info, @timeout),
+         {:ok, {type, _, tracks, order}} <- Task.await(task_tracks, @timeout),
+         {:ok, state} <- save_feed({type, user, tracks, order}) do
       {:ok, state}
     else
-      {:error, reason} -> {:stop, reason}
+      {:error, _reason} = err -> err
     end
   end
 
-  def fetch_user_info(user_id) do
-    case Client.fetch(:user, user_id) do
-      {:ok, user} -> user
-      error -> error
-    end
-  end
-
-  def fetch({:error, _reason} = err), do: err
   def fetch({type, %User{id: user_id} = user, tracks, _order}) do
     case Client.fetch(type, user_id) do
       {:ok, fetched_tracks} ->
         new_tracks = tracks |> insert(fetched_tracks)
         new_order = Enum.map(fetched_tracks, fn %Track{id: id} -> id end)
-        {type, user, new_tracks, new_order}
-      error ->
-        error
+        {:ok, {type, user, new_tracks, new_order}}
+      {:error, _reason} = err ->
+        err
     end
   end
 
-  def save_feed({:error, _reason} = err), do: err
   def save_feed({type, %User{id: user_id}, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
 
-    save_and_return_state = fn ->
-      File.write!(path <> "#{Atom.to_string(type)}.rss", get_feed(state))
-      state
-    end
-
     case File.mkdir_p(path) do
-      :ok -> save_and_return_state.()
-      err -> err
+      :ok ->
+        File.write!(path <> "#{Atom.to_string(type)}.rss", get_feed(state))
+        {:ok, state}
+      err ->
+        {:error, err}
     end
   end
 
