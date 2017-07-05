@@ -44,7 +44,7 @@ defmodule Soundcloud.Worker do
   def handle_info(:fetch_and_save_feed, {_, retries_left} = state) when retries_left <= 0, do:
     {:stop, :too_many_failed_retries, state}
   def handle_info(:fetch_and_save_feed, {data, retries_left}) do
-    case apply(Behavior, :fetch, [data]) do
+    case Behavior.fetch(data) do
       {:ok, newData} ->
         case Behavior.save_feed(newData) do
           {:ok, _} -> {:noreply, {newData, @max_retries}}

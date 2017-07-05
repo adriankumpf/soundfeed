@@ -3,7 +3,7 @@ defmodule Soundcloud.Client.API do
 
   alias Soundcloud.Models.{ErrorMessage, Errors}
   alias Soundcloud.Models.PagedResponse, as: Page
-  alias Soundcloud.Models.Track
+  alias Soundcloud.Models.{User, Track}
 
   defmacro __using__(_params) do
     quote do
@@ -20,52 +20,46 @@ defmodule Soundcloud.Client.API do
       defoverridable [url: 1, body: 0, normalize: 1]
 
       def fetch(user_id) do
-        try do
-          data = user_id |> url |> get([
-            linked_partitioning: 1,
-            client_id: @client_id,
-            limit: 200
-          ])
+        res = user_id |> url |> get([], [
+          linked_partitioning: 1,
+          client_id: @client_id,
+          limit: 200
+        ])
 
-          case data do
-            %ErrorMessage{error_message: msg} ->
-              {:error, msg}
-            _ ->
-              {:ok, normalize(data)}
-          end
-        catch
-          err -> {:error, err}
+        case res do
+          {:ok, data} -> {:ok, normalize(data)}
+          {:error, reason} -> {:error, reason}
         end
       end
 
-      defp get(url, params \\ []) do
+      defp get(url, acc \\ [], params \\ []) do
         HTTPoison.get(url, [], params: params)
-        |> parse_resp
-        |> paginate
+        |> parse
+        |> paginate(acc)
       end
 
-      defp parse_resp({:ok, %Response{status_code: 200, body: data}}) do
-        Poison.decode!(data, as: body())
+      defp parse({:ok, %Response{status_code: 200, body: data}}), do:
+        {:ok, Poison.decode!(data, as: body())}
+      defp parse({:ok, %Response{status_code: 401}}), do:
+        {:error, :forbidden}
+      defp parse({:ok, %Response{status_code: _, body: err}}) do
+        %ErrorMessage{error_message: msg} =
+          Poison.decode!(err, as: %Errors{errors: [%ErrorMessage{}]})
+          |> Map.get(:errors, [])
+          |> hd
+        {:error, msg}
       end
-      defp parse_resp({:ok, %Response{status_code: 404, body: err}}) do
-        Poison.decode!(err, as: %Errors{errors: [%ErrorMessage{}]})
-        |> Map.get(:errors, [])
-        |> hd
-      end
-      defp parse_resp({:ok, %Response{status_code: 401}}) do
-        %ErrorMessage{error_message: "Forbidden"}
-      end
-      defp parse_resp({:ok, %Response{status_code: _, body: body}}) do
-        %ErrorMessage{error_message: body}
-      end
-      defp parse_resp({:error, %Error{reason: reason}}) do
-        %ErrorMessage{error_message: reason}
-      end
+      defp parse({:error, %Error{reason: reason}}), do:
+        {:error, reason}
 
-      defp paginate(%Page{collection: col, next_href: nil}), do: col
-      defp paginate(%Page{collection: col, next_href: url}), do: col ++ get(url)
-      defp paginate(%ErrorMessage{} = error), do: error
-      defp paginate(result), do: result
+      defp paginate({:error, reason}, _acc), do:
+        {:error, reason}
+      defp paginate({:ok, %User{} = user}, _acc), do:
+        {:ok, user}
+      defp paginate({:ok, %Page{collection: col, next_href: nil}}, acc), do:
+        {:ok, acc ++ col}
+      defp paginate({:ok, %Page{collection: col, next_href: url}}, acc), do:
+        get(url, acc ++ col)
     end
   end
 end
