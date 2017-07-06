@@ -1,7 +1,7 @@
 defmodule Soundcloud.Client.API do
   alias HTTPoison.{Error, Response}
 
-  alias Soundcloud.Models.{ErrorMessage, Errors}
+  alias Soundcloud.Models.Errors
   alias Soundcloud.Models.PagedResponse, as: Page
   alias Soundcloud.Models.{User, Track}
 
@@ -42,13 +42,8 @@ defmodule Soundcloud.Client.API do
         {:ok, Poison.decode!(data, as: body())}
       defp parse({:ok, %Response{status_code: 401}}), do:
         {:error, :forbidden}
-      defp parse({:ok, %Response{status_code: _, body: err}}) do
-        %ErrorMessage{error_message: msg} =
-          Poison.decode!(err, as: %Errors{errors: [%ErrorMessage{}]})
-          |> Map.get(:errors, [])
-          |> hd
-        {:error, msg}
-      end
+      defp parse({:ok, %Response{status_code: _, body: err}}), do:
+        {:error, err}
       defp parse({:error, %Error{reason: reason}}), do:
         {:error, reason}
 

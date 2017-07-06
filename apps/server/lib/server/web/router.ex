@@ -1,7 +1,7 @@
 defmodule Server.Web.Router do
   use Server.Web, :router
 
-  import Server.Web.Plugs.SoundcloudWorker
+  alias Server.Web.Plugs.SoundcloudWorker
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -17,10 +17,7 @@ defmodule Server.Web.Router do
   end
 
   pipeline :feeds do
-    plug :start_worker
-    plug Plug.Static,
-      at: "/", from: ".", gzip: false,
-      only: ~w(feeds)
+    plug SoundcloudWorker
   end
 
   scope "/", Server.Web do
@@ -36,9 +33,9 @@ defmodule Server.Web.Router do
 
   scope "/feeds", Server.Web do
     pipe_through :feeds
-    get "/:user_id/likes.rss", FeedController, :index
-    get "/:user_id/tracks.rss", FeedController, :index
-    get "/:user_id/reposts.rss", FeedController, :index
+    get "/:user_id/likes.rss", FeedController, :dummy
+    get "/:user_id/tracks.rss", FeedController, :dummy
+    get "/:user_id/reposts.rss", FeedController, :dummy
   end
 
   defp cache_headers(conn, _) do

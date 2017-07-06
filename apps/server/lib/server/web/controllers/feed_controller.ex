@@ -1,12 +1,8 @@
 defmodule Server.Web.FeedController do
   use Server.Web, :controller
 
-  # Usually Plug.Static handles the requests. This is called
-  # if e.g. the worker crashed or the user doesn't exist.
+  # This will never be reached. It's just necessary
+  # for the router to link to a controller.
+  def dummy(conn, _params), do: send_resp(conn, 500, "")
 
-  def index(conn, _params) do
-    conn
-    |> put_status(:not_found)
-    |> render(Server.Web.ErrorView, "404.html")
-  end
 end
