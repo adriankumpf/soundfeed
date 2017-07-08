@@ -1,12 +1,13 @@
 defmodule Soundcloud.Worker do
   use GenServer
 
+  alias Soundcloud.Worker.{Helpers, Behavior}
+
   require Logger
+  import Helpers
 
-  alias Soundcloud.Worker.Behavior
-
-  @refresh_rate 3*60*60*1000
-  @lifetime 11.95*60*60*1000 |> trunc
+  @refresh_rate 3*60*60*1000 |> randomize(0.05)
+  @lifetime    12*60*60*1000 |> randomize(0.20)
   @max_retries 5
 
   ### Public API
