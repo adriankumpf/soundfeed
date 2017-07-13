@@ -92,7 +92,7 @@ defmodule Soundcloud.Worker do
     Process.send_after(self(), :expire, @lifetime)
 
   defp schedule_retry(task, retries_left) do
-    wait_before_retry = @max_retries - retries_left + 1
+    wait_before_retry = @max_retries - retries_left
     Logger.error("#{task} failed. retrying in #{wait_before_retry} minute(s) ...")
     Process.send_after(self(), task, wait_before_retry*60*1000)
   end

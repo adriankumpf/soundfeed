@@ -39,7 +39,7 @@ defmodule Soundcloud.Client.API do
       end
 
       defp parse({:ok, %Response{status_code: 200, body: data}}), do:
-        {:ok, Poison.decode!(data, as: body())}
+        Poison.decode(data, as: body())
       defp parse({:ok, %Response{status_code: 401}}), do:
         {:error, :forbidden}
       defp parse({:ok, %Response{status_code: _, body: err}}), do:
