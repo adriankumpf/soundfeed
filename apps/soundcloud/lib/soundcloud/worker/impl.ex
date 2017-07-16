@@ -1,4 +1,4 @@
-defmodule Soundcloud.Worker.Behavior do
+defmodule Soundcloud.Worker.Impl do
   require Logger
 
   alias Soundcloud.Models.{Track, User}
@@ -54,7 +54,6 @@ defmodule Soundcloud.Worker.Behavior do
     |> Enum.map(fn id -> tracks[id] end)
     |> Feed.build(type, user)
   end
-
 
   defp insert(map, tracks) do
     Enum.reduce(tracks, map, &do_insert/2)

@@ -10,7 +10,6 @@ defmodule Soundcloud.Application do
       worker(Soundcloud.Supervisor, []),
     ]
 
-    opts = [strategy: :one_for_one, name: __MODULE__]
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children, strategy: :one_for_one, name: __MODULE__)
   end
 end

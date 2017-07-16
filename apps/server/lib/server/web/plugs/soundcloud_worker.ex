@@ -21,7 +21,7 @@ defmodule Server.Web.Plugs.SoundcloudWorker do
   def start_worker(conn, _opts), do: conn
 
   defp start(conn, type, user_id) do
-    case Soundcloud.start(type, user_id) do
+    case Soundcloud.new(type, user_id) do
       {:ok, _pid} ->
         conn
       {:error, :forbidden} ->

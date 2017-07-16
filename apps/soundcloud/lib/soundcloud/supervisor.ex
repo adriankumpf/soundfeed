@@ -9,13 +9,13 @@ defmodule Soundcloud.Supervisor do
 
   def init(_) do
     children = [
-      worker(Soundcloud.Worker, [], restart: :transient)
+      worker(Soundcloud.Worker, [], function: :new, restart: :transient)
     ]
 
     supervise(children, strategy: :simple_one_for_one)
   end
 
-  def start_worker(type, user_id) do
+  def new(type, user_id) do
     Supervisor.start_child(@name, [type, user_id])
   end
 end
