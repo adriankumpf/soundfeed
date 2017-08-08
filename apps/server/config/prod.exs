@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :server, Server.Web.Endpoint,
-  on_init: {Server.Web.Endpoint, :load_from_system_env, []},
+  load_from_system_env: true,
   url: [host: "localhost", port: {:system, "PORT"}],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,

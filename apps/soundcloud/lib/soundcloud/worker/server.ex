@@ -29,7 +29,8 @@ defmodule Soundcloud.Worker.Server do
           {:ok, _} -> {:noreply, {newData, @max_retries}}
           {:error, err} -> {:stop, err, :saving_feed_failed}
         end
-      {:error, _} ->
+      {:error, reason} ->
+        Logger.error("Fetching failed: #{reason}")
         retries_left = retries_left - 1
         schedule_retry(:fetch_and_save_feed, retries_left)
         {:noreply, {data, retries_left}}
@@ -60,7 +61,7 @@ defmodule Soundcloud.Worker.Server do
 
   defp schedule_retry(task, retries_left) do
     wait_before_retry = @max_retries - retries_left
-    Logger.error("#{task} failed. Retrying in #{wait_before_retry} minute(s)")
+    Logger.error("Retrying: #{task} in #{wait_before_retry} minute(s)")
     Process.send_after(self(), task, wait_before_retry*60*1000)
   end
 end

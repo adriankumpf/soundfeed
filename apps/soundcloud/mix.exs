@@ -21,8 +21,8 @@ defmodule Soundcloud.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 0.11.1"},
-      {:poison, "~> 3.0"},
+      {:httpoison, "~> 0.13"},
+      {:poison, "~> 3.1"},
       {:timex, "~> 3.1"}
     ]
   end
