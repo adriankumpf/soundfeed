@@ -1,17 +1,42 @@
 CWD=$(shell pwd)
+
 ASSETS?=${CWD}/apps/server/assets
 BRUNCH?=${ASSETS}/node_modules/brunch/bin/brunch
+RELEASE?=${CWD}/_build/prod/rel/soundfeed/bin/soundfeed
 
-all: clean compile
+PORT=8192
 
-clean:
-	mix do clean, phx.digest.clean, release.clean
+.PHONY: help
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-compile:
-	${BRUNCH} b -p ${ASSETS} && MIX_ENV=prod mix do phx.digest, release
+.PHONY: install
+install: ## Install dependencies
+	mix deps.get && mix cmd --app server "(cd ${ASSETS} && yarn install) || true"
 
-getdeps:
-	mix deps.get && cd ${ASSETS} && npm install && cd ${CWD}
-
-shell:
+.PHONY: start
+start: ## Start the server in dev mode
 	iex -S mix phx.server
+
+.PHONY: start-prod
+start-prod: ## Start the server in prod mode
+	MIX_ENV=prod PORT=${PORT} mix run --no-halt
+
+.PHONY: clean
+clean: ## Clean up build files
+	mix cmd --app server "mix phx.digest.clean" && \
+	mix do clean, release.clean
+
+.PHONY: build
+build: ## Build a release
+	${BRUNCH} build --production ${ASSETS} && \
+	MIX_ENV=prod mix do cmd --app server "mix phx.digest" && \
+	MIX_ENV=prod mix release
+
+.PHONY: start-release
+start-release: ## Start the packaged, standalone daemon
+	PORT=${PORT} ${RELEASE} start
+
+.PHONY: stop-release
+stop-release: ## Stop the daemon
+	${RELEASE} stop

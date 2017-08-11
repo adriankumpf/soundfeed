@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-make getdeps
-make shell
+make install
+make start
 ```
 
