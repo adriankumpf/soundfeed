@@ -3,7 +3,7 @@ defmodule SoundfeedWeb.Mixfile do
 
   def project do
     [app: :soundfeed_web,
-     version: "0.0.1",
+     version: version_from_file(),
      build_path: "../../_build",
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
@@ -33,5 +33,9 @@ defmodule SoundfeedWeb.Mixfile do
       {:logger_file_backend, "~> 0.0.9"},
       {:soundfeed, in_umbrella: true},
     ]
+  end
+
+  defp version_from_file(file \\ "../../VERSION") do
+    String.trim(File.read!(file))
   end
 end

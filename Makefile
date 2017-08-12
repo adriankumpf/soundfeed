@@ -35,8 +35,4 @@ build: ## Build a release
 
 .PHONY: start-release
 start-release: ## Start the packaged, standalone daemon
-	PORT=${PORT} ${RELEASE} start
-
-.PHONY: stop-release
-stop-release: ## Stop the daemon
-	${RELEASE} stop
+	PORT=${PORT} ${RELEASE} foreground

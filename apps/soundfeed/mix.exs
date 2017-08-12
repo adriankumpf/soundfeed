@@ -3,7 +3,7 @@ defmodule Soundfeed.Mixfile do
 
   def project do
     [app: :soundfeed,
-     version: "0.0.1",
+     version: version_from_file(),
      build_path: "../../_build",
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
@@ -25,5 +25,9 @@ defmodule Soundfeed.Mixfile do
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"}
     ]
+  end
+
+  defp version_from_file(file \\ "../../VERSION") do
+    String.trim(File.read!(file))
   end
 end
