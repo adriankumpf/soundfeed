@@ -2,6 +2,15 @@ defmodule Soundfeed.Worker do
 
   alias Soundfeed.Worker.Server
 
+  def child_spec(_) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :new, []},
+      restart: :transient,
+      type: :worker
+    }
+  end
+
   def new(type, user_id) do
     case :global.whereis_name({type, user_id}) do
       :undefined -> start_and_register(type, user_id)
