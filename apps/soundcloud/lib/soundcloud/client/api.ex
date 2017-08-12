@@ -1,7 +1,6 @@
 defmodule Soundcloud.Client.API do
   alias HTTPoison.{Error, Response}
 
-  alias Soundcloud.Models.Errors
   alias Soundcloud.Models.PagedResponse, as: Page
   alias Soundcloud.Models.{User, Track}
 

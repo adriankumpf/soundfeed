@@ -7,7 +7,7 @@ defmodule Soundcloud.Worker.Impl do
 
   @desc_length Application.get_env(:soundcloud, :feed_item_desc_length)
   @feeds_dir Application.get_env(:soundcloud, :feeds_dir)
-  @timeout 65000
+  @timeout 65_000
 
   def init({type, user_id}) do
     initital_state = {type, %User{id: user_id}, Map.new, []}

@@ -6,8 +6,8 @@ defmodule Soundcloud.Worker.Server do
   require Logger
   import Helpers
 
-  @refresh_rate 3*60*60*1000 |> randomize(0.05)
-  @lifetime    12*60*60*1000 |> randomize(0.20)
+  @refresh_rate :timer.hours(3) |> randomize(0.05)
+  @lifetime    :timer.hours(12) |> randomize(0.20)
   @max_retries 5
 
   def init(user_id) do
