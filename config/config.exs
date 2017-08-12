@@ -2,7 +2,7 @@ use Mix.Config
 
 import_config "../apps/*/config/config.exs"
 
-config :soundcloud,
+config :soundfeed,
 
   feeds_dir: "./feeds",
   feed_item_desc_length: 1000

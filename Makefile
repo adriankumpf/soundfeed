@@ -1,6 +1,6 @@
 CWD=$(shell pwd)
 
-ASSETS?=${CWD}/apps/server/assets
+ASSETS?=${CWD}/apps/soundfeed_web/assets
 BRUNCH?=${ASSETS}/node_modules/brunch/bin/brunch
 RELEASE?=${CWD}/_build/prod/rel/soundfeed/bin/soundfeed
 
@@ -12,7 +12,7 @@ help:
 
 .PHONY: install
 install: ## Install dependencies
-	mix deps.get && mix cmd --app server "(cd ${ASSETS} && yarn install) || true"
+	mix deps.get && mix cmd --app soundfeed_web "(cd ${ASSETS} && yarn install) || true"
 
 .PHONY: start
 start: ## Start the server in dev mode
@@ -24,13 +24,13 @@ start-prod: ## Start the server in prod mode
 
 .PHONY: clean
 clean: ## Clean up build files
-	mix cmd --app server "mix phx.digest.clean" && \
+	mix cmd --app soundfeed_web "mix phx.digest.clean" && \
 	mix do clean, release.clean
 
 .PHONY: build
 build: ## Build a release
 	${BRUNCH} build --production ${ASSETS} && \
-	MIX_ENV=prod mix do cmd --app server "mix phx.digest" && \
+	MIX_ENV=prod mix do cmd --app soundfeed_web "mix phx.digest" && \
 	MIX_ENV=prod mix release
 
 .PHONY: start-release
