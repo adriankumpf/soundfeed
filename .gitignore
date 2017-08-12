@@ -12,3 +12,4 @@ feeds/*
 !feeds/.gitkeep
 
 /config/*.secret.exs
+env

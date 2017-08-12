@@ -9,7 +9,7 @@ use Mix.Releases.Config,
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"a1dA<A]|3A&,6j7cAv|@=,%@Ovygvhv~]tHc2!P8h}K<!npDEH(e&d2T/$dfhly6"
+  set cookie: :crypto.hash(:sha256, System.get_env("COOKIE")) |> Base.encode16 |> String.to_atom
 end
 
 release :soundfeed do
