@@ -4,5 +4,4 @@
 source <(sed 's/^/export /' ./env)
 
 # install deps and build release
-make install
-make build
+make install clean build
