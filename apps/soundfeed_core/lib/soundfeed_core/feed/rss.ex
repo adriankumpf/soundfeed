@@ -1,4 +1,4 @@
-defmodule Soundfeed.Feed.RSS do
+defmodule SoundfeedCore.Feed.RSS do
   def feed(channel, items) do
     """
     <?xml version="1.0" encoding="utf-8"?>

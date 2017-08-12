@@ -1,12 +1,12 @@
-defmodule Soundfeed.Worker.Impl do
+defmodule SoundfeedCore.Worker.Impl do
   require Logger
 
-  alias Soundfeed.Models.{Track, User}
-  alias Soundfeed.Client
-  alias Soundfeed.Feed
+  alias SoundfeedCore.Models.{Track, User}
+  alias SoundfeedCore.Client
+  alias SoundfeedCore.Feed
 
-  @desc_length Application.get_env(:soundfeed, :feed_item_desc_length)
-  @feeds_dir Application.get_env(:soundfeed, :feeds_dir)
+  @desc_length Application.get_env(:soundfeed_core, :feed_item_desc_length)
+  @feeds_dir Application.get_env(:soundfeed_core, :feeds_dir)
   @timeout 65_000
 
   def init({type, user_id}) do

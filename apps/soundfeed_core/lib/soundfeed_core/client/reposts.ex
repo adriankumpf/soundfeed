@@ -1,8 +1,8 @@
-defmodule Soundfeed.Client.Reposts do
-  use Soundfeed.Client.API
+defmodule SoundfeedCore.Client.Reposts do
+  use SoundfeedCore.Client.API
 
-  alias Soundfeed.Models.PagedResponse, as: Page
-  alias Soundfeed.Models.Track
+  alias SoundfeedCore.Models.PagedResponse, as: Page
+  alias SoundfeedCore.Models.Track
 
   def url(user_id), do: "https://api-v2.soundcloud.com/stream/users/#{user_id}/reposts"
   def body, do: %Page{collection: [%{"track" => %Track{}}]}

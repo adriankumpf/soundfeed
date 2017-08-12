@@ -31,7 +31,7 @@ defmodule SoundfeedWeb.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 1.0"},
       {:logger_file_backend, "~> 0.0.9"},
-      {:soundfeed, in_umbrella: true},
+      {:soundfeed_core, in_umbrella: true},
     ]
   end
 

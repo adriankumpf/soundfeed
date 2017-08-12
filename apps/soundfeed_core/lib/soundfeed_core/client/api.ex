@@ -1,16 +1,16 @@
-defmodule Soundfeed.Client.API do
+defmodule SoundfeedCore.Client.API do
   alias HTTPoison.{Error, Response}
 
-  alias Soundfeed.Models.PagedResponse, as: Page
-  alias Soundfeed.Models.{User, Track}
+  alias SoundfeedCore.Models.PagedResponse, as: Page
+  alias SoundfeedCore.Models.{User, Track}
 
   defmacro __using__(_params) do
     quote do
       require Logger
 
-      @behaviour Soundfeed.Client.API
+      @behaviour SoundfeedCore.Client.API
 
-      @client_id Application.get_env(:soundfeed, :client_id)
+      @client_id Application.get_env(:soundfeed_core, :client_id)
 
       def url(_user_id), do: ''
       def body, do: %Page{collection: [%Track{}]}

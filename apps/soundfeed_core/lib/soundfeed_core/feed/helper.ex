@@ -1,4 +1,4 @@
-defmodule Soundfeed.Feed.Helper do
+defmodule SoundfeedCore.Feed.Helper do
   use Timex
 
   def now_rfc1123 do

@@ -5,7 +5,7 @@ defmodule SoundfeedWeb.Web.ApiController do
   alias SoundfeedWeb.Web.Cache
 
   def show(conn, %{"user" => user}) do
-    case Cache.get(Soundfeed, :lookup, [user]) do
+    case Cache.get(SoundfeedCore, :lookup, [user]) do
       {:ok, user_id} ->
         json conn, %{user_id: user_id}
       {:error, :not_found} ->

@@ -21,7 +21,7 @@ defmodule SoundfeedWeb.Web.Plugs.SoundfeedWorker do
   def start_worker(conn, _opts), do: conn
 
   defp start(conn, type, user_id) do
-    case Soundfeed.new(type, user_id) do
+    case SoundfeedCore.new(type, user_id) do
       {:ok, _pid} ->
         conn
       {:error, :forbidden} ->

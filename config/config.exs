@@ -2,7 +2,7 @@ use Mix.Config
 
 import_config "../apps/*/config/config.exs"
 
-config :soundfeed,
+config :soundfeed_core,
 
   feeds_dir: "./feeds",
   feed_item_desc_length: 1000,

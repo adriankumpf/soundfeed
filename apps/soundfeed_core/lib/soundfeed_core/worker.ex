@@ -1,6 +1,6 @@
-defmodule Soundfeed.Worker do
+defmodule SoundfeedCore.Worker do
 
-  alias Soundfeed.Worker.Server
+  alias SoundfeedCore.Worker.Server
 
   def child_spec(_) do
     %{

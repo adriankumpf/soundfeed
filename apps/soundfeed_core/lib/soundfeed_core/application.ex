@@ -1,8 +1,8 @@
-defmodule Soundfeed.Application do
+defmodule SoundfeedCore.Application do
   use Application
 
   def start(_type, _args) do
-    children = [Soundfeed.Supervisor]
+    children = [SoundfeedCore.Supervisor]
 
     Supervisor.start_link(children, [
       strategy: :one_for_one,

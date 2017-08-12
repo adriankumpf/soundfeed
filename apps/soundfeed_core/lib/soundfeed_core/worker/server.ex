@@ -1,7 +1,7 @@
-defmodule Soundfeed.Worker.Server do
+defmodule SoundfeedCore.Worker.Server do
   use GenServer
 
-  alias Soundfeed.Worker.{Helpers, Impl}
+  alias SoundfeedCore.Worker.{Helpers, Impl}
 
   require Logger
   import Helpers

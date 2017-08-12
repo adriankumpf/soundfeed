@@ -1,9 +1,9 @@
-defmodule Soundfeed.Client.Resolver do
+defmodule SoundfeedCore.Client.Resolver do
   require Logger
 
   alias HTTPoison.{Error, Response}
 
-  @client_id Application.get_env(:soundfeed, :client_id)
+  @client_id Application.get_env(:soundfeed_core, :client_id)
 
   def lookup(user_id) do
     case HTTPoison.get("http://api.soundcloud.com/resolve", [], params: [

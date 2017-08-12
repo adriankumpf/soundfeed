@@ -1,8 +1,8 @@
-defmodule Soundfeed.Mixfile do
+defmodule SoundfeedCore.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :soundfeed,
+    [app: :soundfeed_core,
      version: version_from_file(),
      build_path: "../../_build",
      config_path: "../../config/config.exs",
@@ -16,7 +16,7 @@ defmodule Soundfeed.Mixfile do
 
   def application do
     [extra_applications: [:logger],
-     mod: {Soundfeed.Application, []}]
+     mod: {SoundfeedCore.Application, []}]
   end
 
   defp deps do

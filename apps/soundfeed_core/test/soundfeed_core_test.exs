@@ -1,6 +1,6 @@
-defmodule SoundfeedTest do
+defmodule SoundfeedCoreTest do
   use ExUnit.Case
-  doctest Soundfeed
+  doctest SoundfeedCore
 
   test "the truth" do
     assert 1 + 1 == 2
