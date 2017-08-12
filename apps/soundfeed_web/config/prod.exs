@@ -6,7 +6,8 @@ config :soundfeed_web, SoundfeedWeb.Web.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
-  version: Mix.Project.config[:version]
+  version: Mix.Project.config[:version],
+  secret_key_base: System.get_env("KEY_BASE")
 
 config :logger,
   handle_otp_reports: true,
@@ -17,5 +18,3 @@ config :logger, backends: [{LoggerFileBackend, :error_log}]
 config :logger, :error_log,
   path: "/var/log/soundfeed/error.log",
   level: :error
-
-import_config "prod.secret.exs"
