@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "restarting soundfeed"
+sudo systemctl stop soundfeed.service
+sudo systemctl start soundfeed.service
+echo "finished restarting soundfeed"
