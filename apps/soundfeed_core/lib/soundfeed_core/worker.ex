@@ -30,7 +30,6 @@ defmodule SoundfeedCore.Worker do
   def get_feed(type, user_id), do:
     GenServer.call({:global, {type, user_id}}, :get_feed)
 
-
   @spec get_user(Client.type, User.id) :: {:error, any} | {:ok, User.t}
   def get_user(type, user_id), do:
     GenServer.call({:global, {type, user_id}}, :get_user)

@@ -3,4 +3,3 @@ defmodule SoundfeedCore.Models.PagedResponse do
 
   @type t :: %__MODULE__{collection: [any], next_href: String.t | nil}
 end
-

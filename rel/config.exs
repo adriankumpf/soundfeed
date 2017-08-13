@@ -1,4 +1,5 @@
-Path.join(["rel", "plugins", "*.exs"])
+["rel", "plugins", "*.exs"]
+|> Path.join()
 |> Path.wildcard()
 |> Enum.map(&Code.eval_file(&1))
 
@@ -20,4 +21,3 @@ release :soundfeed do
     soundfeed_core: :permanent
   ]
 end
-

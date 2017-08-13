@@ -6,8 +6,8 @@ defmodule SoundfeedCore.Worker.Server do
   require Logger
   import Helpers
 
-  @refresh_rate :timer.hours(3) |> randomize(0.05)
-  @lifetime    :timer.hours(12) |> randomize(0.20)
+  @refresh_rate 3 |> :timer.hours |> randomize(0.05)
+  @lifetime    12 |> :timer.hours |> randomize(0.20)
   @max_retries 5
 
   def init(user_id) do
@@ -55,15 +55,15 @@ defmodule SoundfeedCore.Worker.Server do
 
   ### Private
 
-  defp schedule_refresh(), do:
+  defp schedule_refresh, do:
     Process.send_after(self(), :refresh, @refresh_rate)
 
-  defp schedule_expiration(), do:
+  defp schedule_expiration, do:
     Process.send_after(self(), :expire, @lifetime)
 
   defp schedule_retry(task, retries_left) do
     wait_before_retry = @max_retries - retries_left
     _ = Logger.error("Retrying: #{task} in #{wait_before_retry} minute(s)")
-    Process.send_after(self(), task, wait_before_retry*60*1000)
+    Process.send_after(self(), task, :timer.minutes(wait_before_retry))
   end
 end

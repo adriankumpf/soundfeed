@@ -2,6 +2,7 @@ defmodule SoundfeedWeb.Web.Router do
   use SoundfeedWeb.Web, :router
 
   alias SoundfeedWeb.Web.Plugs.SoundfeedWorker
+  alias Plug.Conn
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -39,6 +40,6 @@ defmodule SoundfeedWeb.Web.Router do
   end
 
   defp cache_headers(conn, _) do
-    Plug.Conn.put_resp_header(conn, "cache-control", "public, max-age=86400")
+    Conn.put_resp_header(conn, "cache-control", "public, max-age=86400")
   end
 end

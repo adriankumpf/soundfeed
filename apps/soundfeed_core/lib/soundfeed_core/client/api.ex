@@ -45,7 +45,8 @@ defmodule SoundfeedCore.Client.API do
 
       @spec get(String.t, tracks, params) :: resp
       defp get(url, acc \\ [], params \\ []) do
-        HTTPoison.get(url, [], params: params)
+        url
+        |> HTTPoison.get([], params: params)
         |> parse
         |> paginate(acc)
       end

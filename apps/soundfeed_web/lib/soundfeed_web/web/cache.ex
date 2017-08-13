@@ -6,7 +6,7 @@ defmodule SoundfeedWeb.Web.Cache do
   """
 
   @name :simple_cache
-  @default_ttl_ms 24*60*60*1000
+  @default_ttl_ms :timer.hours(24)
 
   # Client API
 
