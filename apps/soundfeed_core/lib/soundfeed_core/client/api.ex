@@ -4,13 +4,24 @@ defmodule SoundfeedCore.Client.API do
   alias SoundfeedCore.Models.PagedResponse, as: Page
   alias SoundfeedCore.Models.{User, Track}
 
+  @typep body :: Page.t | User.t
+
+  @callback url(User.id) :: String.t
+  @callback body() :: body
+  @callback normalize([any]) :: [any]
+
+  @optional_callbacks body: 0, normalize: 1
+
   defmacro __using__(_params) do
     quote do
-      require Logger
-
       @behaviour SoundfeedCore.Client.API
 
       @client_id Application.get_env(:soundfeed_core, :client_id)
+
+      @typep body   :: body
+      @typep resp   :: {:error, any} | {:ok, body}
+      @typep tracks :: [Track.t]
+      @typep params :: [any]
 
       def url(_user_id), do: ''
       def body, do: %Page{collection: [%Track{}]}
@@ -18,6 +29,7 @@ defmodule SoundfeedCore.Client.API do
 
       defoverridable [url: 1, body: 0, normalize: 1]
 
+      @spec fetch(User.id) :: {:error, any} | {:ok, tracks | User.t}
       def fetch(user_id) do
         res = user_id |> url |> get([], [
           linked_partitioning: 1,
@@ -31,12 +43,14 @@ defmodule SoundfeedCore.Client.API do
         end
       end
 
+      @spec get(String.t, tracks, params) :: resp
       defp get(url, acc \\ [], params \\ []) do
         HTTPoison.get(url, [], params: params)
         |> parse
         |> paginate(acc)
       end
 
+      @spec parse({:error, Error.t} | {:ok, Response.t}) :: resp
       defp parse({:ok, %Response{status_code: 200, body: data}}), do:
         Poison.decode(data, as: body())
       defp parse({:ok, %Response{status_code: 401}}), do:
@@ -46,6 +60,7 @@ defmodule SoundfeedCore.Client.API do
       defp parse({:error, %Error{reason: reason}}), do:
         {:error, reason}
 
+      @spec paginate(resp, tracks) :: {:error, any} | {:ok, User.t | tracks}
       defp paginate({:error, reason}, _acc), do:
         {:error, reason}
       defp paginate({:ok, %User{} = user}, _acc), do:

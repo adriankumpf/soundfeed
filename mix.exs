@@ -7,12 +7,18 @@ defmodule SoundFeed.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
+      dialyzer: [
+        plt_add_deps: :transitive,
+        flags: [:unmatched_returns, :error_handling,
+                :race_conditions, :underspecs]
+      ],
     ]
   end
 
   defp deps do
     [
-      {:distillery, "~> 1.4", runtime: false}
+      {:distillery, "~> 1.4", runtime: false},
+      {:dialyxir, "~> 0.5", only: [:dev], runtime: false}
     ]
   end
 end

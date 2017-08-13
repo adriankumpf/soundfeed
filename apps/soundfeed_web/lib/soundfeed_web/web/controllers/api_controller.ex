@@ -11,7 +11,7 @@ defmodule SoundfeedWeb.Web.ApiController do
       {:error, :not_found} ->
         send_resp conn, 404, ""
       {:error, reason} ->
-        Logger.error("Failed to resolve the user \"#{user}\": #{reason}")
+        _ = Logger.error("Failed to resolve the user \"#{user}\": #{reason}")
         send_resp conn, 500, ""
     end
   end

@@ -27,7 +27,7 @@ defmodule SoundfeedWeb.Web.Plugs.SoundfeedWorker do
       {:error, :forbidden} ->
         conn |> halt |> send_resp( 503, "Please try again in a few minutes.")
       {:error, reason} ->
-        Logger.error("Worker failed: #{reason}")
+        _ = Logger.error("Worker failed: #{reason}")
         conn |> halt |> send_resp( 500, "Something went wrong.")
     end
   end

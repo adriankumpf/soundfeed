@@ -9,6 +9,11 @@ defmodule SoundfeedCore.Worker.Impl do
   @feeds_dir Application.get_env(:soundfeed_core, :feeds_dir)
   @timeout 65_000
 
+  @typep tracks :: %{required(Track.id) => Track.t}
+  @typep order  :: [Track.id]
+  @typep state  :: {Client.type, User.t, tracks, order}
+
+  @spec init({Client.type, User.id}) :: {:error, any} | {:ok, state}
   def init({type, user_id}) do
     initital_state = {type, %User{id: user_id}, Map.new, []}
 
@@ -24,6 +29,7 @@ defmodule SoundfeedCore.Worker.Impl do
     end
   end
 
+  @spec fetch(state) :: {:error, any} | {:ok, state}
   def fetch({type, %User{id: user_id} = user, tracks, _order}) do
     case Client.fetch(type, user_id) do
       {:ok, fetched_tracks} ->
@@ -35,6 +41,7 @@ defmodule SoundfeedCore.Worker.Impl do
     end
   end
 
+  @spec save_feed(state) :: {:error, any} | {:ok, state}
   def save_feed({type, %User{id: user_id}, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
 
@@ -47,30 +54,38 @@ defmodule SoundfeedCore.Worker.Impl do
     end
   end
 
+  @spec get_tracks(state) :: [Track.t]
   def get_tracks({_type, _user, tracks, _order}), do: tracks
+
+  @spec get_user(state) :: User.t
   def get_user({_type, user, _tracks, _order}), do: user
+
+  @spec get_feed(state) :: Feed.t
   def get_feed({type, user, tracks, order}) do
     order
     |> Enum.map(fn id -> tracks[id] end)
     |> Feed.build(type, user)
   end
 
+  @spec insert(tracks, [Track.t]) :: tracks
   defp insert(map, tracks) do
     Enum.reduce(tracks, map, &do_insert/2)
   end
 
-  defp do_insert(%Track{id: id, description: nil} = track, acc) do
-    Map.put_new(acc, id, %{track | description: ""})
+  @spec do_insert(Track.t, tracks) :: tracks
+  defp do_insert(%Track{id: id, desc: nil} = track, acc) do
+    Map.put_new(acc, id, %{track | desc: ""})
   end
-  defp do_insert(%Track{id: id, description: desc} = track, acc) when byte_size(desc) > @desc_length do
-    {description, _} = String.split_at(desc, @desc_length)
-    Map.put_new(acc, id, %{track | description: description <> "..."})
+  defp do_insert(%Track{id: id, desc: desc} = track, acc)
+  when byte_size(desc) > @desc_length do
+    {desc, _} = String.split_at(desc, @desc_length)
+    Map.put_new(acc, id, %{track | desc: desc <> "..."})
   end
-  defp do_insert(%Track{id: id, description: description} = track, acc) do
-    Map.put_new(acc, id, %{track | description: description})
+  defp do_insert(%Track{id: id, desc: desc} = track, acc) do
+    Map.put_new(acc, id, %{track | desc: desc})
   end
   defp do_insert(track, acc) do
-    Logger.error("Could not process track: #{track}")
+    _ = Logger.error("Could not process track: #{track}")
     acc
   end
 end
