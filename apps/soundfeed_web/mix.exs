@@ -8,7 +8,7 @@ defmodule SoundfeedWeb.Mixfile do
      config_path: "../../config/config.exs",
      deps_path: "../../deps",
      lockfile: "../../mix.lock",
-     elixir: "~> 1.4",
+     elixir: "~> 1.5",
      elixirc_paths: elixirc_paths(Mix.env),
      compilers: [:phoenix] ++ Mix.compilers,
      start_permanent: Mix.env == :prod,
@@ -30,7 +30,6 @@ defmodule SoundfeedWeb.Mixfile do
       {:phoenix_html, "~> 2.6"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 1.0"},
-      {:logger_file_backend, "~> 0.0.9"},
       {:soundfeed_core, in_umbrella: true},
     ]
   end

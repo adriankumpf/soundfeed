@@ -1,6 +1,5 @@
 #!/bin/sh
 
-echo "restarting soundfeed"
-sudo systemctl stop soundfeed.service
-sudo systemctl start soundfeed.service
-echo "finished restarting soundfeed"
+echo "Restarting SoundFeed"
+sudo systemctl restart docker-compose@soundfeed.service
+echo "Restared"

@@ -1,6 +1,5 @@
 defmodule SoundfeedCore.Client.API do
   alias HTTPoison.{Error, Response}
-
   alias SoundfeedCore.Models.PagedResponse, as: Page
   alias SoundfeedCore.Models.{User, Track}
 

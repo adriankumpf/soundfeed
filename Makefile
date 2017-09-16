@@ -1,38 +1,51 @@
-CWD=$(shell pwd)
+ASSETS?=$(shell pwd)/apps/soundfeed_web/assets
+VERSION=$(shell cat VERSION)
 
-ASSETS?=${CWD}/apps/soundfeed_web/assets
-BRUNCH?=${ASSETS}/node_modules/brunch/bin/brunch
-RELEASE?=${CWD}/_build/prod/rel/soundfeed/bin/soundfeed
-
-PORT=8192
+# Read env file
+sinclude env
+export $(shell sed 's/=.*//' env)
 
 .PHONY: help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | \
+	sort | \
+	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: install
 install: ## Install dependencies
-	mix deps.get && mix cmd --app soundfeed_web "(cd ${ASSETS} && yarn install) || true"
+	@CLIENT_ID=${CLIENT_ID}; \
+	mix deps.get && \
+	mix deps.compile && \
+	mix cmd --app soundfeed_web "(cd ${ASSETS} && yarn install) || true"
 
 .PHONY: start
 start: ## Start the server in dev mode
-	iex -S mix phx.server
+	@CLIENT_ID=${CLIENT_ID} iex -S mix phx.server
 
-.PHONY: start-prod
-start-prod: ## Start the server in prod mode
-	MIX_ENV=prod PORT=${PORT} mix run --no-halt
+.PHONY: lint
+lint: ## Lint code with Credo
+	@mix credo
 
-.PHONY: clean
-clean: ## Clean up build files
-	mix cmd --app soundfeed_web "mix phx.digest.clean" && \
-	mix do clean, release.clean
+.PHONY: analyze
+analyze: ## Run a static analysis with Dialyzer
+	@mix dialyzer
 
 .PHONY: build
-build: ## Build a release
-	${BRUNCH} build --production ${ASSETS} && \
-	MIX_ENV=prod mix do cmd --app soundfeed_web "mix phx.digest" && \
-	MIX_ENV=prod mix release
+build: ## Build a minimal docker container with the release
+	@docker build \
+		-t "soundfeed" \
+		--build-arg CLIENT_ID=${CLIENT_ID} \
+		--build-arg VERSION=${VERSION} \
+		. && \
+	docker tag soundfeed:latest soundfeed:${VERSION}
+
 
 .PHONY: start-release
-start-release: ## Start the packaged, standalone daemon
-	PORT=${PORT} ${RELEASE} foreground
+start-release: ## Start the docker container
+	 @docker run -it --rm \
+		--name soundfeed \
+		-p 8080:80 \
+		-e PORT=80 \
+	 	-e HOST=localhost \
+		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
+		soundfeed:${VERSION} foreground

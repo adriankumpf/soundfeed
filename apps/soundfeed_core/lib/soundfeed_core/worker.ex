@@ -1,4 +1,5 @@
 defmodule SoundfeedCore.Worker do
+  require Logger
 
   alias SoundfeedCore.Models.{Track, User}
   alias SoundfeedCore.Worker.Server
@@ -36,6 +37,8 @@ defmodule SoundfeedCore.Worker do
 
   @spec start_and_register(Client.type, User.id) :: {:error, any} | {:ok, pid}
   defp start_and_register(type, user_id) do
+    _ = Logger.info("Startinging Worker with name {#{type}, #{user_id}}")
+
     case GenServer.start_link(Server, {type, user_id}) do
       ok = {:ok, pid} ->
         :yes = :global.register_name({type, user_id}, pid)

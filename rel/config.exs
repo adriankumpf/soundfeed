@@ -10,7 +10,7 @@ use Mix.Releases.Config,
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :crypto.hash(:sha256, System.get_env("COOKIE")) |> Base.encode16 |> String.to_atom
+  set cookie: :"${ERLANG_COOKIE}"
 end
 
 release :soundfeed do
