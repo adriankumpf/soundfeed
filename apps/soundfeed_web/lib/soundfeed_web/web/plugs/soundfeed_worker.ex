@@ -6,7 +6,7 @@ defmodule SoundfeedWeb.Web.Plugs.SoundfeedWorker do
 
   plug :start_worker
   plug Plug.Static,
-    at: "/", from: ".", gzip: true,
+    at: "/", from: ".", gzip: false,
     only: ~w(feeds)
 
   def start_worker(%Conn{

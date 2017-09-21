@@ -44,8 +44,6 @@ build: ## Build a minimal docker container with the release
 start-release: ## Start the docker container
 	 @docker run -it --rm \
 		--name soundfeed \
-		-p 8080:80 \
-		-e PORT=80 \
-	 	-e HOST=localhost \
+		-p 8080:8080 \
 		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
 		soundfeed:${VERSION} foreground

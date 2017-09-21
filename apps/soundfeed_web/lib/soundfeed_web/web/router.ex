@@ -6,11 +6,8 @@ defmodule SoundfeedWeb.Web.Router do
 
   pipeline :browser do
     plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_flash
-    plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :cache_headers
+    plug :put_cache_headers
   end
 
   pipeline :api do
@@ -39,7 +36,7 @@ defmodule SoundfeedWeb.Web.Router do
     get "/:user_id/reposts.rss", FeedController, :dummy
   end
 
-  defp cache_headers(conn, _) do
+  defp put_cache_headers(conn, _) do
     Conn.put_resp_header(conn, "cache-control", "public, max-age=86400")
   end
 end

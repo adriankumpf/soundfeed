@@ -8,13 +8,13 @@ config :soundfeed_web, SoundfeedWeb.Web.Endpoint,
   root: ".",
   version: Mix.Project.config[:version]
 
-:ok = Application.ensure_started(:sasl)
+# :ok = Application.ensure_started(:sasl)
 
 config :logger,
   backends: [:console],
   level: :info,
   handle_otp_reports: true,
-  handle_sasl_reports: true,
+  handle_sasl_reports: false,
   compile_time_purge_level: :info
 
 config :logger, :console,
