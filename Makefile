@@ -39,7 +39,6 @@ build: ## Build a minimal docker container with the release
 		. && \
 	docker tag soundfeed:latest soundfeed:${VERSION}
 
-
 .PHONY: start-release
 start-release: ## Start the docker container
 	 @docker run -it --rm \
@@ -48,3 +47,7 @@ start-release: ## Start the docker container
 		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
 		-e CLIENT_ID=${CLIENT_ID} \
 		soundfeed:${VERSION}
+
+.PHONY: deploy
+deploy: ## Deploy
+	@git push prod master
