@@ -5,5 +5,5 @@ defmodule SoundfeedCore do
   defdelegate get_feed(type, user_id), to: SoundfeedCore.Worker
   defdelegate get_user(type, user_id), to: SoundfeedCore.Worker
 
-  defdelegate lookup(user), to: SoundfeedCore.Client
+  defdelegate lookup(user), to: SoundfeedCore.LookupWorker
 end

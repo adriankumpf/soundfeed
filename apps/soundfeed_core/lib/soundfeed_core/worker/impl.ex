@@ -11,18 +11,19 @@ defmodule SoundfeedCore.Worker.Impl do
 
   @typep tracks :: %{required(Track.id) => Track.t}
   @typep order  :: [Track.id]
-  @typep state  :: {Client.type, User.t, tracks, order}
+  @typep state  :: {Client.id, Client.type, User.t, tracks, order}
 
   @spec init({Client.type, User.id}) :: {:error, any} | {:ok, state}
   def init({type, user_id}) do
-    initital_state = {type, %User{id: user_id}, Map.new, []}
+    client_id =  Application.get_env(:soundfeed_core, :client_id)
+    initital_state = {client_id, type, %User{id: user_id}, Map.new, []}
 
-    task_user_info = Task.async(fn -> Client.fetch(:user, user_id) end)
-    task_tracks = Task.async(fn -> fetch(initital_state) end)
+    t_user_info = Task.async(Client, :fetch, [:user, user_id, client_id])
+    t_tracks = Task.async(fn -> fetch(initital_state) end)
 
-    with {:ok, user = %User{}} <- Task.await(task_user_info, @timeout),
-         {:ok, {type, _, tracks, order}} <- Task.await(task_tracks, @timeout),
-         {:ok, state} <- save_feed({type, user, tracks, order}) do
+    with {:ok, user = %User{}} <- Task.await(t_user_info, @timeout),
+         {:ok, {_, type, _, tracks, order}} <- Task.await(t_tracks, @timeout),
+         {:ok, state} <- save_feed({client_id, type, user, tracks, order}) do
       {:ok, state}
     else
       {:error, _reason} = err -> err
@@ -30,19 +31,19 @@ defmodule SoundfeedCore.Worker.Impl do
   end
 
   @spec fetch(state) :: {:error, any} | {:ok, state}
-  def fetch({type, %User{id: user_id} = user, tracks, _order}) do
-    case Client.fetch(type, user_id) do
+  def fetch({client_id, type, %User{id: user_id} = user, tracks, _order}) do
+    case Client.fetch(type, user_id, client_id) do
       {:ok, fetched_tracks} ->
         new_tracks = tracks |> insert(fetched_tracks)
         new_order = Enum.map(fetched_tracks, fn %Track{id: id} -> id end)
-        {:ok, {type, user, new_tracks, new_order}}
+        {:ok, {client_id, type, user, new_tracks, new_order}}
       {:error, _reason} = err ->
         err
     end
   end
 
   @spec save_feed(state) :: {:error, any} | {:ok, state}
-  def save_feed({type, %User{id: user_id}, _, _} = state) do
+  def save_feed({_, type, %User{id: user_id}, _, _} = state) do
     path = "#{@feeds_dir}/#{user_id}/"
 
     case File.mkdir_p(path) do
@@ -55,13 +56,13 @@ defmodule SoundfeedCore.Worker.Impl do
   end
 
   @spec get_tracks(state) :: [Track.t]
-  def get_tracks({_type, _user, tracks, _order}), do: tracks
+  def get_tracks({_client_id, _type, _user, tracks, _order}), do: tracks
 
   @spec get_user(state) :: User.t
-  def get_user({_type, user, _tracks, _order}), do: user
+  def get_user({_client_id, _type, user, _tracks, _order}), do: user
 
   @spec get_feed(state) :: Feed.t
-  def get_feed({type, user, tracks, order}) do
+  def get_feed({_client_id, type, user, tracks, order}) do
     order
     |> Enum.map(fn id -> tracks[id] end)
     |> Feed.build(type, user)

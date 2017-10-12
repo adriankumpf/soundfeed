@@ -4,18 +4,16 @@ defmodule SoundfeedCore.Client.Resolver do
   alias HTTPoison.{Error, Response}
   alias SoundfeedCore.Models.User
 
-  @client_id Application.get_env(:soundfeed_core, :client_id)
-
   @type headers :: [any]
   @type url :: String.t
 
-  @spec lookup(User.id) :: {:error, any} | {:ok, String.t}
-  def lookup(user_id) do
+  @spec lookup(User.id, String.t) :: {:error, any} | {:ok, String.t}
+  def lookup(user_id, client_id) do
     _ = Logger.info("Looking up '#{user_id}'")
 
     case HTTPoison.get("http://api.soundcloud.com/resolve", [], params: [
       url: "http://soundcloud.com/#{user_id}",
-      client_id: @client_id
+      client_id: client_id
     ]) do
       {:ok, %Response{status_code: 302, headers: headers}} ->
         headers |> get_location |> get_user_id

@@ -46,4 +46,5 @@ start-release: ## Start the docker container
 		--name soundfeed \
 		-p 8080:8080 \
 		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
-		soundfeed:${VERSION} foreground
+		-e CLIENT_ID=${CLIENT_ID} \
+		soundfeed:${VERSION}

@@ -15,8 +15,6 @@ defmodule SoundfeedCore.Client.API do
     quote do
       @behaviour SoundfeedCore.Client.API
 
-      @client_id Application.get_env(:soundfeed_core, :client_id)
-
       @typep body   :: body
       @typep resp   :: {:error, any} | {:ok, body}
       @typep tracks :: [Track.t]
@@ -28,11 +26,11 @@ defmodule SoundfeedCore.Client.API do
 
       defoverridable [url: 1, body: 0, normalize: 1]
 
-      @spec fetch(User.id) :: {:error, any} | {:ok, tracks | User.t}
-      def fetch(user_id) do
+      @spec fetch(User.id, String.t) :: {:error, any} | {:ok, tracks | User.t}
+      def fetch(user_id, client_id) do
         res = user_id |> url |> get([], [
           linked_partitioning: 1,
-          client_id: @client_id,
+          client_id: client_id,
           limit: 200
         ])
 
