@@ -10,11 +10,13 @@ defmodule SoundfeedCore.Worker.Server do
   @lifetime    12 |> :timer.hours |> randomize(0.20)
   @max_retries 5
 
-  def init(user_id) do
+  def init(args) do
     schedule_refresh()
     schedule_expiration()
 
-    case Impl.init(user_id) do
+    _ = Logger.info("Startinging Worker #{inspect(args)}")
+
+    case Impl.init(args) do
       {:ok, data} -> {:ok, {data, @max_retries}}
       {:error, reason} -> {:stop, reason}
     end
