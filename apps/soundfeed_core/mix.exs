@@ -23,7 +23,8 @@ defmodule SoundfeedCore.Mixfile do
     [
       {:httpoison, "~> 0.13"},
       {:poison, "~> 3.1"},
-      {:timex, "~> 3.1"}
+      {:timex, "~> 3.1"},
+      {:telegram_logger_backend, git: "https://github.com/adriankumpf/telegram-logger-backend", tag: "v0.1.0"}
     ]
   end
 

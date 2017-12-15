@@ -14,7 +14,7 @@ defmodule SoundfeedCore.Worker.Server do
     schedule_refresh()
     schedule_expiration()
 
-    _ = Logger.info("Startinging Worker #{inspect(args)}")
+    _ = Logger.info(fn -> "Startinging Worker #{inspect(args)}" end)
 
     case Impl.init(args) do
       {:ok, data} -> {:ok, {data, @max_retries}}
@@ -34,7 +34,7 @@ defmodule SoundfeedCore.Worker.Server do
           {:error, err} -> {:stop, err, :saving_feed_failed}
         end
       {:error, reason} ->
-        _ = Logger.error("Fetching failed: #{reason}")
+        _ = Logger.error("Fetching failed: #{inspect(reason)}")
         retries_left = retries_left - 1
         schedule_retry(:fetch_and_save_feed, retries_left)
         {:noreply, {data, retries_left}}
