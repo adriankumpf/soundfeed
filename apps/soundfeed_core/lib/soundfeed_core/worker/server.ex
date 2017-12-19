@@ -6,8 +6,8 @@ defmodule SoundfeedCore.Worker.Server do
   require Logger
   import Helpers
 
-  @refresh_rate 3 |> :timer.hours() |> randomize(0.05)
-  @lifetime 12 |> :timer.hours() |> randomize(0.20)
+  @refresh_rate 3 |> :timer.hours() |> randomize(0.063)
+  @lifetime 48 |> :timer.hours() |> randomize(0.12)
   @max_retries 5
 
   def init(args) do
