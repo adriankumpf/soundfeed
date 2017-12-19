@@ -7,9 +7,10 @@ defmodule SoundfeedWeb.Application do
       SoundfeedWeb.Web.Cache
     ]
 
-    Supervisor.start_link(children, [
+    Supervisor.start_link(
+      children,
       strategy: :one_for_one,
       name: __MODULE__
-    ])
+    )
   end
 end

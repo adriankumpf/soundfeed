@@ -7,12 +7,14 @@ defmodule SoundfeedWeb.Web.ApiController do
   def show(conn, %{"user" => user}) do
     case Cache.get(SoundfeedCore, :lookup, [user]) do
       {:ok, user_id} ->
-        json conn, %{user_id: user_id}
+        json(conn, %{user_id: user_id})
+
       {:error, :not_found} ->
-        send_resp conn, 404, ""
+        send_resp(conn, 404, "")
+
       {:error, reason} ->
         _ = Logger.error("Failed to resolve the user \"#{user}\": #{reason}")
-        send_resp conn, 500, ""
+        send_resp(conn, 500, "")
     end
   end
 end

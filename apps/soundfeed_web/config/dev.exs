@@ -5,8 +5,14 @@ config :soundfeed_web, SoundfeedWeb.Web.Endpoint,
   debug_errors: false,
   code_reloader: true,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
-                    cd: Path.expand("../assets", __DIR__)]]
+  watchers: [
+    node: [
+      "node_modules/brunch/bin/brunch",
+      "watch",
+      "--stdin",
+      cd: Path.expand("../assets", __DIR__)
+    ]
+  ]
 
 config :soundfeed_web, SoundfeedWeb.Web.Endpoint,
   live_reload: [
@@ -17,7 +23,6 @@ config :soundfeed_web, SoundfeedWeb.Web.Endpoint,
     ]
   ]
 
-config :logger, :console,
-  format: "[$level] $message\n"
+config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20

@@ -1,8 +1,7 @@
 defmodule SoundfeedCore.Feed.RSS do
-
-  @type feed :: String.t
-  @type item :: String.t
-  @type channel :: String.t
+  @type feed :: String.t()
+  @type item :: String.t()
+  @type channel :: String.t()
 
   @spec feed(channel, [item]) :: feed
   def feed(channel, items) do
@@ -11,13 +10,13 @@ defmodule SoundfeedCore.Feed.RSS do
     <rss version="2.0">
       <channel>
         #{channel}
-        #{Enum.join items, ""}
+        #{Enum.join(items, "")}
       </channel>
     </rss>
     """
   end
 
-  @spec item(String.t, String.t, String.t, String.t) :: item
+  @spec item(String.t(), String.t(), String.t(), String.t()) :: item
   def item(title, desc, link, guid) do
     """
     <item>
@@ -29,7 +28,7 @@ defmodule SoundfeedCore.Feed.RSS do
     """
   end
 
-  @spec channel(String.t, String.t, String.t, String.t) :: channel
+  @spec channel(String.t(), String.t(), String.t(), String.t()) :: channel
   def channel(title, link, desc, date) do
     """
       <title>#{title}</title>

@@ -1,9 +1,9 @@
 defmodule SoundfeedWeb.Web.Cache do
-  use GenServer
-
   @moduledoc """
   A simple ETS based cache for expensive function calls.
   """
+
+  use GenServer
 
   @name :simple_cache
   @default_ttl_ms :timer.hours(24)
@@ -30,10 +30,12 @@ defmodule SoundfeedWeb.Web.Cache do
   end
 
   def handle_call({:get, [mod, fun, args, ttl]}, _from, ets) do
-    result = case lookup(ets, mod, fun, args) do
-      nil -> cache_apply(ets, mod, fun, args, ttl)
-      hit -> hit
-    end
+    result =
+      case lookup(ets, mod, fun, args) do
+        nil -> cache_apply(ets, mod, fun, args, ttl)
+        hit -> hit
+      end
+
     {:reply, result, ets}
   end
 

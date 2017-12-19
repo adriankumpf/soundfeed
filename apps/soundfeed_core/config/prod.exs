@@ -1,7 +1,6 @@
 use Mix.Config
 
-config :soundfeed_core,
-  client_id: "${CLIENT_ID}"
+config :soundfeed_core, client_id: "${CLIENT_ID}"
 
 # :ok = Application.ensure_started(:sasl)
 
