@@ -63,6 +63,9 @@ defmodule SoundfeedCore.Worker.Impl do
   @spec get_user(state) :: User.t()
   def get_user({_client_id, _type, user, _tracks, _order}), do: user
 
+  @spec get_type(state) :: Client.type()
+  def get_type({_client_id, type, _user, _tracks, _order}), do: type
+
   @spec get_feed(state) :: Feed.t()
   def get_feed({_client_id, type, user, tracks, order}) do
     order

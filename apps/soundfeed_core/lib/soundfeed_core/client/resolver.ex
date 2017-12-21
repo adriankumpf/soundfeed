@@ -9,7 +9,7 @@ defmodule SoundfeedCore.Client.Resolver do
 
   @spec lookup(User.id(), String.t()) :: {:error, any} | {:ok, String.t()}
   def lookup(user_id, client_id) do
-    _ = Logger.warn("Looking up '#{user_id}'")
+    _ = Logger.info("Looking up '#{user_id}'", notify: true)
 
     case HTTPoison.get(
            "http://api.soundcloud.com/resolve",

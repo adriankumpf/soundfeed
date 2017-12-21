@@ -4,7 +4,8 @@ defmodule SoundfeedCore.Application do
   def start(_type, _args) do
     children = [
       SoundfeedCore.Supervisor,
-      SoundfeedCore.LookupWorker
+      SoundfeedCore.LookupWorker,
+      SoundfeedCore.Reporter
     ]
 
     Supervisor.start_link(

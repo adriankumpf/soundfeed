@@ -54,6 +54,7 @@ defmodule SoundfeedCore.Worker.Server do
   def handle_call(:get_tracks, _, {data, _} = state), do: {:reply, Impl.get_tracks(data), state}
   def handle_call(:get_feed, _, {data, _} = state), do: {:reply, Impl.get_feed(data), state}
   def handle_call(:get_user, _, {data, _} = state), do: {:reply, Impl.get_user(data), state}
+  def handle_call(:get_type, _, {data, _} = state), do: {:reply, Impl.get_type(data), state}
 
   ### Private
 

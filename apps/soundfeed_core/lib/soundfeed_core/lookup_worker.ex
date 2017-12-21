@@ -18,7 +18,7 @@ defmodule SoundfeedCore.LookupWorker do
   @spec new() :: {:error, any} | {:ok, pid}
   def new do
     client_id = Application.get_env(:soundfeed_core, :client_id)
-    _ = Logger.info("Startinging LookupWorker")
+    _ = Logger.info("Starting LookupWorker")
     GenServer.start_link(__MODULE__, client_id, name: @name)
   end
 
