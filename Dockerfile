@@ -1,4 +1,4 @@
-FROM elixir:1.5.2-alpine as asset-builder-mix-getter
+FROM elixir:1.5.3-alpine as asset-builder-mix-getter
 
 ENV HOME=/opt/app
 
@@ -27,7 +27,7 @@ RUN yarn install
 RUN ./node_modules/.bin/brunch build --production
 
 ########################################################################
-FROM bitwalker/alpine-elixir:1.5.2 as releaser
+FROM bitwalker/alpine-elixir:1.5.3 as releaser
 
 ENV HOME=/opt/app
 
@@ -61,7 +61,7 @@ WORKDIR $HOME
 RUN mix release --env=$MIX_ENV --verbose
 
 ########################################################################
-FROM alpine:3.6
+FROM alpine:3.7
 
 ENV LANG=en_US.UTF-8 \
     HOME=/opt/app/ \
