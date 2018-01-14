@@ -6,8 +6,8 @@ config :soundfeed_core, client_id: "${CLIENT_ID}"
 
 config :logger,
   backends: [
-    {TelegramLoggerBackend, :telegram_errors},
-    {TelegramLoggerBackend, :telegram_notify},
+    {LoggerTelegramBackend, :telegram_errors},
+    {LoggerTelegramBackend, :telegram_notify},
     :console
   ],
   level: :info,
