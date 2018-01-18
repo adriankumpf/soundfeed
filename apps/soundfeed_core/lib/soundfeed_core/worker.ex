@@ -3,16 +3,16 @@ defmodule SoundfeedCore.Worker do
   alias SoundfeedCore.Worker.Server
   alias SoundfeedCore.{Feed, Client}
 
-  def child_spec(_) do
+  def child_spec(args) do
     %{
       id: __MODULE__,
-      start: {__MODULE__, :new, []},
+      start: {__MODULE__, :new, args},
       restart: :transient,
       type: :worker
     }
   end
 
-  @spec new(Client.type(), User.id()) :: {:error, any} | {:ok, pid}
+  @spec new(Cliene.type(), User.id()) :: {:error, any} | {:ok, pid}
   def new(type, user_id) do
     case :global.whereis_name({type, user_id}) do
       :undefined ->

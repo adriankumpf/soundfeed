@@ -6,8 +6,8 @@
 
 ## Prerequisites
 
-* Elixir v1.5
-* Node v6
+* Elixir v1.6
+* Node v8
 * Docker (only necessary to create a release)
 
 ## Installation

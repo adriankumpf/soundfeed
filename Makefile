@@ -51,9 +51,3 @@ start-release: ## Start the docker container
 .PHONY: deploy
 deploy: ## Deploy
 	@git push prod master
-
-format: ## Format the whole codabase with the upcoming formatter
-	@docker run \
-	--rm --name elixir_dev -it \
-	-v $(shell pwd):/app leifg/elixir:edge \
-	sh -c "cd /app && mix format ${FILE}"

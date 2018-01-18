@@ -83,8 +83,7 @@ defmodule SoundfeedCore.Worker.Impl do
     Map.put_new(acc, id, %{track | desc: ""})
   end
 
-  defp do_insert(%Track{id: id, desc: desc} = track, acc)
-       when byte_size(desc) > @desc_length do
+  defp do_insert(%Track{id: id, desc: desc} = track, acc) when byte_size(desc) > @desc_length do
     {desc, _} = String.split_at(desc, @desc_length)
     Map.put_new(acc, id, %{track | desc: desc <> "..."})
   end

@@ -22,8 +22,7 @@ defmodule SoundfeedCore.Worker.Server do
     end
   end
 
-  def handle_info(:fetch_and_save_feed, {_, retries_left} = state)
-      when retries_left <= 0 do
+  def handle_info(:fetch_and_save_feed, {_, retries_left} = state) when retries_left <= 0 do
     {:stop, :too_many_failed_retries, state}
   end
 
