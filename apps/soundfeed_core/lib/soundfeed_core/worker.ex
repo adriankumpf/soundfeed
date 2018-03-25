@@ -12,7 +12,7 @@ defmodule SoundfeedCore.Worker do
     }
   end
 
-  @spec new(Cliene.type(), User.id()) :: {:error, any} | {:ok, pid}
+  @spec new(Client.type(), User.id()) :: {:error, any} | {:ok, pid}
   def new(type, user_id) do
     case :global.whereis_name({type, user_id}) do
       :undefined ->
