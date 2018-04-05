@@ -35,9 +35,13 @@ defmodule SoundfeedCore.Worker.Server do
         end
 
       {:error, reason} ->
-        _ = Logger.error("Fetching failed: #{inspect(reason)}")
+        if retries_left < 4 do
+          _ = Logger.error("Fetching failed: #{inspect(reason)}")
+        end
+
         retries_left = retries_left - 1
         schedule_retry(:fetch_and_save_feed, retries_left)
+
         {:noreply, {data, retries_left}}
     end
   end
@@ -63,7 +67,7 @@ defmodule SoundfeedCore.Worker.Server do
 
   defp schedule_retry(task, retries_left) do
     wait_before_retry = @max_retries - retries_left
-    _ = Logger.error("Retrying: #{task} in #{wait_before_retry} minute(s)")
+    _ = Logger.info("Retrying: #{task} in #{wait_before_retry} minute(s)")
     Process.send_after(self(), task, :timer.minutes(wait_before_retry))
   end
 end
