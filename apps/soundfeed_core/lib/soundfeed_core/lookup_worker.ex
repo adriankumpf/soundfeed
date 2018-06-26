@@ -1,8 +1,8 @@
 defmodule SoundfeedCore.LookupWorker do
   require Logger
 
-  alias SoundfeedCore.Models.User
   alias SoundfeedCore.Client
+  alias SoundfeedCore.Models.User
 
   @name __MODULE__
 

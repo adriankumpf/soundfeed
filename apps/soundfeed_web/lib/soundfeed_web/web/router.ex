@@ -1,8 +1,8 @@
 defmodule SoundfeedWeb.Web.Router do
   use SoundfeedWeb.Web, :router
 
-  alias SoundfeedWeb.Web.Plugs.SoundfeedWorker
   alias Plug.Conn
+  alias SoundfeedWeb.Web.Plugs.SoundfeedWorker
 
   pipeline :browser do
     plug(:accepts, ["html"])

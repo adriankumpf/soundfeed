@@ -1,7 +1,7 @@
 defmodule SoundfeedCore.Feed do
-  alias SoundfeedCore.Models.{Track, User}
-  alias SoundfeedCore.Feed.{RSS, Helper}
   alias SoundfeedCore.Client
+  alias SoundfeedCore.Feed.{Helper, RSS}
+  alias SoundfeedCore.Models.{Track, User}
 
   @type t :: RSS.feed()
 

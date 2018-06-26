@@ -1,7 +1,7 @@
 defmodule SoundfeedCore.Worker do
+  alias SoundfeedCore.{Client, Feed}
   alias SoundfeedCore.Models.{Track, User}
   alias SoundfeedCore.Worker.Server
-  alias SoundfeedCore.{Feed, Client}
 
   def child_spec(args) do
     %{

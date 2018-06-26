@@ -1,7 +1,7 @@
 defmodule SoundfeedCore.Client.API do
   alias HTTPoison.{Error, Response}
   alias SoundfeedCore.Models.PagedResponse, as: Page
-  alias SoundfeedCore.Models.{User, Track}
+  alias SoundfeedCore.Models.{Track, User}
 
   @typep body :: Page.t() | User.t()
 
@@ -29,7 +29,8 @@ defmodule SoundfeedCore.Client.API do
       @spec fetch(User.id(), String.t()) :: {:error, any} | {:ok, tracks | User.t()}
       def fetch(user_id, client_id) do
         res =
-          user_id |> url
+          user_id
+          |> url
           |> get(
             [],
             linked_partitioning: 1,

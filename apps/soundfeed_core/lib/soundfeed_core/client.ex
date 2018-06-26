@@ -1,7 +1,7 @@
 defmodule SoundfeedCore.Client do
-  alias SoundfeedCore.Client.{Reposts, Tracks, Likes, User, Resolver}
-  alias SoundfeedCore.Models.User, as: UserM
+  alias SoundfeedCore.Client.{Likes, Reposts, Resolver, Tracks, User}
   alias SoundfeedCore.Models.Track
+  alias SoundfeedCore.Models.User, as: UserM
 
   @type type :: :reposts | :tracks | :likes | :user
   @type id :: String.t()

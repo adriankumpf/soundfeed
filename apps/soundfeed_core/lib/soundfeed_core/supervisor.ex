@@ -18,7 +18,7 @@ defmodule SoundfeedCore.Supervisor do
     |> DynamicSupervisor.which_children()
     |> Enum.map(fn {_id, child, _type, _modules} ->
       %SoundfeedCore.Models.User{username: name} = GenServer.call(child, :get_user)
-      tracks = child |> GenServer.call(:get_tracks) |> Map.values |> length
+      tracks = child |> GenServer.call(:get_tracks) |> Map.values() |> length
       type = GenServer.call(child, :get_type)
 
       {name, type, tracks}

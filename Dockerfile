@@ -1,4 +1,4 @@
-FROM elixir:1.6.4-alpine as asset-builder-mix-getter
+FROM elixir:1.6.6-alpine as asset-builder-mix-getter
 
 ENV HOME=/opt/app
 
@@ -14,7 +14,7 @@ WORKDIR $HOME/apps/soundfeed_web
 RUN mix deps.get
 
 ########################################################################
-FROM node:8.10.0-alpine as asset-builder
+FROM node:8.11.3-alpine as asset-builder
 
 ENV HOME=/opt/app
 WORKDIR $HOME
@@ -27,7 +27,7 @@ RUN yarn install
 RUN ./node_modules/.bin/brunch build --production
 
 ########################################################################
-FROM bitwalker/alpine-elixir:1.6.4 as releaser
+FROM bitwalker/alpine-elixir:1.6.6 as releaser
 
 ENV HOME=/opt/app
 

@@ -17,7 +17,7 @@ defmodule SoundFeed.Mixfile do
   defp deps do
     [
       {:distillery, "~> 1.4", runtime: false},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.2", only: [:dev], runtime: false},
       {:credo, "~> 0.8", only: [:dev, :test], runtime: false}
     ]
   end

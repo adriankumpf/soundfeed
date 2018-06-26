@@ -1,9 +1,9 @@
 defmodule SoundfeedCore.Worker.Impl do
   require Logger
 
-  alias SoundfeedCore.Models.{Track, User}
   alias SoundfeedCore.Client
   alias SoundfeedCore.Feed
+  alias SoundfeedCore.Models.{Track, User}
 
   @desc_length Application.get_env(:soundfeed_core, :feed_item_desc_length)
   @feeds_dir Application.get_env(:soundfeed_core, :feeds_dir)

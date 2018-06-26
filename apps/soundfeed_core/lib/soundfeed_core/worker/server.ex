@@ -36,7 +36,7 @@ defmodule SoundfeedCore.Worker.Server do
 
       {:error, reason} ->
         if retries_left < 4 do
-          _ = Logger.error("Fetching failed: #{inspect(reason)}")
+          :ok = Logger.error("Fetching failed: #{inspect(reason)}")
         end
 
         retries_left = retries_left - 1
