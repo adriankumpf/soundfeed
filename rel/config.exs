@@ -14,13 +14,13 @@ environment :prod do
 end
 
 release :soundfeed do
-  set(version: current_version(:soundfeed_core))
+  set(version: current_version(:core))
 
   set(
     applications: [
       :runtime_tools,
-      soundfeed_core: :permanent,
-      soundfeed_web: :permanent
+      core: :permanent,
+      ui: :permanent
     ]
   )
 end

@@ -6,11 +6,11 @@ RUN mix do local.hex --force, local.rebar --force
 
 COPY config/ $HOME/config/
 COPY mix.exs mix.lock $HOME/
-COPY apps/soundfeed_web/mix.exs $HOME/apps/soundfeed_web/
-COPY apps/soundfeed_web/config/ $HOME/apps/soundfeed_web/config/
+COPY apps/ui/mix.exs $HOME/apps/ui/
+COPY apps/ui/config/ $HOME/apps/ui/config/
 COPY VERSION $HOME/VERSION
 
-WORKDIR $HOME/apps/soundfeed_web
+WORKDIR $HOME/apps/ui
 RUN mix deps.get
 
 ########################################################################
@@ -21,8 +21,8 @@ WORKDIR $HOME
 
 COPY --from=asset-builder-mix-getter $HOME/deps $HOME/deps
 
-WORKDIR $HOME/apps/soundfeed_web/assets
-COPY apps/soundfeed_web/assets/ ./
+WORKDIR $HOME/apps/ui/assets
+COPY apps/ui/assets/ ./
 RUN yarn install
 RUN ./node_modules/.bin/brunch build --production
 
@@ -41,8 +41,8 @@ RUN mix do local.hex --force, local.rebar --force
 COPY mix.exs mix.lock $HOME/
 
 # Copy  mix.exs files
-COPY apps/soundfeed_core/mix.exs $HOME/apps/soundfeed_core/
-COPY apps/soundfeed_web/mix.exs $HOME/apps/soundfeed_web/
+COPY apps/core/mix.exs $HOME/apps/core/
+COPY apps/ui/mix.exs $HOME/apps/ui/
 COPY VERSION $HOME/VERSION
 
 # Install dependencies
@@ -52,8 +52,8 @@ RUN mix do deps.get --only $MIX_ENV, deps.compile
 COPY . $HOME/
 
 # Digest precompiled assets
-COPY --from=asset-builder $HOME/apps/soundfeed_web/priv/static/ $HOME/apps/soundfeed_web/priv/static/
-WORKDIR $HOME/apps/soundfeed_web
+COPY --from=asset-builder $HOME/apps/ui/priv/static/ $HOME/apps/ui/priv/static/
+WORKDIR $HOME/apps/ui
 RUN mix phx.digest
 
 # Release

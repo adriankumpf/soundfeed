@@ -1,4 +1,4 @@
-ASSETS?=$(shell pwd)/apps/soundfeed_web/assets
+ASSETS?=$(shell pwd)/apps/ui/assets
 VERSION=$(shell cat VERSION)
 
 # Read env file
@@ -16,7 +16,7 @@ install: ## Install dependencies
 	@CLIENT_ID=${CLIENT_ID}; \
 	mix deps.get && \
 	mix deps.compile && \
-	mix cmd --app soundfeed_web "(cd ${ASSETS} && yarn install) || true"
+	mix cmd --app ui "(cd ${ASSETS} && yarn install) || true"
 
 .PHONY: start
 start: ## Start the server in dev mode

@@ -1,0 +1,28 @@
+<div class="generator">
+  <form class="form">
+    <input class="profile-url" type="text" placeholder="Enter your profile URL" spellcheck="false">
+    <div class="type">
+      <select class="type-select">
+        <option selected>Likes</option>
+        <option>Reposts</option>
+        <option>Tracks</option>
+      </select>
+    </div>
+    <div class="submit">
+      <div role="button" class="submit-btn">Generate</div>
+      <div class="submit-spinner">
+        <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </div>
+      <div role="button" class="submit-close">
+        <span class="close"></span>
+      </div>
+      <a class="submit-url"></a>
+    </div>
+  </form>
+</div>
+
+<script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
