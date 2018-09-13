@@ -58,7 +58,7 @@ RUN mix phx.digest
 
 # Release
 WORKDIR $HOME
-RUN mix release --env=$MIX_ENV --verbose
+RUN mix release --env=$MIX_ENV
 
 ########################################################################
 FROM alpine:3.8

@@ -22,14 +22,6 @@ install: ## Install dependencies
 start: ## Start the server in dev mode
 	@CLIENT_ID=${CLIENT_ID} iex -S mix phx.server
 
-.PHONY: lint
-lint: ## Lint code with Credo
-	@mix credo
-
-.PHONY: analyze
-analyze: ## Run a static analysis with Dialyzer
-	@mix dialyzer
-
 .PHONY: build
 build: ## Build a minimal docker container with the release
 	@docker build \

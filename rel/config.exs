@@ -1,10 +1,10 @@
-["rel", "plugins", "*.exs"]
+~w(rel plugins *.exs)
 |> Path.join()
 |> Path.wildcard()
 |> Enum.map(&Code.eval_file(&1))
 
 use Mix.Releases.Config,
-  default_release: :soundfeed,
+  default_release: :default,
   default_environment: :prod
 
 environment :prod do
@@ -19,8 +19,8 @@ release :soundfeed do
   set(
     applications: [
       :runtime_tools,
-      soundfeed_web: :permanent,
-      soundfeed_core: :permanent
+      soundfeed_core: :permanent,
+      soundfeed_web: :permanent
     ]
   )
 end
