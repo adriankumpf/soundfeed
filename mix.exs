@@ -6,11 +6,7 @@ defmodule SoundFeed.Mixfile do
       apps_path: "apps",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      deps: deps(),
-      dialyzer: [
-        plt_add_deps: :transitive,
-        flags: [:unmatched_returns, :error_handling, :race_conditions, :underspecs]
-      ]
+      deps: deps()
     ]
   end
 

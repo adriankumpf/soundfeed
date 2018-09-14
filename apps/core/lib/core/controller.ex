@@ -1,9 +1,9 @@
 defmodule Core.Controller do
   use DynamicSupervisor
 
-  @name __MODULE__
+  alias Core.Worker
 
-  alias __MODULE__.Worker
+  @name __MODULE__
 
   # API
 
@@ -12,7 +12,7 @@ defmodule Core.Controller do
   end
 
   def new(type, user_id) do
-    DynamicSupervisor.start_child(@name, {Worker, {type, user_id}})
+    DynamicSupervisor.start_child(@name, {Worker, type: type, user_id: user_id})
   end
 
   def get_report do
@@ -25,7 +25,11 @@ defmodule Core.Controller do
 
   # Callbacks
 
-  def init(_opts) do
-    DynamicSupervisor.init(strategy: :one_for_one)
+  def init(opts) do
+    DynamicSupervisor.init(
+      strategy: :one_for_one,
+      max_children: 256,
+      extra_arguments: [opts]
+    )
   end
 end

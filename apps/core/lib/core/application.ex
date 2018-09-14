@@ -5,7 +5,7 @@ defmodule Core.Application do
 
   def start(_type, _args) do
     children = [
-      Controller,
+      {Controller, client_id: client_id(), feeds_dir: feeds_dir()},
       {Resolver, client_id: client_id()},
       Reporter
     ]
@@ -13,7 +13,6 @@ defmodule Core.Application do
     Supervisor.start_link(children, strategy: :one_for_one, name: __MODULE__)
   end
 
-  def client_id do
-    Application.get_env(:core, :client_id)
-  end
+  defp client_id, do: Application.get_env(:core, :client_id)
+  defp feeds_dir, do: Application.get_env(:core, :feeds_dir)
 end

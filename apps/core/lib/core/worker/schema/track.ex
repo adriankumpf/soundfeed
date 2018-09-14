@@ -1,4 +1,4 @@
-defmodule Core.Schemas.Track do
+defmodule Core.Worker.Schema.Track do
   defstruct [
     :id,
     :title,

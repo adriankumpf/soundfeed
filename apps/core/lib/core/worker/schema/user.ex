@@ -1,4 +1,4 @@
-defmodule Core.Schemas.User do
+defmodule Core.Worker.Schema.User do
   defstruct [:id, :username, :permalink_url, :avatar_url]
 
   @type id :: String.t()
