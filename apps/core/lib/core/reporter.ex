@@ -3,8 +3,10 @@ defmodule Core.Reporter do
 
   require Logger
 
-  alias Core.Schemas.User
   alias Core.Controller
+
+  defstruct timer: nil
+  alias __MODULE__, as: State
 
   @name __MODULE__
 
@@ -12,15 +14,20 @@ defmodule Core.Reporter do
     GenServer.start_link(__MODULE__, args, name: @name)
   end
 
-  def generate do
-    Process.send(__MODULE__, :schedule_report, [])
+  def send_report do
+    GenServer.cast(@name, :send_report)
   end
 
   # Callbacks
 
-  def init(_args) do
-    send(self(), :schedule_report)
-    {:ok, nil}
+  @impl true
+  def init(_opts) do
+    {:ok, %State{}, {:continue, :schedule_report}}
+  end
+
+  @impl true
+  def handle_cast(:send_report, state) do
+    {:noreply, state, {:continue, :schedule_report}}
   end
 
   @impl true
@@ -38,22 +45,19 @@ defmodule Core.Reporter do
   defp send_report(old_timer) do
     reports =
       Controller.get_report()
-      |> Enum.map(fn {%User{username: name}, type, tracks} ->
-        "#{name}: #{tracks} #{type}"
-      end)
       |> Enum.sort()
 
-    _ = Logger.info("Running workers:\n#{report}", notify: true)
+    Logger.info("Running workers [#{length(reports)}]:\n#{Enum.join(reports, "\n")}",
+      notify: true
+    )
 
-    _ = cancel_timer(old_timer)
+    cancel_timer(old_timer)
     timer = Process.send_after(self(), :schedule_report, ms_until_next_report())
 
-    {:noreply, timer}
+    timer
   end
 
-  # Private
-
-  defp cancel_timer(nil), do: 0
+  defp cancel_timer(nil), do: :ok
   defp cancel_timer(timer), do: Process.cancel_timer(timer)
 
   defp ms_until_next_report do
