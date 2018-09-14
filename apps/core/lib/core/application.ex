@@ -1,12 +1,12 @@
 defmodule Core.Application do
   use Application
 
-  alias Core.{Controller, LookupWorker, Reporter}
+  alias Core.{Controller, Resolver, Reporter}
 
   def start(_type, _args) do
     children = [
       Controller,
-      {LookupWorker, client_id: client_id()},
+      {Resolver, client_id: client_id()},
       Reporter
     ]
 
