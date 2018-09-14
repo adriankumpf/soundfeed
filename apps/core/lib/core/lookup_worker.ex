@@ -1,39 +1,30 @@
 defmodule Core.LookupWorker do
+  use GenServer
+
   require Logger
 
   alias Core.Client
-  alias Core.Schemas.User
+
+  defstruct [:client_id]
+  alias __MODULE__, as: State
 
   @name __MODULE__
 
-  def child_spec(_) do
-    %{
-      id: __MODULE__,
-      start: {__MODULE__, :new, []},
-      restart: :transient,
-      type: :worker
-    }
+  def start_link(opts) do
+    GenServer.start_link(__MODULE__, opts, name: Keyword.get(opts, :name, @name))
   end
 
-  @spec new() :: {:error, any} | {:ok, pid}
-  def new do
-    client_id = Application.get_env(:core, :client_id)
-    _ = Logger.info("Starting LookupWorker")
-    GenServer.start_link(__MODULE__, client_id, name: @name)
-  end
-
-  @spec lookup(String.t()) :: {:error, any} | {:ok, User.id()}
-  def lookup(user) do
-    GenServer.call(@name, {:lookup, user})
+  def lookup(name \\ @name, user) do
+    GenServer.call(name, {:lookup, user})
   end
 
   # GenServer API
 
-  def init(client_id) do
-    {:ok, client_id}
+  def init(opts) do
+    {:ok, %State{client_id: Keyword.fetch!(opts, :client_id)}}
   end
 
-  def handle_call({:lookup, user}, _from, client_id) do
-    {:reply, Client.lookup(user, client_id), client_id}
+  def handle_call({:lookup, user}, _from, %State{client_id: client_id} = state) do
+    {:reply, Client.lookup(user, client_id), state}
   end
 end

@@ -2,23 +2,16 @@ defmodule Core.Client.Resolver do
   require Logger
 
   alias HTTPoison.{Error, Response}
-  alias Core.Schemas.User
 
-  @type headers :: [any]
-  @type url :: String.t()
-
-  @spec lookup(User.id(), String.t()) :: {:error, any} | {:ok, String.t()}
   def lookup(user_id, client_id) do
-    _ = Logger.info("Looking up '#{user_id}'", notify: true)
+    Logger.info("Looking up '#{user_id}'", notify: true)
 
-    case HTTPoison.get(
-           "http://api.soundcloud.com/resolve",
-           [],
-           params: [
-             url: "http://soundcloud.com/#{user_id}",
-             client_id: client_id
-           ]
-         ) do
+    params = [
+      url: "http://soundcloud.com/#{user_id}",
+      client_id: client_id
+    ]
+
+    case HTTPoison.get("http://api.soundcloud.com/resolve", [], params: params) do
       {:ok, %Response{status_code: 302, headers: headers}} ->
         headers |> get_location |> get_user_id
 
@@ -33,18 +26,15 @@ defmodule Core.Client.Resolver do
     end
   end
 
-  @spec get_location(headers) :: :no_headers_present | url
   defp get_location([{"Location", loc} | _]), do: loc
   defp get_location([_ | headers]), do: get_location(headers)
   defp get_location([]), do: :no_headers_present
 
-  @spec get_user_id(url) :: {:error, String.t()} | {:ok, User.id()}
   defp get_user_id("https://api.soundcloud.com/users/" <> user_id),
     do: {:ok, split_left(user_id, "?")}
 
   defp get_user_id(unkown), do: {:error, "Could not extract user id of: #{unkown}"}
 
-  @spec split_left(String.t(), String.t()) :: String.t()
   defp split_left(string, sep) do
     case :binary.match(string, [sep]) do
       {start, _length} ->

@@ -3,6 +3,9 @@ defmodule Core.Reporter do
 
   require Logger
 
+  alias Core.Schemas.User
+  alias Core.Controller
+
   @name __MODULE__
 
   def start_link(args) do
@@ -20,11 +23,23 @@ defmodule Core.Reporter do
     {:ok, nil}
   end
 
-  def handle_info(:schedule_report, old_timer) do
-    report =
-      Core.Supervisor.get_report()
-      |> Enum.map(fn {user, type, tracks} ->
-        "#{user}: #{tracks} #{type}"
+  @impl true
+  def handle_continue(:schedule_report, %State{timer: old_timer} = state) do
+    {:noreply, %State{state | timer: send_report(old_timer)}, :hibernate}
+  end
+
+  @impl true
+  def handle_info(:schedule_report, %State{timer: old_timer} = state) do
+    {:noreply, %State{state | timer: send_report(old_timer)}, :hibernate}
+  end
+
+  # Private
+
+  defp send_report(old_timer) do
+    reports =
+      Controller.get_report()
+      |> Enum.map(fn {%User{username: name}, type, tracks} ->
+        "#{name}: #{tracks} #{type}"
       end)
       |> Enum.sort()
 
