@@ -7,7 +7,3 @@ config :ui, Ui.Endpoint,
   server: true,
   root: ".",
   version: Mix.Project.config()[:version]
-
-config :logger, :console,
-  format: "$time $metadata[$level] $levelpad$message\n",
-  metadata: []

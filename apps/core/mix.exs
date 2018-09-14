@@ -24,8 +24,7 @@ defmodule Core.Mixfile do
     [
       {:httpoison, "~> 1.0"},
       {:poison, "~> 3.1"},
-      {:timex, "~> 3.1"},
-      {:logger_telegram_backend, "~> 1.0"}
+      {:timex, "~> 3.1"}
     ]
   end
 

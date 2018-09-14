@@ -16,8 +16,8 @@ defmodule SoundFeed.Mixfile do
 
   defp deps do
     [
-      {:distillery, "~> 2.0", runtime: false},
-      {:dialyxir, "~> 1.0.0-pre", only: [:dev], runtime: false}
+      {:distillery, "~> 2.0"},
+      {:logger_telegram_backend, "~> 1.0", only: :prod}
     ]
   end
 end
