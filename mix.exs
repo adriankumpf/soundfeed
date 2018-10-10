@@ -13,7 +13,7 @@ defmodule SoundFeed.Mixfile do
   defp deps do
     [
       {:distillery, "~> 2.0"},
-      {:logger_telegram_backend, "~> 1.0", only: :prod}
+      {:logger_telegram_backend, "~> 1.1", only: :prod}
     ]
   end
 end

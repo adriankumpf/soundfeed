@@ -19,6 +19,7 @@ release :soundfeed do
   set(
     applications: [
       :runtime_tools,
+      logger_telegram_backend: :permanent,
       core: :permanent,
       ui: :permanent
     ]

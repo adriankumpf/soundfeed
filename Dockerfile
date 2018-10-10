@@ -1,4 +1,4 @@
-FROM elixir:1.8.0-alpine as asset-builder-mix-getter
+FROM elixir:1.8-alpine as asset-builder-mix-getter
 
 ENV HOME=/opt/app
 
@@ -24,10 +24,10 @@ COPY --from=asset-builder-mix-getter $HOME/deps $HOME/deps
 WORKDIR $HOME/apps/ui/assets
 COPY apps/ui/assets/ ./
 RUN yarn install
-RUN ./node_modules/.bin/brunch build --production
+RUN yarn run deploy
 
 ########################################################################
-FROM bitwalker/alpine-elixir:1.8.0 as releaser
+FROM elixir:1.8-alpine as releaser
 
 ENV HOME=/opt/app
 
@@ -45,6 +45,8 @@ COPY apps/core/mix.exs $HOME/apps/core/
 COPY apps/ui/mix.exs $HOME/apps/ui/
 COPY VERSION $HOME/VERSION
 
+WORKDIR $HOME
+
 # Install dependencies
 ENV MIX_ENV=prod
 RUN mix do deps.get --only $MIX_ENV, deps.compile
@@ -61,7 +63,7 @@ WORKDIR $HOME
 RUN mix release --env=$MIX_ENV
 
 ########################################################################
-FROM alpine:3.8
+FROM alpine:3.9
 
 ENV LANG=en_US.UTF-8 \
     HOME=/opt/app/ \
@@ -81,12 +83,11 @@ ENV PORT=8080 \
 
 WORKDIR $HOME
 
-RUN addgroup -g 1000 soundfeed && \
-    adduser -u 1000 -D -h $HOME -G soundfeed soundfeed
+RUN addgroup -g 4004 soundfeed && \
+    adduser -u 4004 -D -h $HOME -G soundfeed soundfeed
 USER soundfeed
 
 COPY --from=releaser $HOME/_build/prod/rel/soundfeed/releases/$VERSION/soundfeed.tar.gz $HOME
-
 RUN tar -xzf soundfeed.tar.gz
 
 ENTRYPOINT ["/opt/app/bin/soundfeed"]

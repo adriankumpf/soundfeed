@@ -1,6 +1,7 @@
 defmodule Ui.ApiController do
-  require Logger
   use Ui, :controller
+
+  require Logger
 
   alias Ui.Cache
 

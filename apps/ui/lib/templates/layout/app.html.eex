@@ -13,11 +13,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>" media="all">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" media="all">
   </head>
   <body>
     <header class="header">
-      <a href="<%= page_path @conn, :index %>" class="main">
+      <a href="<%= Routes.page_path @conn, :index %>" class="main">
         <h1>SoundFeed</h1>
       </a>
       <p class="subheader">Generate RSS feeds for any SoundCloud user</p>
@@ -26,10 +26,10 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <footer class="footer">
-      <a href="<%= page_path @conn, :faq %>" class="footer-item">
+      <a href="<%= Routes.page_path @conn, :faq %>" class="footer-item">
         FAQ
       </a>
-      <a href="<%= page_path @conn, :index %>" class="footer-item">
+      <a href="<%= Routes.page_path @conn, :index %>" class="footer-item">
         ☁
       </a>
       <a href="https://github.com/adriankumpf/soundfeed" class="footer-item">

@@ -28,7 +28,7 @@ defmodule Core.Controller do
   def init(opts) do
     DynamicSupervisor.init(
       strategy: :one_for_one,
-      max_children: 256,
+      max_children: 1024,
       extra_arguments: [opts]
     )
   end

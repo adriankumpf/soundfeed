@@ -26,12 +26,11 @@ defmodule Ui.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_html, "~> 2.6"},
+      {:phoenix, "~> 1.4.0-rc"},
+      {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
-      {:cowboy, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"},
+      {:cowboy, "~> 2.3"},
+      {:plug_cowboy, "~> 2.0"},
       {:core, in_umbrella: true}
     ]
   end

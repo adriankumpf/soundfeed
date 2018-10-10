@@ -2,20 +2,33 @@
   "repository": {},
   "license": "MIT",
   "scripts": {
-    "deploy": "brunch build --production",
-    "watch": "brunch watch --stdin"
+    "deploy": "webpack --mode production",
+    "watch": "webpack --mode development --watch-stdin"
   },
   "dependencies": {
+    "@babel/runtime": "^7.3.4",
     "phoenix": "file:../../../deps/phoenix",
     "phoenix_html": "file:../../../deps/phoenix_html"
   },
   "devDependencies": {
-    "autoprefixer-stylus": "^0.14.0",
-    "babel-brunch": "7.0.0",
-    "brunch": "2.10.17",
-    "clean-css-brunch": "2.10.0",
-    "css-brunch": "2.10.0",
-    "stylus-brunch": "^2.10.1",
-    "uglify-js-brunch": "2.10.0"
-  }
+    "@babel/core": "^7.3.4",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^5.0.1",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "webpack": "4.29.6",
+    "webpack-cli": "^3.2.3"
+  },
+  "browserslist": [
+    "> 1%",
+    "not ie <= 11",
+    "not UCAndroid > 0",
+    "not Samsung > 0",
+    "not op_mini all"
+  ]
 }

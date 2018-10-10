@@ -2,8 +2,9 @@ defmodule Ui do
   def controller do
     quote do
       use Phoenix.Controller, namespace: Ui
+
       import Plug.Conn
-      import Ui.Router.Helpers
+      alias Ui.Router.Helpers, as: Routes
     end
   end
 
@@ -19,7 +20,7 @@ defmodule Ui do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Ui.Router.Helpers
+      alias Ui.Router.Helpers, as: Routes
     end
   end
 
