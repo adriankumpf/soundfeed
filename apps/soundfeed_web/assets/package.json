@@ -11,11 +11,11 @@
   },
   "devDependencies": {
     "autoprefixer-stylus": "^0.14.0",
-    "babel-brunch": "6.1.1",
-    "brunch": "2.10.12",
+    "babel-brunch": "7.0.0",
+    "brunch": "2.10.17",
     "clean-css-brunch": "2.10.0",
     "css-brunch": "2.10.0",
-    "stylus-brunch": "^2.10.0",
+    "stylus-brunch": "^2.10.1",
     "uglify-js-brunch": "2.10.0"
   }
 }
