@@ -67,8 +67,8 @@
         -moz-appearance: none;
 
         // does not work in safari
-        // text-align: center;
-        // text-align-last: center;
+        text-align: center;
+        text-align-last: center;
 
         option {
           color: black;
@@ -107,57 +107,61 @@
       padding: 0;
       border: none;
 
-      &:hover:enabled:not(.full) {
+      &:hover:not(.expand) {
         background-color: lighten($highlight, 5%);
       }
 
-      &.loading {
-        & > .submit-spinner {
-          display: block;
-        }
-        & > .submit-btn {
-          display: none;
-        }
-      }
-
-      &.full {
+      &.expand {
         cursor: default;
         height: 155px;
         background-color: $main;
         padding: 0 20px;
         -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
-        & > .submit-close,
-        & > .submit-url {
-          display: block;
-        }
-
-        & > .submit-btn {
-          display: none;
-        }
-      }
-
-      &-btn {
-        display: flex;
-        height: 100%;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-      }
-
-      &-spinner {
-        display: none;
+        z-index: 100
       }
 
       &-close {
-        display: none;
         position: absolute
         top: 10px
         right: 10px
+
+        $dimensions=15px
+        $thickness=2px
+
+        .close {
+          cursor: pointer;
+          position: relative;
+          display: inline-block;
+          padding: 10px;
+          width: $dimensions;
+          height: $dimensions;
+          overflow: hidden;
+
+          &::before,
+          &::after {
+            content: '';
+            position: absolute;
+            height: $thickness;
+            width: $dimensions;
+            top: 50%;
+            left: 2px;
+            background: $highlight;
+          }
+
+          &::before {
+            transform: rotate(45deg);
+          }
+          &::after {
+            transform: rotate(-45deg);
+          }
+
+          &:hover {
+            opacity: 0.9;
+          }
+        }
       }
 
       &-url {
-        display: none;
         overflow-wrap: break-word;
         margin: 0 auto;
         font-family: monospace;

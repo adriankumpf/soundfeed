@@ -1,0 +1,36 @@
+<div class="generator">
+  <form class="form<%= if @error, do: ' shake' %> " phx-submit="generate">
+    <input
+      class="profile-url"
+      type="text"
+      value="<%= @profile_url %>"
+      name="profile_url"
+      placeholder="Enter your profile URL"
+      spellcheck="false"
+      required
+      autofocus
+    />
+
+    <div class="type">
+      <select class="type-select" name="type">
+        <option value="likes" <%= if @type == "likes", do: "selected" %>>Likes</option>
+        <option value="reposts" <%= if @type == "reposts", do: "selected" %>>Reposts</option>
+        <option value="tracks" <%= if @type == "tracks", do: "selected" %>>Tracks</option>
+      </select>
+    </div>
+
+    <button type="submit" class="submit <%= if @feed_url, do: 'expand' %>" phx-disable-with="Loading ...">
+      <%= if @feed_url do %>
+        <a type="button" class="submit-close" phx-click="close" >
+          <span class="close"></span>
+        </a>
+
+        <a class="submit-url" href="<%= @feed_url %>" phx-keyup="close" phx-target="window">
+          <%= @feed_url %>
+        </a>
+      <% else %>
+        Generate
+      <% end %>
+    </button>
+  </form>
+</div>

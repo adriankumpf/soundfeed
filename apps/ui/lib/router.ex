@@ -1,13 +1,17 @@
 defmodule Ui.Router do
   use Ui, :router
 
+  # import Phoenix.LiveView.Router
+
   alias Plug.Conn
   alias Ui.Plugs.SoundfeedWorker
 
   pipeline :browser do
     plug(:accepts, ["html"])
+    # plug(Phoenix.LiveView.Flash)
     plug(:put_secure_browser_headers)
     plug(:put_cache_headers)
+    plug(:put_layout, {Ui.LayoutView, :app})
   end
 
   pipeline :api do

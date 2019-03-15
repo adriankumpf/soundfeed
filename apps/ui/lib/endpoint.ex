@@ -1,6 +1,8 @@
 defmodule Ui.Endpoint do
   use Phoenix.Endpoint, otp_app: :ui
 
+  socket("/live", Phoenix.LiveView.Socket)
+
   plug(
     Plug.Static,
     at: "/",

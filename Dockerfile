@@ -3,6 +3,7 @@ FROM elixir:1.8-alpine as asset-builder-mix-getter
 ENV HOME=/opt/app
 
 RUN mix do local.hex --force, local.rebar --force
+RUN apk add --no-cache git
 
 COPY config/ $HOME/config/
 COPY mix.exs mix.lock $HOME/
@@ -35,6 +36,7 @@ ENV CLIENT_ID $CLIENT_ID
 
 # Install Hex + Rebar
 RUN mix do local.hex --force, local.rebar --force
+RUN apk add --no-cache git
 
 # Cache elixir deps
 COPY mix.exs mix.lock $HOME/
