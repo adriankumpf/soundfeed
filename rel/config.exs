@@ -14,7 +14,7 @@ environment :prod do
 end
 
 release :soundfeed do
-  set(version: current_version(:core))
+  set(version: "0.0.0")
 
   set(
     applications: [

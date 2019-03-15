@@ -8,7 +8,6 @@ COPY config/ $HOME/config/
 COPY mix.exs mix.lock $HOME/
 COPY apps/ui/mix.exs $HOME/apps/ui/
 COPY apps/ui/config/ $HOME/apps/ui/config/
-COPY VERSION $HOME/VERSION
 
 WORKDIR $HOME/apps/ui
 RUN mix deps.get
@@ -43,7 +42,6 @@ COPY mix.exs mix.lock $HOME/
 # Copy  mix.exs files
 COPY apps/core/mix.exs $HOME/apps/core/
 COPY apps/ui/mix.exs $HOME/apps/ui/
-COPY VERSION $HOME/VERSION
 
 WORKDIR $HOME
 
@@ -69,9 +67,6 @@ ENV LANG=en_US.UTF-8 \
     HOME=/opt/app/ \
     TERM=xterm
 
-ARG VERSION
-ENV VERSION $VERSION
-
 RUN apk add --no-cache ncurses-libs openssl bash
 
 EXPOSE 8080
@@ -87,7 +82,7 @@ RUN addgroup -g 4004 soundfeed && \
     adduser -u 4004 -D -h $HOME -G soundfeed soundfeed
 USER soundfeed
 
-COPY --from=releaser $HOME/_build/prod/rel/soundfeed/releases/$VERSION/soundfeed.tar.gz $HOME
+COPY --from=releaser $HOME/_build/prod/rel/soundfeed/releases/0.0.0/soundfeed.tar.gz $HOME
 RUN tar -xzf soundfeed.tar.gz
 
 ENTRYPOINT ["/opt/app/bin/soundfeed"]

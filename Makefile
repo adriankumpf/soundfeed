@@ -1,5 +1,7 @@
 ASSETS?=$(shell pwd)/apps/ui/assets
-VERSION=$(shell cat VERSION)
+
+APP_VSN ?= `git describe --abbrev=0 --tags`
+BUILD ?= `git rev-parse --short HEAD`
 
 # Read env file
 sinclude env
@@ -7,6 +9,7 @@ export $(shell sed 's/=.*//' env)
 
 .PHONY: help
 help:
+	@echo "soundfeed:$(APP_VSN)-$(BUILD)"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | \
 	sort | \
 	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -24,12 +27,8 @@ start: ## Start the server in dev mode
 
 .PHONY: build
 build: ## Build a minimal docker container with the release
-	@docker build \
-		-t "soundfeed" \
-		--build-arg CLIENT_ID=${CLIENT_ID} \
-		--build-arg VERSION=${VERSION} \
-		. && \
-	docker tag soundfeed:latest soundfeed:${VERSION}
+	@docker build -t soundfeed --build-arg CLIENT_ID=${CLIENT_ID} . && \
+	docker tag soundfeed:latest soundfeed:$(APP_VSN)-$(BUILD)
 
 .PHONY: start-release
 start-release: ## Start the docker container
@@ -38,7 +37,7 @@ start-release: ## Start the docker container
 		-p 8080:8080 \
 		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
 		-e CLIENT_ID=${CLIENT_ID} \
-		soundfeed:${VERSION}
+		soundfeed:latest
 
 .PHONY: deploy
 deploy: ## Deploy

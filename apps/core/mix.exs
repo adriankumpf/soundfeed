@@ -4,7 +4,7 @@ defmodule Core.Mixfile do
   def project do
     [
       app: :core,
-      version: version_from_file(),
+      version: "0.0.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
@@ -26,9 +26,5 @@ defmodule Core.Mixfile do
       {:poison, "~> 3.1"},
       {:timex, "~> 3.1"}
     ]
-  end
-
-  defp version_from_file(file \\ "../../VERSION") do
-    String.trim(File.read!(file))
   end
 end

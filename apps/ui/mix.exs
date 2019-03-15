@@ -4,7 +4,7 @@ defmodule Ui.Mixfile do
   def project do
     [
       app: :ui,
-      version: version_from_file(),
+      version: "0.0.0",
       build_path: "../../_build",
       config_path: "../../config/config.exs",
       deps_path: "../../deps",
@@ -33,9 +33,5 @@ defmodule Ui.Mixfile do
       {:plug_cowboy, "~> 2.0"},
       {:core, in_umbrella: true}
     ]
-  end
-
-  defp version_from_file(file \\ "../../VERSION") do
-    String.trim(File.read!(file))
   end
 end
