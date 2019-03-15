@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.4.0] - 2019-03-15
+
 ### Changed
 
 - Streamline project structure
@@ -75,7 +77,8 @@
 
 ## [1.0.0] - 2017-08-12
 
-[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/adriankumpf/soundfeed/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/adriankumpf/soundfeed/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/adriankumpf/soundfeed/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/adriankumpf/soundfeed/compare/v1.2.2...v1.3.0
