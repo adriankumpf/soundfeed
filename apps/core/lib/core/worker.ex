@@ -88,12 +88,15 @@ defmodule Core.Worker do
         {:noreply, %State{state | tracks: tracks, failures: 0}, :hibernate}
 
       {:error, reason} ->
-        if failures > 0, do: Logger.error("Fetching failed: #{inspect(reason)}")
+        Logger.bare_log(
+          if(failures > 0, do: :warn, else: :info),
+          "Fetching failed: #{inspect(reason)}"
+        )
 
         wait = :math.pow(2, failures)
 
         Logger.info("Retrying in #{wait} minute(s)")
-        Process.send_after(self(), :refresh, :timer.minutes(wait))
+        Process.send_after(self(), :refresh, round(:timer.minutes(wait)))
 
         {:noreply, %State{state | failures: failures + 1}}
     end
