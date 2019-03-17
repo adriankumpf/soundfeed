@@ -39,10 +39,16 @@ defmodule Core.Worker.Api do
   def normalize(data, _type), do: data
 
   defp get(url, type, params, acc \\ []) do
-    with {:ok, json} <- HTTPoison.get(url, [], params: params) |> extract(),
+    with {:ok, json} <- get_json(url, params),
          {:ok, data} <- Poison.decode(json, as: body(type)) do
       paginate(data, type, params, acc)
     end
+  end
+
+  defp get_json(url, params) do
+    url
+    |> HTTPoison.get([], params: params, recv_timeout: 15_000)
+    |> extract()
   end
 
   defp extract({:ok, %Res{status_code: 200, body: body}}), do: {:ok, body}

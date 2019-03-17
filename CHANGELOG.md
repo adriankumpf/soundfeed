@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.4.2] - 2019-03-17
+
+### Fixed
+
+- Increase http timeout
+
 ## [1.4.1] - 2019-03-16
 
 ### Changed
@@ -87,7 +93,9 @@
 
 ## [1.0.0] - 2017-08-12
 
-[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.1...HEAD
+[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.2...HEAD
+[1.4.2]: https://github.com/adriankumpf/soundfeed/compare/v1.4.1...v1.4.2
+[1.4.1]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...v1.4.1
 [1.4.1]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/adriankumpf/soundfeed/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/adriankumpf/soundfeed/compare/v1.3.1...v1.3.2
