@@ -50,10 +50,7 @@ function extractUserId(profileUrl) {
     .toLowerCase()
     .split("soundcloud.com/")[1];
 
-  const isValid =
-    uId && !uId.includes("#") && !uId.includes("?") && !uId.includes("/");
-
-  return isValid ? uId : false;
+  return uId && !/[#?\/&]/.test(uId) ? uId : false;
 }
 
 async function lookupUserId() {

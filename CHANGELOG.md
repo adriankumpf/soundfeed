@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Disallow special chars in user names
+
 ## [1.4.2] - 2019-03-17
 
 ### Fixed
