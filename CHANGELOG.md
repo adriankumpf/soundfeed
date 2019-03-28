@@ -2,9 +2,15 @@
 
 ## [Unreleased]
 
+## [1.4.3] - 2019-03-28
+
 ### Changed
 
 - Disallow special chars in user names
+
+### Fixed
+
+- Update tzdata: tz release 2019a caused errors due to a typo in tz data
 
 ## [1.4.2] - 2019-03-17
 
@@ -97,7 +103,8 @@
 
 ## [1.0.0] - 2017-08-12
 
-[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.2...HEAD
+[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.3...HEAD
+[1.4.3]: https://github.com/adriankumpf/soundfeed/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/adriankumpf/soundfeed/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...v1.4.1
 [1.4.1]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...v1.4.1
