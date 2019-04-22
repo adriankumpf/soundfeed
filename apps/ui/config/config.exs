@@ -7,4 +7,6 @@ config :ui, Ui.Endpoint,
   render_errors: [view: Ui.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Ui.PubSub, adapter: Phoenix.PubSub.PG2]
 
+config :phoenix, :json_library, Jason
+
 import_config "#{Mix.env()}.exs"

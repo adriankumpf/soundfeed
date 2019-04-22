@@ -26,7 +26,8 @@ defmodule Ui.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.4.0-rc"},
+      {:phoenix, "~> 1.4"},
+      {:jason, "~> 1.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:cowboy, "~> 2.3"},
