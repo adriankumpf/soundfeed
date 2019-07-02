@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.5.0] - 2019-07-02
+
+### Changed
+
+- Strip umbrella project down
+- Replace distillery with Elixir (v1.9) releases
+
 ## [1.4.3] - 2019-03-28
 
 ### Changed
@@ -103,7 +110,8 @@
 
 ## [1.0.0] - 2017-08-12
 
-[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.4.3...HEAD
+[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/adriankumpf/soundfeed/compare/v1.4.3...v1.5.0
 [1.4.3]: https://github.com/adriankumpf/soundfeed/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/adriankumpf/soundfeed/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/adriankumpf/soundfeed/compare/v1.4.0...v1.4.1
