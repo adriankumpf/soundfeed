@@ -33,7 +33,7 @@
 ### Changed
 
 - Streamline project structure
-- Refactor and modernize Core
+- Refactor and modernize SoundFeed
 - Log less retry messages
 - Update dependencies
 

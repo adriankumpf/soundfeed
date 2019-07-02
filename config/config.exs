@@ -1,33 +1,18 @@
-use Mix.Config
+import Config
 
-if Mix.env() == :prod do
-  # :ok = Application.ensure_started(:sasl)
+config :soundfeed,
+  feeds_dir: "./feeds",
+  feed_item_desc_length: 1000
 
-  config :logger,
-    backends: [
-      {LoggerTelegramBackend, :telegram_errors},
-      {LoggerTelegramBackend, :telegram_notify},
-      :console
-    ],
-    level: :info,
-    handle_otp_reports: true,
-    handle_sasl_reports: false,
-    compile_time_purge_level: :info
+config :soundfeed, SoundFeedWeb.Endpoint,
+  url: [host: "localhost"],
+  render_errors: [view: SoundFeedWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: SoundFeedWeb.PubSub, adapter: Phoenix.PubSub.PG2]
 
-  config :logger, :telegram_errors,
-    chat_id: "${CHAT_ID}",
-    token: "${TOKEN}",
-    level: :warn
+config :logger, :console,
+  format: "$time $metadata[$level] $message\n",
+  metadata: []
 
-  config :logger, :telegram_notify,
-    chat_id: "${CHAT_ID}",
-    token: "${TOKEN}",
-    metadata_filter: [notify: true],
-    metadata: [:module]
+config :phoenix, :json_library, Jason
 
-  config :logger, :console,
-    format: "$time $metadata[$level] $levelpad$message\n",
-    metadata: []
-end
-
-import_config "../apps/*/config/config.exs"
+import_config "#{Mix.env()}.exs"

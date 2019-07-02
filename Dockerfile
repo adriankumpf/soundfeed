@@ -1,89 +1,44 @@
-FROM elixir:1.8-alpine as asset-builder-mix-getter
+FROM elixir:1.9-alpine AS builder
 
-ENV HOME=/opt/app
+RUN apk add --update --no-cache nodejs yarn git build-base && \
+    mix local.rebar --force && \
+    mix local.hex --force
 
-RUN mix do local.hex --force, local.rebar --force
-
-COPY config/ $HOME/config/
-COPY mix.exs mix.lock $HOME/
-COPY apps/ui/mix.exs $HOME/apps/ui/
-COPY apps/ui/config/ $HOME/apps/ui/config/
-
-WORKDIR $HOME/apps/ui
-RUN mix deps.get
-
-########################################################################
-FROM node:10-alpine as asset-builder
-
-ENV HOME=/opt/app
-WORKDIR $HOME
-
-COPY --from=asset-builder-mix-getter $HOME/deps $HOME/deps
-
-WORKDIR $HOME/apps/ui/assets
-COPY apps/ui/assets/ ./
-RUN yarn install
-RUN yarn run deploy
-
-########################################################################
-FROM elixir:1.8-alpine as releaser
-
-ENV HOME=/opt/app
-
-ARG CLIENT_ID
-ENV CLIENT_ID $CLIENT_ID
-
-# Install Hex + Rebar
-RUN mix do local.hex --force, local.rebar --force
-
-# Cache elixir deps
-COPY mix.exs mix.lock $HOME/
-
-# Copy  mix.exs files
-COPY apps/core/mix.exs $HOME/apps/core/
-COPY apps/ui/mix.exs $HOME/apps/ui/
-
-WORKDIR $HOME
-
-# Install dependencies
 ENV MIX_ENV=prod
+
+WORKDIR /opt/app
+
+COPY mix.exs mix.lock ./
 RUN mix do deps.get --only $MIX_ENV, deps.compile
 
-COPY . $HOME/
+COPY assets assets
+RUN cd assets && \
+  yarn install && \
+  yarn deploy && \
+  cd ..
 
-# Digest precompiled assets
-COPY --from=asset-builder $HOME/apps/ui/priv/static/ $HOME/apps/ui/priv/static/
-WORKDIR $HOME/apps/ui
-RUN mix phx.digest
+COPY config config
+COPY lib lib
+COPY priv priv
 
-# Release
-WORKDIR $HOME
-RUN mix release --env=$MIX_ENV
+RUN mix do phx.digest, compile
+
+RUN mkdir -p /opt/built && mix release --path /opt/built
 
 ########################################################################
-FROM alpine:3.9
 
-ENV LANG=en_US.UTF-8 \
-    HOME=/opt/app/ \
-    TERM=xterm
+FROM alpine:3.9 AS app
 
-RUN apk add --no-cache ncurses-libs openssl bash
+ENV LANG=C.UTF-8 \
+    TZ=Europe/Berlin
 
-EXPOSE 8080
-ENV PORT=8080 \
-    HOST=localhost \
-    MIX_ENV=prod \
-    REPLACE_OS_VARS=true \
-    SHELL=/bin/sh
+RUN apk add --update --no-cache bash openssl
 
-WORKDIR $HOME
+WORKDIR /opt/app
 
-RUN addgroup -g 4004 soundfeed && \
-    adduser -u 4004 -D -h $HOME -G soundfeed soundfeed
-USER soundfeed
+COPY --from=builder /opt/built .
+RUN chown -R nobody: .
 
-COPY --from=releaser $HOME/_build/prod/rel/soundfeed/releases/0.0.0/soundfeed.tar.gz $HOME
-RUN tar -xzf soundfeed.tar.gz
+USER nobody
 
-ENTRYPOINT ["/opt/app/bin/soundfeed"]
-CMD ["foreground"]
+CMD trap 'exit' INT; /opt/app/bin/soundfeed start

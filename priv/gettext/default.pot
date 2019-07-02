@@ -1,0 +1,66 @@
+## This file is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here as no
+## effect: edit them in PO (`.po`) files instead.
+msgid ""
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:22
+msgid "Can I subscribe to a feed with my podcast client?"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/index.html.eex:17
+msgid "Generate"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:13
+msgid "How often are the RSS feeds updated?"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/index.html.eex:11
+msgid "Likes"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/index.html.eex:12
+msgid "Reposts"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/index.html.eex:13
+msgid "Tracks"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:4
+msgid "Where do I find my SoundCloud profile URL?"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:16
+msgid "The RSS feeds are updated approximately every 90 minutes."
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:7
+msgid "Visit soundcloud.com and navigate to your profile page. Then copy the whole URL displayed in your address bar"
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:7
+msgid "e.g."
+msgstr ""
+
+#, elixir-format
+#: lib/soundfeed_web/templates/page/faq.html.eex:25
+msgid "Unfortunately, the generated feeds aren't proper podcast feeds since there is no universal way to download files directly from SoundCloud."
+msgstr ""

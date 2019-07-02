@@ -1,44 +1,19 @@
-ASSETS?=$(shell pwd)/apps/ui/assets
+.PHONY: help
 
-APP_VSN ?= `git describe --abbrev=0 --tags`
+APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e 's/[:,]//g'`
+APP_VSN ?= `grep 'version:' mix.exs | cut -d '"' -f2`
 BUILD ?= `git rev-parse --short HEAD`
 
-# Read env file
-sinclude env
-export $(shell sed 's/=.*//' env)
-
-.PHONY: help
 help:
-	@echo "soundfeed:$(APP_VSN)-$(BUILD)"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | \
-	sort | \
-	awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo "$(APP_NAME):$(APP_VSN)-$(BUILD)"
+	@perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-.PHONY: install
-install: ## Install dependencies
-	@CLIENT_ID=${CLIENT_ID}; \
-	mix deps.get && \
-	mix deps.compile && \
-	mix cmd --app ui "(cd ${ASSETS} && yarn install) || true"
+build: ## Build the Docker image
+	@docker build \
+			-t $(APP_NAME):$(APP_VSN)-$(BUILD) \
+			-t $(APP_NAME) .
 
-.PHONY: start
-start: ## Start the server in dev mode
-	@CLIENT_ID=${CLIENT_ID} iex -S mix phx.server
-
-.PHONY: build
-build: ## Build a minimal docker container with the release
-	@docker build -t soundfeed --build-arg CLIENT_ID=${CLIENT_ID} . && \
-	docker tag soundfeed:latest soundfeed:$(APP_VSN)-$(BUILD)
-
-.PHONY: start-release
-start-release: ## Start the docker container
-	 @docker run -it --rm \
-		--name soundfeed \
-		-p 8080:8080 \
-		-e ERLANG_COOKIE=${ERLANG_COOKIE} \
-		-e CLIENT_ID=${CLIENT_ID} \
-		soundfeed:latest
-
-.PHONY: deploy
-deploy: ## Deploy
-	@git push prod master
+run: ## Run the app in Docker
+	@docker run --env-file .env \
+			--expose 4000 -p 4000:4000 \
+			--rm -it $(APP_NAME)

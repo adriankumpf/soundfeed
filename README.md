@@ -12,18 +12,23 @@
 
 ## Installation
 
-First create an `env` file in the root directory of the application with your SoundCloud `client_id` and a cookie value:
+First create an `.env` file in the root directory of the application with your
+SoundCloud `client_id` and `source` it:
 
 ```plaintext
 CLIENT_ID=$your_client_id
-ERLANG_COOKIE=$secret
 ```
 
-Then start the application with:
+Then run the setup task:
 
 ```bash
-make install
-make start
+mix setup
+```
+
+And finally start the application with:
+
+```bash
+iex -S mix phx.server
 ```
 
 ## Release
@@ -32,5 +37,4 @@ To build a minimal Docker container that runs the release:
 
 ```bash
 make build
-make start-release
 ```

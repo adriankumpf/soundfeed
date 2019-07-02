@@ -1,0 +1,28 @@
+<div class="faq">
+  <section class="qa">
+    <h2 class="question">
+      <%= gettext "Where do I find my SoundCloud profile URL?" %>
+    </h2>
+    <p class="answer">
+      <%= gettext "Visit soundcloud.com and navigate to your profile page. Then copy the whole URL displayed in your address bar" %> (<%= gettext "e.g." %> <code>https://soundcloud.com/yourUserName</code>)
+    </p>
+  </section>
+
+  <section class="qa">
+    <h2 class="question">
+      <%= gettext "How often are the RSS feeds updated?" %>
+    </h2>
+    <p class="answer">
+      <%= gettext "The RSS feeds are updated approximately every 90 minutes." %>
+    </p>
+  </section>
+
+  <section class="qa">
+    <h2 class="question">
+      <%= gettext "Can I subscribe to a feed with my podcast client?" %>
+    </h2>
+    <p class="answer">
+      <%= gettext "Unfortunately, the generated feeds aren't proper podcast feeds since there is no universal way to download files directly from SoundCloud." %>
+    </p>
+  </section>
+</div>
