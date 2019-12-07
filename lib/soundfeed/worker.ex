@@ -5,7 +5,7 @@ defmodule SoundFeed.Worker do
 
   alias __MODULE__.{Api, Feed}
 
-  @timeout 15_000
+  @timeout 30_000
   @max_failures 5
 
   defstruct client_id: nil,

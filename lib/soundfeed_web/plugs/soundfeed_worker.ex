@@ -46,7 +46,7 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
         conn |> halt |> send_resp(503, "Please try again later.")
 
       {:error, reason} ->
-        Logger.error("Worker could not be started: #{reason}")
+        Logger.error("Worker could not be started: #{inspect(reason)}")
         conn |> halt |> send_resp(500, "Something went wrong.")
     end
   end
