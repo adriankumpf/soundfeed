@@ -4,7 +4,6 @@ defmodule SoundFeed.Application do
   def start(_type, _args) do
     children = [
       SoundFeedWeb.Endpoint,
-      SoundFeedWeb.Cache,
       {SoundFeed.Controller, client_id: client_id(), feeds_dir: feeds_dir()},
       {SoundFeed.Resolver, client_id: client_id()},
       SoundFeed.Reporter
