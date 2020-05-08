@@ -13,9 +13,14 @@ help:
 build: ## Build image containing the release
 	@docker build \
 		-t docker.pkg.github.com/adriankumpf/$(APP_NAME)/$(APP_NAME):$(APP_VSN) \
-		-t docker.pkg.github.com/adriankumpf/$(APP_NAME)/$(APP_NAME) \
+		-t docker.pkg.github.com/adriankumpf/$(APP_NAME)/$(APP_NAME):latest \
 		-t $(APP_NAME):$(APP_VSN) \
 		-t $(APP_NAME) .
+
+.PHONY: publish
+publish: ## Publish image to the GitHub package registryt
+	@docker push docker.pkg.github.com/adriankumpf/$(APP_NAME)/$(APP_NAME):$(APP_VSN)
+	@docker push docker.pkg.github.com/adriankumpf/$(APP_NAME)/$(APP_NAME):latest
 
 .PHONY: run
 run: ## Run the app in Docker
