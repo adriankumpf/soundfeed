@@ -13,7 +13,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="manifest" href="/manifest.json">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" media="all">
+    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
+    <%= if script = @conn.assigns[:script] do %>
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, script) %>"></script>
+    <% end %>
   </head>
   <body>
     <header class="header">
@@ -23,7 +26,7 @@
       <p class="subheader">Generate RSS feeds for any SoundCloud user</p>
     </header>
     <main role="main">
-      <%= render @view_module, @view_template, assigns %>
+      <%= @inner_content %>
     </main>
     <footer class="footer">
       <a href="<%= Routes.page_path @conn, :faq %>" class="footer-item">

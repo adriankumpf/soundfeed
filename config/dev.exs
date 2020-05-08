@@ -1,4 +1,4 @@
-import Config
+use Mix.Config
 
 config :soundfeed, client_id: System.get_env("CLIENT_ID")
 
@@ -15,18 +15,20 @@ config :soundfeed, SoundFeedWeb.Endpoint,
       "--watch-stdin",
       cd: Path.expand("../assets", __DIR__)
     ]
-  ],
+  ]
+
+config :soundfeed, SoundFeedWeb.Endpoint,
   live_reload: [
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/soundfeed_web/{live,views}/.*(ex)$",
-      ~r"lib/soundfeed_web/templates/.*(eex)$",
-      ~r{lib/soundfeed_web/live/.*(ex)$}
+      ~r"lib/soundfeed_web/(live|views)/.*(ex)$",
+      ~r"lib/soundfeed_web/templates/.*(eex)$"
     ]
   ]
 
 config :logger, :console, format: "[$level] $message\n"
 
 config :phoenix, :stacktrace_depth, 20
+
 config :phoenix, :plug_init_mode, :runtime

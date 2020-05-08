@@ -29,5 +29,3 @@
     </div>
   </form>
 </div>
-
-<script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>

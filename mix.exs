@@ -27,10 +27,11 @@ defmodule SoundFeed.MixProject do
 
   defp deps do
     [
-      # Default
-      {:phoenix, "~> 1.4"},
+      {:phoenix, "~> 1.5.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
@@ -44,7 +45,7 @@ defmodule SoundFeed.MixProject do
 
   defp aliases do
     [
-      setup: ["deps.get", &setup_yarn/1]
+      setup: ["deps.get", "cmd npm install --prefix assets"]
     ]
   end
 
@@ -55,18 +56,5 @@ defmodule SoundFeed.MixProject do
         applications: [runtime_tools: :permanent]
       ]
     ]
-  end
-
-  defp setup_yarn(_) do
-    cmd("yarn", ["install"], cd: "assets")
-  end
-
-  defp cmd(cmd, args, opts) do
-    opts = Keyword.merge([into: IO.stream(:stdio, :line), stderr_to_stdout: true], opts)
-    {_, result} = System.cmd(cmd, args, opts)
-
-    if result != 0 do
-      raise "Non-zero result (#{result}) from: #{cmd} #{Enum.map_join(args, " ", &inspect/1)}"
-    end
   end
 end

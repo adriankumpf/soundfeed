@@ -1,6 +1,6 @@
-FROM elixir:1.9-alpine AS builder
+FROM elixir:1.10-alpine AS builder
 
-RUN apk add --update --no-cache nodejs yarn git build-base && \
+RUN apk add --update --no-cache nodejs npm git build-base python && \
     mix local.rebar --force && \
     mix local.hex --force
 
@@ -9,36 +9,37 @@ ENV MIX_ENV=prod
 WORKDIR /opt/app
 
 COPY mix.exs mix.lock ./
-RUN mix do deps.get --only $MIX_ENV, deps.compile
+COPY config config
+RUN mix "do" deps.get --only $MIX_ENV, deps.compile
+
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN npm ci --prefix ./assets --progress=false --no-audit --loglevel=error
 
 COPY assets assets
-RUN cd assets && \
-  yarn install && \
-  yarn deploy && \
-  cd ..
+RUN npm run deploy --prefix ./assets
+RUN mix phx.digest
 
-COPY config config
 COPY lib lib
-COPY priv priv
+COPY priv/gettext priv/gettext
 
-RUN mix do phx.digest, compile
-
-RUN mkdir -p /opt/built && mix release --path /opt/built
+RUN mkdir -p /opt/built && \
+    mix "do" compile, release --path /opt/built
 
 ########################################################################
 
-FROM alpine:3.9 AS app
+FROM alpine:3.11 AS app
 
 ENV LANG=C.UTF-8 \
-    TZ=Europe/Berlin
+    HOME=/opt/app
 
-RUN apk add --update --no-cache bash openssl
+RUN apk add --no-cache ncurses-libs openssl tzdata
 
-WORKDIR /opt/app
+WORKDIR $HOME
+RUN chown -R nobody:nobody .
+USER nobody:nobody
 
-COPY --from=builder /opt/built .
-RUN chown -R nobody: .
+COPY --from=builder --chown=nobody:nobody /opt/built .
 
-USER nobody
+EXPOSE 4000
 
-CMD trap 'exit' INT; /opt/app/bin/soundfeed start
+CMD ["bin/soundfeed", "start"]
