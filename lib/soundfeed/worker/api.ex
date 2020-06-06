@@ -53,6 +53,7 @@ defmodule SoundFeed.Worker.Api do
 
   defp extract({:ok, %Res{status_code: 200, body: body}}), do: {:ok, body}
   defp extract({:ok, %Res{status_code: 401}}), do: {:error, :forbidden}
+  defp extract({:ok, %Res{status_code: 404}}), do: {:error, :not_found}
   defp extract({:ok, %Res{body: reason}}), do: {:error, reason}
   defp extract({:error, %Err{reason: reason}}), do: {:error, reason}
 

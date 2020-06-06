@@ -40,7 +40,7 @@ defmodule SoundFeed.Resolver do
       case HTTPoison.get("http://api.soundcloud.com/resolve", [], params: params) do
         {:ok, %Response{status_code: 302, headers: headers}} -> find_user_id(headers)
         {:ok, %Response{status_code: 404}} -> {:error, :not_found}
-        {:ok, %Response{status_code: _}} -> {:error, :bad_status_code}
+        {:ok, %Response{status_code: status}} -> {:error, {:bad_status_code, status}}
         {:error, %Error{reason: reason}} -> {:error, reason}
       end
 
