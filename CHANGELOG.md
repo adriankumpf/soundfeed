@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [1.6.0] - 2020-08-11
+
+### Enhancements
+
+- Increase timeouts
+- Remove caching layer for user lookups
+- Bump phoenix to 1.5
+- Use finch as HTTP client
+- Refactor JSON decoding
+- Include playlist tracks in the reposts feed
+
+### Bug Fixes
+
+- Set charset to UTF-8 in the content-type header
+- Return 404 if user was not found
+
 ## [1.5.1] - 2019-07-22
 
 ### Removed
@@ -121,7 +137,8 @@
 
 ## [1.0.0] - 2017-08-12
 
-[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.5.1...HEAD
+[unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/adriankumpf/soundfeed/compare/v1.5.1...v1.6.0
 [1.5.1]: https://github.com/adriankumpf/soundfeed/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/adriankumpf/soundfeed/compare/v1.4.3...v1.5.0
 [1.4.3]: https://github.com/adriankumpf/soundfeed/compare/v1.4.2...v1.4.3
