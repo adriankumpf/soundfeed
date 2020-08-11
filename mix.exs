@@ -35,9 +35,7 @@ defmodule SoundFeed.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      # Custom
-      {:logger_telegram_backend, "~> 1.0", only: :prod},
-      {:httpoison, "~> 1.5"},
+      {:finch, "~> 0.3"},
       {:poison, "~> 4.0"},
       {:timex, "~> 3.1"}
     ]

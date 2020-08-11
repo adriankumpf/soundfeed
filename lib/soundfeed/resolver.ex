@@ -3,7 +3,8 @@ defmodule SoundFeed.Resolver do
 
   require Logger
 
-  alias HTTPoison.{Error, Response}
+  alias SoundFeed.HTTP
+  alias Finch.Response
 
   defstruct [:client_id]
   alias __MODULE__, as: State
@@ -36,12 +37,17 @@ defmodule SoundFeed.Resolver do
       client_id: client_id
     ]
 
+    url =
+      URI.parse("https://api.soundcloud.com/resolve")
+      |> Map.put(:query, URI.encode_query(params))
+      |> URI.to_string()
+
     response =
-      case HTTPoison.get("http://api.soundcloud.com/resolve", [], params: params) do
-        {:ok, %Response{status_code: 302, headers: headers}} -> find_user_id(headers)
-        {:ok, %Response{status_code: 404}} -> {:error, :not_found}
-        {:ok, %Response{status_code: status}} -> {:error, {:bad_status_code, status}}
-        {:error, %Error{reason: reason}} -> {:error, reason}
+      case HTTP.get(url) do
+        {:ok, %Response{status: 302, headers: headers}} -> find_user_id(headers)
+        {:ok, %Response{status: 404}} -> {:error, :not_found}
+        {:ok, %Response{status: status}} -> {:error, {:bad_status_code, status}}
+        {:error, error} -> {:error, Exception.message(error)}
       end
 
     {:reply, response, state}
@@ -50,7 +56,7 @@ defmodule SoundFeed.Resolver do
   # Private
 
   defp find_user_id(headers) do
-    with {:ok, location} <- get_header(headers, "Location"),
+    with {:ok, location} <- get_header(headers, "location"),
          {:ok, user_id} <- extract_user_id(location) do
       {:ok, user_id}
     end

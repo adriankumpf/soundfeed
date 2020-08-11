@@ -1,8 +1,8 @@
 defmodule SoundFeed.Worker.Api do
-  alias HTTPoison.Response, as: Res
-  alias HTTPoison.Error, as: Err
+  alias Finch.Response
 
   alias SoundFeed.Worker.Schema.{Page, Track, User}
+  alias SoundFeed.HTTP
 
   def fetch(type, user_id, client_id) do
     url = url(user_id, type)
@@ -28,12 +28,10 @@ defmodule SoundFeed.Worker.Api do
   def body(_), do: %Page{collection: [%Track{}]}
 
   def normalize(tracks, :reposts) do
-    tracks
-    |> Enum.reduce([], fn
-      %{"track" => track}, acc -> [track | acc]
-      _, acc -> acc
+    Enum.flat_map(tracks, fn
+      %{"track" => track} -> [track]
+      _ -> []
     end)
-    |> Enum.reverse()
   end
 
   def normalize(data, _type), do: data
@@ -46,18 +44,34 @@ defmodule SoundFeed.Worker.Api do
   end
 
   defp get_json(url, params) do
-    url
-    |> HTTPoison.get([], params: params, recv_timeout: 15_000)
-    |> extract()
-  end
+    url = append_query_params(url, params)
 
-  defp extract({:ok, %Res{status_code: 200, body: body}}), do: {:ok, body}
-  defp extract({:ok, %Res{status_code: 401}}), do: {:error, :forbidden}
-  defp extract({:ok, %Res{status_code: 404}}), do: {:error, :not_found}
-  defp extract({:ok, %Res{body: reason}}), do: {:error, reason}
-  defp extract({:error, %Err{reason: reason}}), do: {:error, reason}
+    case HTTP.get(url, receive_timeout: 15_000) do
+      {:ok, %Response{status: 200, body: body}} -> {:ok, body}
+      {:ok, %Response{status: 401}} -> {:error, :forbidden}
+      {:ok, %Response{status: 404}} -> {:error, :not_found}
+      {:ok, %Response{body: reason}} -> {:error, reason}
+      {:error, reason} -> {:error, Exception.message(reason)}
+    end
+  end
 
   defp paginate(%User{} = user, _type, _params, _acc), do: {:ok, user}
   defp paginate(%Page{collection: c, next_href: nil}, _, _, acc), do: {:ok, acc ++ c}
   defp paginate(%Page{collection: c, next_href: url}, t, p, a), do: get(url, t, p, a ++ c)
+
+  defp append_query_params(url, params) do
+    url
+    |> URI.parse()
+    |> Map.update!(:query, fn
+      nil ->
+        URI.encode_query(params)
+
+      query ->
+        query
+        |> URI.decode_query()
+        |> Map.merge(Enum.into(params, %{}))
+        |> URI.encode_query()
+    end)
+    |> URI.to_string()
+  end
 end

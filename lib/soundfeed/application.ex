@@ -6,6 +6,7 @@ defmodule SoundFeed.Application do
       SoundFeedWeb.Telemetry,
       {Phoenix.PubSub, name: SoundFeed.PubSub},
       SoundFeedWeb.Endpoint,
+      SoundFeed.HTTP,
       {SoundFeed.Controller, client_id: client_id(), feeds_dir: feeds_dir()},
       {SoundFeed.Resolver, client_id: client_id()},
       SoundFeed.Reporter

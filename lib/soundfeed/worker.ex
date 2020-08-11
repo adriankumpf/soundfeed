@@ -5,7 +5,6 @@ defmodule SoundFeed.Worker do
 
   alias __MODULE__.{Api, Feed}
 
-  @timeout 30_000
   @max_failures 5
 
   defstruct client_id: nil,
@@ -49,8 +48,8 @@ defmodule SoundFeed.Worker do
     t_user = Task.async(fn -> Api.fetch(:user, user_id, client_id) end)
     t_tracks = Task.async(fn -> Api.fetch(type, user_id, client_id) end)
 
-    with {:ok, user} <- Task.await(t_user, @timeout),
-         {:ok, tracks} <- Task.await(t_tracks, @timeout) do
+    with {:ok, user} <- Task.await(t_user, 15_000),
+         {:ok, tracks} <- Task.await(t_tracks, 60_000) do
       Logger.info("Starting Worker: #{user_id} | #{user.username} | #{type}")
 
       save_feed!(type, tracks, user, feeds_dir)
