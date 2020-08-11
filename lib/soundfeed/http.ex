@@ -1,8 +1,8 @@
 defmodule SoundFeed.HTTP do
   @pools %{
-    "http://api.soundcloud.com" => [size: 25],
+    "https://api.soundcloud.com" => [size: 25],
     "https://api-v2.soundcloud.com" => [size: 10],
-    :default => [size: 5]
+    :default => [size: 10]
   }
 
   @pool_timeout 10_000
