@@ -1,4 +1,6 @@
 defmodule SoundFeed.Worker.Schema.User do
+  use SoundFeed.Schema
+
   defstruct [:id, :username, :permalink_url, :avatar_url]
 
   @type id :: String.t()

@@ -36,7 +36,6 @@ defmodule SoundFeed.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:finch, "~> 0.3"},
-      {:poison, "~> 4.0"},
       {:timex, "~> 3.1"}
     ]
   end

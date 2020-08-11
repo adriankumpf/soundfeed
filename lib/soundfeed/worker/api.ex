@@ -1,8 +1,9 @@
 defmodule SoundFeed.Worker.Api do
-  alias Finch.Response
+  require Logger
 
   alias SoundFeed.Worker.Schema.{Page, Track, User}
   alias SoundFeed.HTTP
+  alias Finch.Response
 
   def fetch(type, user_id, client_id) do
     url = url(user_id, type)
@@ -13,9 +14,7 @@ defmodule SoundFeed.Worker.Api do
       limit: 200
     ]
 
-    with {:ok, response} <- get(url, type, opts) do
-      {:ok, normalize(response, type)}
-    end
+    get(url, type, opts)
   end
 
   def url(user_id, :likes), do: "https://api.soundcloud.com/users/#{user_id}/favorites"
@@ -23,22 +22,9 @@ defmodule SoundFeed.Worker.Api do
   def url(user_id, :tracks), do: "https://api.soundcloud.com/users/#{user_id}/tracks"
   def url(user_id, :user), do: "https://api.soundcloud.com/users/#{user_id}"
 
-  def body(:reposts), do: %Page{collection: [%{"track" => %Track{}}]}
-  def body(:user), do: %User{}
-  def body(_), do: %Page{collection: [%Track{}]}
-
-  def normalize(tracks, :reposts) do
-    Enum.flat_map(tracks, fn
-      %{"track" => track} -> [track]
-      _ -> []
-    end)
-  end
-
-  def normalize(data, _type), do: data
-
   defp get(url, type, params, acc \\ []) do
     with {:ok, json} <- get_json(url, params),
-         {:ok, data} <- Poison.decode(json, as: body(type)) do
+         {:ok, data} <- decode(json, type) do
       paginate(data, type, params, acc)
     end
   end
@@ -49,9 +35,40 @@ defmodule SoundFeed.Worker.Api do
     case HTTP.get(url, receive_timeout: 15_000) do
       {:ok, %Response{status: 200, body: body}} -> {:ok, body}
       {:ok, %Response{status: 401}} -> {:error, :forbidden}
+      {:ok, %Response{status: 403}} -> {:error, :forbidden}
       {:ok, %Response{status: 404}} -> {:error, :not_found}
       {:ok, %Response{body: reason}} -> {:error, reason}
       {:error, reason} -> {:error, Exception.message(reason)}
+    end
+  end
+
+  defp decode(json, type) do
+    case {type, Jason.decode(json)} do
+      {:reposts, {:ok, %{"collection" => collection} = data}} ->
+        track_collection =
+          Enum.flat_map(collection, fn
+            %{"type" => "track-repost", "track" => track} ->
+              [Track.into(track)]
+
+            %{"type" => "playlist-repost", "playlist" => %{"tracks" => tracks}} ->
+              Enum.map(tracks, &Track.into/1)
+
+            unknown ->
+              Logger.warn("Received unknown repost type: #{inspect(unknown, pretty: true)}}")
+              []
+          end)
+
+        {:ok, %Page{collection: track_collection, next_href: data["next_href"]}}
+
+      {type, {:ok, %{"collection" => collection} = data}} when type in [:likes, :tracks] ->
+        track_collection = Enum.map(collection, &Track.into/1)
+        {:ok, %Page{collection: track_collection, next_href: data["next_href"]}}
+
+      {:user, {:ok, user}} ->
+        {:ok, User.into(user)}
+
+      {_type, {:error, reason}} ->
+        {:error, reason}
     end
   end
 

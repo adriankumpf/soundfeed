@@ -1,4 +1,6 @@
 defmodule SoundFeed.Worker.Schema.Track do
+  use SoundFeed.Schema
+
   defstruct [
     :id,
     :title,

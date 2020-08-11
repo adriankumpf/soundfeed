@@ -65,7 +65,10 @@ defmodule SoundFeed.Worker do
       {:ok, state}
     else
       {:error, reason} ->
-        Logger.warn("Could not start Worker {#{user_id}, #{type}}: #{inspect(reason)}")
+        if reason != :not_found do
+          Logger.warn("Could not start Worker {#{user_id}, #{type}}: #{inspect(reason)}")
+        end
+
         {:stop, reason}
     end
   end
