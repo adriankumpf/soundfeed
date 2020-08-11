@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [1.6.1] - 2020-08-11
+
+### Bug Fixes
+
+- Fix HTTP pool URLs
+
 ## [1.6.0] - 2020-08-11
 
 ### Enhancements
