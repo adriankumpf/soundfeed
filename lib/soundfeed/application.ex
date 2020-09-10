@@ -3,7 +3,6 @@ defmodule SoundFeed.Application do
 
   def start(_type, _args) do
     children = [
-      SoundFeedWeb.Telemetry,
       {Phoenix.PubSub, name: SoundFeed.PubSub},
       SoundFeedWeb.Endpoint,
       SoundFeed.HTTP,

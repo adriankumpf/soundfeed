@@ -4,7 +4,7 @@ defmodule SoundFeed.MixProject do
   def project do
     [
       app: :soundfeed,
-      version: "1.6.1",
+      version: "1.7.0-dev",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -18,7 +18,7 @@ defmodule SoundFeed.MixProject do
   def application do
     [
       mod: {SoundFeed.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :observer]
     ]
   end
 
@@ -30,8 +30,6 @@ defmodule SoundFeed.MixProject do
       {:phoenix, "~> 1.5.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
