@@ -15,14 +15,14 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "babel-loader": "^8.1.0",
-    "copy-webpack-plugin": "^6.1.0",
+    "copy-webpack-plugin": "^6.2.0",
     "css-loader": "^4.3.0",
-    "mini-css-extract-plugin": "^0.11.1",
+    "mini-css-extract-plugin": "^0.11.3",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "stylus": "^0.54.8",
-    "stylus-loader": "^3.0.2",
-    "terser-webpack-plugin": "^4.1.0",
-    "webpack": "4.44.1",
+    "stylus-loader": "^4.1.0",
+    "terser-webpack-plugin": "^4.2.2",
+    "webpack": "4.44.2",
     "webpack-cli": "^3.3.12"
   }
 }
