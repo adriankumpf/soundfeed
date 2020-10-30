@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :soundfeed,
   feeds_dir: "./feeds",
@@ -18,4 +18,4 @@ config :logger, :console,
 
 config :phoenix, :json_library, Jason
 
-import_config "#{Mix.env()}.exs"
+import_config "#{config_env()}.exs"

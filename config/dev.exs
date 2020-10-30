@@ -1,9 +1,6 @@
-use Mix.Config
-
-config :soundfeed, client_id: System.get_env("CLIENT_ID")
+import Config
 
 config :soundfeed, SoundFeedWeb.Endpoint,
-  http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

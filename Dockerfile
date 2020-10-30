@@ -1,6 +1,6 @@
-FROM elixir:1.10-alpine AS builder
+FROM hexpm/elixir:1.11.1-erlang-23.1-alpine-3.12.0 AS builder
 
-RUN apk add --update --no-cache nodejs npm git build-base python && \
+RUN apk add --update --no-cache nodejs npm git build-base && \
     mix local.rebar --force && \
     mix local.hex --force
 
@@ -9,8 +9,10 @@ ENV MIX_ENV=prod
 WORKDIR /opt/app
 
 COPY mix.exs mix.lock ./
+RUN mix deps.get --only $MIX_ENV
+
 COPY config config
-RUN mix "do" deps.get --only $MIX_ENV, deps.compile
+RUN mix deps.compile
 
 COPY assets/package.json assets/package-lock.json ./assets/
 RUN npm ci --prefix ./assets --progress=false --no-audit --loglevel=error
@@ -27,7 +29,7 @@ RUN mkdir -p /opt/built && \
 
 ########################################################################
 
-FROM alpine:3.11 AS app
+FROM alpine:3.12 AS app
 
 ENV LANG=C.UTF-8 \
     HOME=/opt/app

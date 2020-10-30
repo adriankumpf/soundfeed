@@ -5,7 +5,7 @@ defmodule SoundFeed.MixProject do
     [
       app: :soundfeed,
       version: "1.7.0-dev",
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -18,7 +18,7 @@ defmodule SoundFeed.MixProject do
   def application do
     [
       mod: {SoundFeed.Application, []},
-      extra_applications: [:logger, :runtime_tools, :observer]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 

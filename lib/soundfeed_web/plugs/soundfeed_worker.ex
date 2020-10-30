@@ -23,7 +23,7 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
         conn |> halt |> send_resp(404, "Not found")
 
       {:error, :forbidden} ->
-        Logger.warn("Worker could not be started: :forbidden")
+        Logger.warning("Worker could not be started: :forbidden")
         conn |> halt |> send_resp(503, "Please try again later")
 
       {:error, reason} ->

@@ -54,7 +54,7 @@ defmodule SoundFeed.Worker.Api do
               Enum.map(tracks, &Track.into/1)
 
             unknown ->
-              Logger.warn("Received unknown repost type: #{inspect(unknown, pretty: true)}}")
+              Logger.warning("Received unknown repost type: #{inspect(unknown, pretty: true)}}")
               []
           end)
 

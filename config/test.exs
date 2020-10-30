@@ -1,7 +1,5 @@
-use Mix.Config
+import Config
 
-config :soundfeed, SoundFeedWeb.Endpoint,
-  http: [port: 4002],
-  server: false
+config :soundfeed, SoundFeedWeb.Endpoint, server: false
 
-config :logger, level: :warn
+config :logger, level: :warning

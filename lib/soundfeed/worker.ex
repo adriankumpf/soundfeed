@@ -66,7 +66,7 @@ defmodule SoundFeed.Worker do
     else
       {:error, reason} ->
         if reason != :not_found do
-          Logger.warn("Could not start Worker {#{user_id}, #{type}}: #{inspect(reason)}")
+          Logger.warning("Could not start Worker {#{user_id}, #{type}}: #{inspect(reason)}")
         end
 
         {:stop, reason}
@@ -91,7 +91,7 @@ defmodule SoundFeed.Worker do
 
       {:error, reason} ->
         Logger.bare_log(
-          if(failures > 0, do: :warn, else: :info),
+          if(failures > 0, do: :warning, else: :info),
           "Fetching failed: #{inspect(reason)}"
         )
 
