@@ -3,26 +3,26 @@
   "description": " ",
   "license": "MIT",
   "scripts": {
-    "deploy": "webpack --mode production",
-    "watch": "webpack --mode development --watch"
+    "deploy": "webpack --mode production --stats-colors",
+    "watch": "webpack --mode development --watch --watch-options-stdin --stats-colors"
   },
   "dependencies": {
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/plugin-transform-runtime": "^7.11.5",
-    "@babel/preset-env": "^7.11.5",
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.1.0",
-    "copy-webpack-plugin": "^6.2.0",
-    "css-loader": "^4.3.0",
-    "mini-css-extract-plugin": "^0.11.3",
-    "optimize-css-assets-webpack-plugin": "^5.0.4",
+    "copy-webpack-plugin": "^6.2.1",
+    "css-loader": "^5.0.0",
+    "css-minimizer-webpack-plugin": "^1.1.5",
+    "mini-css-extract-plugin": "^1.2.1",
     "stylus": "^0.54.8",
-    "stylus-loader": "^4.1.0",
-    "terser-webpack-plugin": "^4.2.2",
-    "webpack": "4.44.2",
-    "webpack-cli": "^3.3.12"
+    "stylus-loader": "^4.2.0",
+    "terser-webpack-plugin": "^5.0.3",
+    "webpack": "5.3.2",
+    "webpack-cli": "^4.1.0"
   }
 }
