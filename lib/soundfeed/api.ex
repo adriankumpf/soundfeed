@@ -15,8 +15,6 @@ defmodule SoundFeed.Api do
 
   alias SoundFeed.Schema.{Page, Track, User}
 
-  def fetch(:reposts, _user_id, _client_id), do: {:error, :unsupported}
-
   def fetch(type, user_id, client_id) do
     get_paged(url(user_id, type), type,
       linked_partitioning: 1,

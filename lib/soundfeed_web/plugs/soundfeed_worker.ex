@@ -4,7 +4,7 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
 
   alias Plug.Conn
 
-  @content_types for kind <- [:reposts, :tracks, :likes],
+  @content_types for kind <- [:tracks, :likes],
                      do: {"#{kind}.rss", "application/rss+xml; charset=utf-8"},
                      into: %{}
 
@@ -32,7 +32,6 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
     end
   end
 
-  defp parse_filename("reposts.rss"), do: :reposts
   defp parse_filename("tracks.rss"), do: :tracks
   defp parse_filename("likes.rss"), do: :likes
 end

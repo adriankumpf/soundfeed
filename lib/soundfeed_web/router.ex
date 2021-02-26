@@ -36,7 +36,6 @@ defmodule SoundFeedWeb.Router do
     pipe_through :feeds
     get "/:user_id/likes.rss", FeedController, :dummy
     get "/:user_id/tracks.rss", FeedController, :dummy
-    get "/:user_id/reposts.rss", FeedController, :dummy
   end
 
   defp put_cache_headers(conn, _) do
