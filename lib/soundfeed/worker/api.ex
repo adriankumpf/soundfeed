@@ -17,7 +17,7 @@ defmodule SoundFeed.Worker.Api do
     get(url, type, opts)
   end
 
-  def url(user_id, :likes), do: "https://api.soundcloud.com/users/#{user_id}/favorites"
+  def url(user_id, :likes), do: "https://api.soundcloud.com/users/#{user_id}/likes/tracks"
   def url(user_id, :reposts), do: "https://api-v2.soundcloud.com/stream/users/#{user_id}/reposts"
   def url(user_id, :tracks), do: "https://api.soundcloud.com/users/#{user_id}/tracks"
   def url(user_id, :user), do: "https://api.soundcloud.com/users/#{user_id}"
