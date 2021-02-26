@@ -3,7 +3,8 @@ defmodule SoundFeed.Worker do
 
   require Logger
 
-  alias __MODULE__.{Api, Feed}
+  alias SoundFeed.Api
+  alias __MODULE__.Feed
 
   @max_failures 5
 

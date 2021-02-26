@@ -1,17 +1,17 @@
 defmodule SoundFeed.Resolver do
   use GenServer
+  use Tesla
+
+  adapter Tesla.Adapter.Finch, name: SoundFeed.Api, receive_timeout: 15_000
+
+  plug Tesla.Middleware.BaseUrl, "https://api.soundcloud.com"
+  plug Tesla.Middleware.Headers, [{"user-agent", "github.com/adriankumpf/soundfeed"}]
+  plug Tesla.Middleware.Logger, debug: true, log_level: &log_level/1
 
   require Logger
-
-  alias SoundFeed.HTTP
-  alias Finch.Response
-
-  defstruct [:client_id]
-  alias __MODULE__, as: State
+  alias Plug.Conn.Status
 
   @name __MODULE__
-
-  # API
 
   def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: Keyword.get(opts, :name, @name))
@@ -21,71 +21,40 @@ defmodule SoundFeed.Resolver do
     GenServer.call(name, {:lookup, user})
   end
 
-  # Callbacks
-
-  @impl true
+  @impl GenServer
   def init(opts) do
-    {:ok, %State{client_id: Keyword.fetch!(opts, :client_id)}}
+    {:ok, %{client_id: Keyword.fetch!(opts, :client_id)}}
   end
 
-  @impl true
-  def handle_call({:lookup, user}, _from, %State{client_id: client_id} = state) do
+  @impl GenServer
+  def handle_call({:lookup, user}, _from, %{client_id: client_id} = state) do
     Logger.info("Looking up '#{user}'", notify: true)
 
-    params = [
-      url: "http://soundcloud.com/#{user}",
-      client_id: client_id
-    ]
-
-    url =
-      URI.parse("https://api.soundcloud.com/resolve")
-      |> Map.put(:query, URI.encode_query(params))
-      |> URI.to_string()
-
     response =
-      case HTTP.get(url) do
-        {:ok, %Response{status: 302, headers: headers}} -> find_user_id(headers)
-        {:ok, %Response{status: 404}} -> {:error, :not_found}
-        {:ok, %Response{status: status}} -> {:error, {:bad_status_code, status}}
-        {:error, error} -> {:error, Exception.message(error)}
+      case get("/resolve", query: [url: "http://soundcloud.com/#{user}", client_id: client_id]) do
+        {:ok, %Tesla.Env{status: 302} = env} -> find_user_id(env)
+        {:ok, %Tesla.Env{status: status}} -> {:error, Status.reason_atom(status)}
+        {:error, e} when is_exception(e) -> {:error, Exception.message(e)}
+        {:error, reason} -> {:error, reason}
       end
 
     {:reply, response, state}
   end
 
-  # Private
-
-  defp find_user_id(headers) do
-    with {:ok, location} <- get_header(headers, "location"),
-         {:ok, user_id} <- extract_user_id(location) do
-      {:ok, user_id}
+  defp find_user_id(%Tesla.Env{} = env) do
+    try do
+      env
+      |> Tesla.get_header("location")
+      |> (fn "https://api.soundcloud.com/users/" <> user_id -> user_id end).()
+      |> String.split("?")
+      |> List.first()
+    rescue
+      _ -> {:error, :invalid_loaction}
+    else
+      user_id -> {:ok, user_id}
     end
   end
 
-  defp get_header(headers, key) do
-    case List.keyfind(headers, key, 0) do
-      {^key, value} -> {:ok, value}
-      nil -> {:error, :header_not_found}
-    end
-  end
-
-  defp extract_user_id("https://api.soundcloud.com/users/" <> user_id) do
-    {:ok, split_left(user_id, "?")}
-  end
-
-  defp extract_user_id(location) do
-    Logger.error("Could not extract user_id from #{location}")
-    {:error, :invalid_loaction}
-  end
-
-  defp split_left(string, sep) do
-    case :binary.match(string, [sep]) do
-      {start, _length} ->
-        <<left::binary-size(start), _::binary>> = string
-        left
-
-      :nomatch ->
-        string
-    end
-  end
+  defp log_level(%Tesla.Env{} = env) when env.status >= 400, do: :error
+  defp log_level(%Tesla.Env{}), do: :info
 end

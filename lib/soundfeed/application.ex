@@ -5,7 +5,7 @@ defmodule SoundFeed.Application do
     children = [
       {Phoenix.PubSub, name: SoundFeed.PubSub},
       SoundFeedWeb.Endpoint,
-      SoundFeed.HTTP,
+      SoundFeed.Api,
       {SoundFeed.Controller, client_id: client_id(), feeds_dir: feeds_dir()},
       {SoundFeed.Resolver, client_id: client_id()},
       SoundFeed.Reporter

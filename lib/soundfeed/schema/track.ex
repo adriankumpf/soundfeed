@@ -1,4 +1,4 @@
-defmodule SoundFeed.Worker.Schema.Track do
+defmodule SoundFeed.Schema.Track do
   use SoundFeed.Schema
 
   defstruct [

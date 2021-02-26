@@ -1,4 +1,4 @@
-defmodule SoundFeed.Worker.Schema.User do
+defmodule SoundFeed.Schema.User do
   use SoundFeed.Schema
 
   defstruct [:id, :username, :permalink_url, :avatar_url]

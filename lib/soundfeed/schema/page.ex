@@ -1,4 +1,4 @@
-defmodule SoundFeed.Worker.Schema.Page do
+defmodule SoundFeed.Schema.Page do
   use SoundFeed.Schema
 
   defstruct [:collection, :next_href]
