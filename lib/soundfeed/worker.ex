@@ -8,14 +8,14 @@ defmodule SoundFeed.Worker do
 
   @max_failures 5
 
-  defstruct client_id: nil,
-            type: nil,
-            user: nil,
-            tracks: %{},
-            failures: 0,
-            feeds_dir: nil
-
-  alias __MODULE__, as: State
+  defmodule State do
+    defstruct client_id: nil,
+              type: nil,
+              user: nil,
+              tracks: %{},
+              failures: 0,
+              feeds_dir: nil
+  end
 
   # API
 
@@ -109,7 +109,7 @@ defmodule SoundFeed.Worker do
           "Fetching failed: #{inspect(reason)}"
         )
 
-        wait = :math.pow(2, failures)
+        wait = round(:math.pow(2, failures))
 
         Logger.info("Retrying in #{wait} minute(s)")
         Process.send_after(self(), :refresh, round(:timer.minutes(wait)))

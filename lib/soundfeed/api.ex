@@ -1,5 +1,5 @@
 defmodule SoundFeed.Api do
-  use Tesla
+  use Tesla, only: [:get, :post]
 
   def child_spec(_arg) do
     Finch.child_spec(name: __MODULE__, pools: %{:default => [size: 25]})

@@ -11,8 +11,12 @@ defmodule SoundFeed.Controller do
     DynamicSupervisor.start_link(__MODULE__, opts, name: @name)
   end
 
-  def new(type, user_id) do
-    DynamicSupervisor.start_child(@name, {Worker, type: type, user_id: user_id})
+  def monitor_likes(user_id) do
+    with {:ok, _pid} <- start_child(:likes, user_id), do: :ok
+  end
+
+  def monitor_tracks(user_id) do
+    with {:ok, _pid} <- start_child(:tracks, user_id), do: :ok
   end
 
   def get_report do
@@ -23,13 +27,16 @@ defmodule SoundFeed.Controller do
     end)
   end
 
-  # Callbacks
-
+  @impl true
   def init(opts) do
     DynamicSupervisor.init(
       strategy: :one_for_one,
       max_children: 1024,
       extra_arguments: [opts]
     )
+  end
+
+  defp start_child(type, user_id) do
+    DynamicSupervisor.start_child(@name, {Worker, type: type, user_id: user_id})
   end
 end

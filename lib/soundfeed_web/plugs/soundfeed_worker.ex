@@ -12,11 +12,12 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
   plug Plug.Static, at: "/", from: ".", only: ~w(feeds), content_types: @content_types
 
   def start_worker(%Conn{params: %{"user_id" => user_id}, path_info: [_, _, fname]} = conn, _opts) do
-    fname
-    |> parse_filename()
-    |> SoundFeed.new(user_id)
+    case fname do
+      "tracks.rss" -> SoundFeed.Controller.monitor_tracks(user_id)
+      "likes.rss" -> SoundFeed.Controller.monitor_likes(user_id)
+    end
     |> case do
-      {:ok, _pid} ->
+      :ok ->
         conn
 
       {:error, :not_found} ->
@@ -31,7 +32,4 @@ defmodule SoundFeedWeb.Plugs.SoundfeedWorker do
         conn |> halt |> send_resp(500, "Something went wrong")
     end
   end
-
-  defp parse_filename("tracks.rss"), do: :tracks
-  defp parse_filename("likes.rss"), do: :likes
 end

@@ -4,7 +4,7 @@ defmodule SoundFeedWeb.ApiController do
   require Logger
 
   def show(conn, %{"user" => user}) do
-    case SoundFeed.lookup(user) do
+    case SoundFeed.Api.lookup_user(user) do
       {:ok, user_id} ->
         json(conn, %{user_id: user_id})
 
