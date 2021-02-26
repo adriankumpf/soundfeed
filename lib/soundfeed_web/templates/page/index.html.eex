@@ -9,7 +9,6 @@
     <div class="type">
       <select class="type-select">
         <option selected><%= gettext "Likes" %></option>
-        <option><%= gettext "Reposts" %></option>
         <option><%= gettext "Tracks" %></option>
       </select>
     </div>
