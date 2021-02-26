@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+## [1.7.0] - 2021-02-26
+
+- Remove support for fetching reposts (the SoundCloud API does not allow fetching reposts anymore)
+- Update SoundCloud API route to retrieve liked tracks
+- Use Tesla with the Finch adapter
+- Upgrade to Elixir v1.11
+- Migrate to Webpack 5
+
 ## [1.6.1] - 2020-08-11
 
 ### Bug Fixes
@@ -144,6 +152,7 @@
 ## [1.0.0] - 2017-08-12
 
 [unreleased]: https://github.com/adriankumpf/soundfeed/compare/v1.6.0...HEAD
+[1.7.0]: https://github.com/adriankumpf/soundfeed/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/adriankumpf/soundfeed/compare/v1.5.1...v1.6.0
 [1.5.1]: https://github.com/adriankumpf/soundfeed/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/adriankumpf/soundfeed/compare/v1.4.3...v1.5.0
