@@ -46,8 +46,15 @@ defmodule SoundFeed.Worker do
     schedule_refresh()
     schedule_expiration()
 
-    t_user = Task.async(fn -> Api.fetch(:user, user_id, client_id) end)
-    t_tracks = Task.async(fn -> Api.fetch(type, user_id, client_id) end)
+    t_user = Task.async(fn -> Api.get_user(user_id, client_id: client_id) end)
+
+    t_tracks =
+      Task.async(fn ->
+        case type do
+          :likes -> Api.get_likes(user_id, client_id: client_id)
+          :tracks -> Api.get_tracks(user_id, client_id: client_id)
+        end
+      end)
 
     with {:ok, user} <- Task.await(t_user, 15_000),
          {:ok, tracks} <- Task.await(t_tracks, 60_000) do
@@ -82,7 +89,13 @@ defmodule SoundFeed.Worker do
   @impl true
   def handle_info(:refresh, %State{client_id: cid, type: t, user: u, failures: failures} = state)
       when failures < @max_failures do
-    case Api.fetch(t, u.id, cid) do
+    fetch =
+      case t do
+        :likes -> &Api.get_likes/2
+        :tracks -> &Api.get_tracks/2
+      end
+
+    case fetch.(u.id, client_id: cid) do
       {:ok, tracks} ->
         save_feed!(t, tracks, u, state.feeds_dir)
 

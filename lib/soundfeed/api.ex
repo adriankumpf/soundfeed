@@ -13,9 +13,17 @@ defmodule SoundFeed.Api do
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Logger, debug: true, log_level: &log_level/1
 
+  alias SoundFeed.Application
   alias SoundFeed.Schema.{Page, Track, User}
+  alias __MODULE__.Resolver
 
-  def fetch(type, user_id, client_id) do
+  def get_likes(user_id, opts \\ []), do: fetch(:likes, user_id, opts[:client_id])
+  def get_tracks(user_id, opts \\ []), do: fetch(:tracks, user_id, opts[:client_id])
+  def get_user(user_id, opts \\ []), do: fetch(:user, user_id, opts[:client_id])
+
+  def lookup_user(user), do: Resolver.lookup(user, client_id: Application.client_id())
+
+  defp fetch(type, user_id, client_id) do
     get_paged(url(user_id, type), type,
       linked_partitioning: 1,
       client_id: client_id,
@@ -23,9 +31,9 @@ defmodule SoundFeed.Api do
     )
   end
 
-  def url(user_id, :likes), do: "/users/#{user_id}/likes/tracks"
-  def url(user_id, :tracks), do: "/users/#{user_id}/tracks"
-  def url(user_id, :user), do: "/users/#{user_id}"
+  defp url(user_id, :likes), do: "/users/#{user_id}/likes/tracks"
+  defp url(user_id, :tracks), do: "/users/#{user_id}/tracks"
+  defp url(user_id, :user), do: "/users/#{user_id}"
 
   defp get_paged(url, type, params, acc \\ []) do
     with {:ok, body} <- get_body(url, params),

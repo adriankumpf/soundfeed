@@ -3,11 +3,10 @@ defmodule SoundFeed.Application do
 
   def start(_type, _args) do
     children = [
-      {Phoenix.PubSub, name: SoundFeed.PubSub},
-      SoundFeedWeb.Endpoint,
       SoundFeed.Api,
       {SoundFeed.Controller, client_id: client_id(), feeds_dir: feeds_dir()},
-      {SoundFeed.Resolver, client_id: client_id()},
+      {Phoenix.PubSub, name: SoundFeed.PubSub},
+      SoundFeedWeb.Endpoint,
       SoundFeed.Reporter
     ]
 
@@ -17,8 +16,8 @@ defmodule SoundFeed.Application do
     )
   end
 
-  defp client_id, do: Application.get_env(:soundfeed, :client_id)
-  defp feeds_dir, do: Application.get_env(:soundfeed, :feeds_dir)
+  def client_id, do: Application.get_env(:soundfeed, :client_id)
+  def feeds_dir, do: Application.get_env(:soundfeed, :feeds_dir)
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
