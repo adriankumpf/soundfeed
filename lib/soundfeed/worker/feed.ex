@@ -15,20 +15,18 @@ defmodule SoundFeed.Worker.Feed do
         <link>#{user_link}</link>
         <description>#{@desc}</description>
         <lastBuildDate>#{now()}</lastBuildDate>
-    #{
-      for %Track{title: title, desc: desc, permalink_url: track_link} <- tracks do
-        '''
-            <item>
-              <title><![CDATA[#{title}]]></title>
-              <description><![CDATA[#{shorten(desc, @max)}]]></description>
-              <link>#{track_link}</link>
-              <guid>#{track_link}?user=#{id}</guid>
-            </item>
-        '''
-      end
-      |> Enum.join()
-      |> String.trim_trailing()
-    }
+    #{for %Track{title: title, desc: desc, permalink_url: track_link} <- tracks do
+      '''
+          <item>
+            <title><![CDATA[#{title}]]></title>
+            <description><![CDATA[#{shorten(desc, @max)}]]></description>
+            <link>#{track_link}</link>
+            <guid>#{track_link}?user=#{id}</guid>
+          </item>
+      '''
+    end
+    |> Enum.join()
+    |> String.trim_trailing()}
       </channel>
     </rss>
     """

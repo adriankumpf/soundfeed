@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.11.3-erlang-23.2-alpine-3.13.1 AS builder
+FROM hexpm/elixir:1.12.0-erlang-24.0-alpine-3.13.3 as builder
 
 RUN apk add --update --no-cache nodejs npm git build-base && \
     mix local.rebar --force && \
@@ -31,12 +31,12 @@ RUN mix release --path /opt/built
 
 ########################################################################
 
-FROM alpine:3.13.1 AS app
+FROM alpine:3.13.3 AS app
 
 ENV LANG=C.UTF-8 \
     HOME=/opt/app
 
-RUN apk add --no-cache ncurses-libs openssl tzdata
+RUN apk add --no-cache ncurses-libs ca-certificates libstdc++
 
 WORKDIR $HOME
 RUN chown -R nobody:nobody .
