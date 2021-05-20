@@ -4,7 +4,7 @@ defmodule SoundFeed.MixProject do
   def project do
     [
       app: :soundfeed,
-      version: "1.7.0",
+      version: "1.8.0",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
