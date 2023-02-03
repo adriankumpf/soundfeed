@@ -28,7 +28,7 @@ defmodule SoundFeed.Api.Resolver do
       |> String.split("?")
       |> List.first()
     rescue
-      _ -> {:error, :invalid_loaction}
+      _ -> {:error, :invalid_location}
     else
       user_id -> {:ok, user_id}
     end
